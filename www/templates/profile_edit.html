@@ -1,0 +1,36 @@
+<ion-view title="Mi perfil">
+    <ion-content overflow-scroll="true" padding="true" class="has-header">
+        <form class="list"  name="profileForm">
+            <ion-item class="item-thumbnail-left">
+              <img src="img/blank-avatar-big.png" ng-if="user.image == null && user.login_fb == false" />
+              <img src="{{ user.image }}" ng-if="user.image != null" />
+              <button
+                ng-if="facebookConnected == false"
+                class="button button-full icon-right ion-camera button-stable"
+                ng-click="editProfilePicture()">
+                Selecciona tu avatar
+              </button>
+            </ion-item>
+            <label class="item item-input item-detail">
+                <span class="input-label item-detail-label">Nombre</span>
+                <input type="text" ng-model="user.nombre" ng-required="true">
+            </label>
+            <label class="item item-input item-detail">
+                <span class="input-label item-detail-label">Apellido</span>
+                <input type="text" ng-model="user.apellido" ng-required="true">
+            </label>
+            <label class="item item-input item-detail">
+                <span class="input-label item-detail-label">Teléfono</span>
+                <input type="tel" ng-model="user.telefono" ng-required="true">
+            </label>
+            <label class="item item-input item-detail">
+                <span class="input-label item-detail-label">E-mail</span>
+                <input type="email" ng-model="user.email" disabled>
+            </label>
+
+            <button class="button button-full button-positive" ng-disabled="profileForm.$invalid" ng-click="profileForm.$valid && saveProfile()">
+              Guardar cambios
+            </button>
+        </form>
+    </ion-content>
+</ion-view>

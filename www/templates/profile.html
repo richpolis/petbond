@@ -1,0 +1,42 @@
+<ion-view view-title="Perfil">
+  <ion-content class="fondo-perritos">
+    <div class="list card">
+
+      <div class="item item-avatar">
+        <img src="img/blank-avatar-big.png" ng-if="user.image == null && user.login_fb == false" />
+        <img src="{{ user.image }}" ng-if="user.image != null" />
+        <h2>{{ user.nombre }} {{ user.apellido }}</h2>
+      </div>
+
+      <div class="item item-icon-left ">
+        <i class="icon ion-iphone"></i>
+        {{ user.telefono }}
+      </div>
+
+
+      <div class="item item-icon-left ">
+        <i class="icon ion-ios-email-outline"></i>
+        {{ user.email }}
+      </div>
+
+      <div class="item">
+
+        <div class="row">
+          <div class="col">
+            <button class="button button-positive button-block" type="button" ng-click="goToEditProfile()">Editar</button>
+          </div>
+          <div class="col">
+            <button ng-if="user.login_fb == false" class="button button-block button-positive"  ng-click="goToChangePassword()">Cambiar Contraseña</button>
+          </div>
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+
+
+  </ion-content>
+</ion-view>

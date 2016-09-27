@@ -1,0 +1,63 @@
+/*
+To customize the look and feel of Ionic, you can override the variables
+in ionic's _variables.scss file.
+
+For example, you might change some of the default colors:
+
+$light:                           #fff !default;
+$stable:                          #f8f8f8 !default;
+$positive:                        #387ef5 !default;
+$calm:                            #11c1f3 !default;
+$balanced:                        #33cd5f !default;
+$energized:                       #ffc900 !default;
+$assertive:                       #ef473a !default;
+$royal:                           #886aea !default;
+$dark:                            #444 !default;
+*/
+
+.petmatch-item {
+    background-color: #009900 !important;
+    color: #000 !important;
+    border-radius: 15px !important;
+    margin: 5px !important;
+}
+
+$amatic-font-path: "../lib/ionic/fonts/amatic" !default;
+@font-face {
+    font-family: 'amatic_bold';
+    src: url('#{$amatic-font-path}/amatic_bold.eot');
+    src: url('#{$amatic-font-path}/amatic_bold.eot') format('embedded-opentype'),
+        url('#{$amatic-font-path}/amatic_bold.woff2') format('woff2'),
+        url('#{$amatic-font-path}/amatic_bold.woff') format('woff'),
+        url('#{$amatic-font-path}/amatic_bold.ttf') format('truetype'),
+        url('#{$amatic-font-path}/amatic_bold.svg#amatic_bold') format('svg');
+}
+
+$font-family-sans-serif:            "amatic_bold", "Helvetica Neue", "Roboto", sans-serif !default;
+$font-family-light-sans-serif:      "amatic_bold", "HelveticaNeue-Light", "Roboto-Light", sans-serif-light !default;
+$item-p-color:                      #000 !default;
+
+$positive:                          #009900 !default;
+$balanced:                          #387ef5 !default;
+$bar-title-font-size:               30px !default;
+$android-bar-title-font-size:       30px !default;
+
+$item-font-size:                    27px !default;
+$item-h2-font-size:                 22px !default;
+
+/*$font-size-base:                  20px !default;
+$font-size-large:                 22px !default;
+$font-size-small:                 11px !default;*/
+$select-font-size-base:             25px !default;
+$input-label-font-size:             30px !default;
+
+$button-font-size:                  25px !default;
+$button-bar-button-font-size:       25px !default;
+$button-stable-border:              #b2b2b2 !default;
+
+// The path for our ionicons font files, relative to the built CSS in www/css
+$ionicons-font-path: "../lib/ionic/fonts" !default;
+
+// Include all of Ionic
+@import "www/lib/ionic/scss/ionic";
+

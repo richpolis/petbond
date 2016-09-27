@@ -1,0 +1,37 @@
+<ion-view hide-nav-bar="true">
+    <ion-content padding="true" class="login">
+        <div class="main-portlet">
+            <p>Petbond</p>
+            <!--Custom login-->
+            <div>
+                <form name="loginform">
+                    <!--Email-->
+                    <label class="item item-input">
+                        <span class="input-label">Email</span>
+                        <input type="text" ng-model="loginData.email">
+                    </label>
+
+                    <!--Password-->
+                    <label class="item item-input">
+                        <span class="input-label">Contraseña</span>
+                        <input type="password" ng-model="loginData.password">
+                    </label>
+
+                    <!--Buttons-->  
+                    <div>
+                        <a class="button button-block button-dark" ng-click="doLogin()">Ingresar</a>
+                    </div>
+                </form>
+
+                <div>
+                    <a class="button button-block button-dark" ng-click="goToSignUp()">Registrarme</a>
+                </div>
+            </div>
+
+            <!--Facebook login-->
+            <div>
+                <a class="button button-block icon-left ion-social-facebook button-balanced " ng-click="facebookLogin()">Login con Facebook</a>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,72 @@
+<ion-view title="{{title}}">
+  <ion-content overflow-scroll="true" padding="true" class="has-header fondo-perritos">
+    <form id="publicacionForm" name="publicacionForm" class="list card">
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">Título</span>
+        <textarea placeholder="Título de la publicación" ng-model="publicacion.titulo" ng-required="true"></textarea>
+      </label>
+      <label class="item">
+        <span class="input-label">Publicar en</span>
+        <ion-list>
+          <ion-radio ng-repeat="tipo in tipos" ng-model="publicacion.tipo" ng-value="'{{tipo.value}}'" ng-required="true">{{tipo.texto}}</ion-radio>
+        </ion-list>
+      </label>
+      <label class="item item-select">
+        <span class="input-label">Mascota</span>
+        <select ng-model="publicacion.tipoMascota" id="tipoMascota" ng-required="true" ng-options="mascota.id as mascota.nombre for mascota in tipos_mascota">
+        </select>
+      </label>
+      <label class="item item-select">
+        <span class="input-label">Sexo</span>
+        <select ng-model="publicacion.sexo" ng-options="sexo.value as sexo.texto for sexo in sexos"></select>
+      </label>
+      <label class="item item-select" name="raza">
+        <span class="input-label">Raza</span>
+        <select ng-model="publicacion.raza" id="raza" ng-required="true">
+          <option ng-repeat="raza in razas" ng-if="raza.tipo_mascota.id == publicacion.tipoMascota" value="{{raza.id}}">{{raza.nombre}}</option>
+        </select>
+      </label>
+      <label class="item item-select">
+        <span class="input-label">Color pelaje</span>
+        <select ng-model="publicacion.color" ng-required="true" ng-options="color.id as color.nombre for color in colores">
+        </select>
+      </label>
+      <label class="item item-select">
+        <span class="input-label">Edad</span>
+        <select ng-model="publicacion.edad" ng-options="edad.value as edad.texto for edad in edades" ng-required="true"></select>
+      </label>
+      <div class="item" ng-click="openModal()">
+          <div class="row">
+            <div class="col">
+            <span>Zona</span>
+            </div>
+            <div class="col">
+              <span class="pull-right input-text-button" ng-if="!publicacion.latitude">Ver mapa <i class="icon ion-ios-location-outline"></i></span>
+              <span class="pull-right input-text-button" ng-if="publicacion.latitude">Registrada <i class="icon ion-map"></i></span>
+            </div>
+          </div>
+      </div>
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">Descripción</span>
+        <textarea placeholder="Info adicional de la mascota" ng-model="publicacion.descripcion"  ng-required="true"></textarea>
+      </label>
+      <!--Botones para crear publicación-->
+      <div class="item" ng-if="!publicacion.id > 0">
+        <button class="button button-block button-positive icon ion-save" type="submit"
+                ng-disabled="publicacionForm.$invalid"
+                ng-click="publicacionForm.$valid && createPublicacion()">Grabar y editar fotos</button>
+      </div>
+
+      <!--Botones para editar publicación-->
+      <div class="item" ng-if="publicacion.id > 0">
+        <button class="button button-block button-positive icon ion-upload" type="submit"
+                ng-disabled="publicacionForm.$invalid"
+                ng-click="publicacionForm.$valid && updatePublicacion()">Grabar cambios</button>
+        <button class="button button-block button-assertive icon ion-camera"
+                ng-click="goToPublicacionImages()">Editar fotos</button>
+      </div>
+    </form>
+  </ion-content>
+
+
+</ion-view>

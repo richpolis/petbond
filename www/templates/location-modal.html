@@ -1,0 +1,46 @@
+<ion-modal-view>
+    <ion-content>
+        <div class="bar bar-header item-input-inset">
+            <label class="item-input-wrapper">
+                <i class="icon ion-ios-search placeholder-icon"></i>
+                <input type="text" placeholder="Dirección" ng-model="publicacion.direction" g-places-autocomplete options="autocompleteOptions">
+            </label>
+            <button class="button button-clear button-small vcenter" type="button" ng-click="publicacion.direction = null">
+                <i class="icon ion-android-close"></i>
+            </button>
+        </div>
+
+        <div id="new-event-map">
+            <ui-gmap-google-map center='map.center' zoom='map.zoom' options='map.options'>
+                <ui-gmap-marker coords="marker.coords" idkey="marker.id"></ui-gmap-marker>
+            </ui-gmap-google-map>
+        </div>
+
+        <div class="new-event-instructions">
+            <p>
+                <strong>¿Cómo fijar la dirección?</strong><br>
+                <ol class="show-list-numbers">
+                    <li>Introduce la dirección o nombre de la cancha en la barra superior.</li>
+                    <li>Si es necesario, ajusta la ubicación arrastrando el marcardor en el mapa hacia la posición exacta del lugar.</li>
+                </ol>
+            </p>
+        </div>
+
+        <div class="padding">
+            <div class="row">
+              <div class="col">
+                <button class="button button-block button-positive button-no-bar" type="button" ng-click="closeModal()" ng-disabled="!publicacion.address">Fijar Ubicación</button>
+              </div>
+              <div class="col">
+                <button class="button button-block button-positive" ng-click="centerOnMe()">Mi ubicacion</button>
+              </div>
+            </div>
+
+        </div>
+
+        <div class="padding">
+          <button class="button button-block button-positive button-no-bar" type="button" ng-click="closeModal()">Cerrar</button>
+        </div>
+
+    </ion-content>
+</ion-modal-view>

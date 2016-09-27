@@ -1,0 +1,172 @@
+
+.image-loader-container {
+    margin: 9px;
+    max-width: 81px;
+    max-height: 81px;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+    background-color: #e5e5e5;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-content: stretch;
+    align-items: center;
+}
+
+.image-list-thumb {
+    padding: 2px 2px 2px 2px;
+    height: 300px;
+    width: 100%;
+}
+
+.fullscreen-image {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    margin: 0 auto;
+}
+
+.post-date {
+    text-align: right;
+}
+
+.tipo-pub {
+    padding: 3px;
+    color: #000 !important;
+    background-color: #ffd966;
+    font-size: 18px;
+}
+
+.desc-pub {
+    font: 13px arial !important;
+}
+
+.fecha-pub {
+    font: italic bold 9px arial !important;
+    text-align: right;
+    margin-top: 10px;
+}
+
+.item-detail {
+    font: 13px arial !important;
+    padding: 0 0 0 16px !important;
+}
+
+.item-detail-label {
+    font: bolder 20px amatic_bold !important;
+    font-weight: bold;
+    background-color: activeborder;
+}
+
+.button-fav {
+    float: right;
+    width: 25px;
+    height: 25px;
+}
+
+.favorite {
+    background-image: url('../img/fav.png');
+    background-repeat: no-repeat;
+}
+
+.not-favorite {
+    background-image: url('../img/no_fav.png');
+    background-repeat: no-repeat;
+}
+
+.login {
+/*    background-image: url('../img/dog.jpg');
+    background-repeat: no-repeat;*/
+}
+
+.main-portlet {
+    padding-top: 50%;
+}
+
+.main-portlet p {
+    font-size: 50px;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.pane {
+	/*background: url(image) no-repeat center center fixed; */
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	background-size: cover;
+}
+
+/* Google maps */
+
+.scroll {
+  height: 100%;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+}
+
+
+textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"] {
+  font-weight: normal;
+  font-size: 22px;
+  line-height: 1.42857;
+}
+
+.fondo-perritos{
+  background-image: url('../img/fondo.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+#event-map {
+  width: 100%;
+  height: 250px; }
+
+.angular-google-map-container {
+  height: 250px; }
+
+/** This is the map configuration for NEW EVENTS, not a new map format */
+#new-event-map {
+  width: 100%;
+  height: 300px; }
+
+#new-event-map:before {
+  width: 22px;
+  height: 40px;
+  display: block;
+  content: ' ';
+  position: relative;
+  top: 50%;
+  left: 50%;
+  margin: -40px 0 0 -11px;
+  background: url("../img/marker.png");
+  background-size: 22px 40px;
+  /* Since I used the HiDPI marker version this compensates for the 2x size */
+  z-index: 1; }
+
+.new-event-instructions {
+  padding: 15px;
+  letter-spacing: 0.05em;
+  font-style: normal;
+  font-size: 12px; }
+.new-event-instructions strong {
+  font-weight: normal;
+  letter-spacing: 0.05em;
+  font-style: normal;
+  font-size: 14px; }
+
+/* AUTOCOMPLETE FIX PELOS 2016-03-03 */
+div.pac-container {
+  pointer-events: auto;
+  position: absolute;
+  z-index: 10000; }
+
+/*# sourceMappingURL=style.css.map */

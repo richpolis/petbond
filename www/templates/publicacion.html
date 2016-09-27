@@ -1,0 +1,90 @@
+<ion-view title="Publicación" cache-view="false">
+  <ion-content overflow-scroll="true" padding="true" class="has-header fondo-perritos">
+    <div class="list card">
+
+      <div class="item item-avatar">
+        <img ng-if="publicacion.fotos.length > 0" ng-src="{{ base_url + publicacion.fotos[0].image }}" />
+        <img ng-if="publicacion.fotos.length == 0" src="img/dog.jpg" />
+        <h2>{{publicacion.titulo}}</h2>
+        <p ng-repeat="tipo in tipos" ng-if="tipo.value == publicacion.tipo">{{tipo.texto}}</p>
+      </div>
+      <div class="item item-text-wrap">
+        {{publicacion.descripcion}}
+      </div>
+
+      <div class="item item-divider">
+        Fotos
+      </div>
+    <!--Foto principal-->
+    <div class="item item-divider">
+      <i class="ion-images"> Fotos ({{publicacion.fotos.length}})</i>
+      <!--Editar fotos-->
+      <button class="button button-small icon-left button-positive" style="float:right;" ng-click="goToPublicacionImages()" ng-if="can_edit">
+        Editar
+      </button>
+      <br><br>
+      <!--Vista preliminar-->
+      <img ng-src="{{base_url + publicacion.fotos[0].image}}" class="image-list-thumb" ng-click="showPhoto()" ng-if="publicacion.fotos.length > 0">
+      <!--Sin fotos disponibles-->
+      <span ng-if="publicacion.fotos.length == 0">No hay imágenes disponibles.</span>
+    </div>
+      <div class="item item-divider">
+        Mapa
+      </div>
+    <!--Mapa-->
+    <div class="item" id="event-map">
+      <ui-gmap-google-map center='map.center' zoom='map.zoom' options='map.options'>
+        <ui-gmap-marker coords="marker.coords" idkey="marker.id"></ui-gmap-marker>
+      </ui-gmap-google-map>
+    </div>
+
+    <div class="item item-divider">
+      Más datos
+    </div>
+    <!--Detalles-->
+    <div class="list">
+      <label class="item item-input item-detail">
+        <span class="input-label item-detail-label">Mascota</span>
+        {{publicacion.tipoMascota.nombre}}
+      </label>
+      <label class="item item-input item-detail">
+        <span class="input-label item-detail-label">Raza</span>
+        {{publicacion.raza.nombre}}
+      </label>
+      <label class="item item-input item-detail">
+        <span class="input-label item-detail-label">Sexo</span>
+        <span ng-repeat="sexo in sexos" ng-if="sexo.value == publicacion.sexo">{{sexo.texto}}</span>
+      </label>
+      <label class="item item-input item-detail">
+        <span class="input-label item-detail-label">Edad</span>
+        <span ng-repeat="edad in edades" ng-if="edad.value == publicacion.edad">{{edad.texto}}</span>
+      </label>
+      <label class="item item-input item-detail">
+        <span class="input-label item-detail-label">Color</span>
+        {{publicacion.color.nombre}}
+      </label>
+      <label class="item item-input item-detail">
+        <span class="input-label item-detail-label">Fecha</span>
+        {{publicacion.date}}
+      </label>
+    </div>
+
+    <div class="item item-divider">
+      Cómo contactarme
+    </div>
+    <br/>
+      <div class="item">
+        <button class="button icon-left ion-edit" ng-click="edit()" ng-if="can_edit">Editar</button>
+        <!--Pausar/Activar-->
+        <button class="button icon-left ion-pause" ng-show="can_edit && (publicacion.estado=='A')" ng-click="setEstado('B')">Pausar</button>
+        <button class="button icon-left ion-play" ng-show="can_edit && (publicacion.estado=='N' || publicacion.estado=='B')" ng-click="setEstado('A')">Activar</button>
+
+        <!--Favorito/No favorito-->
+        <button class="button icon-right ion-ios-heart-outline" ng-if="!is_favorite" ng-click="setFavorite()">Marcar favorito</button>
+        <button class="button icon-right ion-ios-heart" ng-if="is_favorite" ng-click="setFavorite()">Quitar favorito</button>
+      </div>
+    <!--Contacto.-->
+    </div>
+  </ion-content>
+
+</ion-view>

@@ -1,0 +1,28 @@
+<ion-view title="Fotos" id="publicacion-images" cache-view="false">
+  <ion-content overflow-scroll="true" padding="true" scroller>
+    <button
+      class="button button-full icon-right ion-camera button-stable"
+      ng-click="addPhoto()" ng-disabled="fotos.length == 4">
+      Selecciona hasta 4 fotos
+    </button>
+
+    <!--Lista de fotos de la publicación actual.-->
+    <div class="alert alert-warning text-center" data-ng-hide="fotos.length">
+      Esta publicación no tiene fotos.
+    </div>
+    <div class="list">
+      <div class="item item-thumbnail-left" ng-repeat="foto in fotos">
+        <img src="{{urlForImage(foto)}}">
+        <h2>Foto {{$index + 1}}</h2>
+        <!--Delete photo-->
+        <button class="button button-small icon-left ion-trash-a button-assertive" ng-click="removeImage(foto)">
+          Borrar
+        </button>
+      </div>
+    </div>
+
+  </ion-content>
+  <div class="bar bar-footer bar-positive">
+    <button class="button" ng-click="finish()" ng-if="true">Ver publicacion</button>
+  </div>
+</ion-view>

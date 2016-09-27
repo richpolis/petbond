@@ -1,0 +1,61 @@
+<ion-modal-view>
+  <ion-header-bar>
+    <h1 class="title">Buscar publicaciones</h1>
+    <div class="buttons">
+      <button class="button button-icon icon ion-close-round" ng-click="closeModal()">
+      </button>
+    </div>
+  </ion-header-bar>
+  <ion-content class="fondo-perritos">
+    <form class="list card">
+      <!--Filtro.-->
+      <label class="item item-select">
+        <span class="input-label">Listar</span>
+        <select ng-model="criteria.tipoPublicacion">
+          <option value="">Todos</option>
+        </select>
+      </label>
+
+      <!-- Pet. -->
+      <label class="item item-select">
+        <span class="input-label">Mascota</span>
+        <select ng-model="criteria.tipoMascota" ng-options="tipoMascota.id as tipoMascota.nombre for tipoMascota in tipos_mascota"></select>
+      </label>
+
+      <!-- Sexo. -->
+      <label class="item item-select">
+        <span class="input-label">Sexo</span>
+        <select ng-model="criteria.sexo" ng-options="sexo.value as sexo.texto for sexo in sexos"></select>
+      </label>
+
+      <!-- Edad. -->
+      <label class="item item-select">
+        <span class="input-label">Edad</span>
+        <select ng-model="criteria.edad" ng-options="edad.value as edad.texto for edad in edades"></select>
+      </label>
+
+      <!-- Race. -->
+      <label class="item item-select">
+        <span class="input-label">Raza</span>
+        <select ng-model="publicacion.raza">
+          <option ng-repeat="raza in razas" ng-if="raza.tipo_mascota.id == criteria.tipoMascota" value="{{raza.id}}">{{raza.nombre}}</option>
+        </select>
+      </label>
+
+      <!-- Color. -->
+      <label class="item item-select">
+        <span class="input-label">Color</span>
+        <select ng-model="criteria.color" ng-options="color.id as color.nombre for color in colores"></select>
+      </label>
+
+      <!-- Tipo publicación. -->
+      <ion-toggle toggle-class="toggle-positive" ng-repeat="(key, value) in Config.tipos" ng-model="selected_tipos[key]">{{value}}</ion-toggle>
+
+      <!-- Zone. -->
+      <!--<ion-item>Zona</ion-item>-->
+    </form>
+  </ion-content>
+  <div class="bar bar-footer">
+    <button class="button button-full button-positive" ng-click="doSearch()">Buscar</button>
+  </div>
+</ion-modal-view>

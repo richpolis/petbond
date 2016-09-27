@@ -1,0 +1,30 @@
+<ion-view title="Mis publicaciones" id="page1" hide-back-button="true">
+  <ion-nav-buttons side="secondary">
+    <button class="button ion-search" ng-click="openModal()" ng-if="tipoController=='inicio'"></button>
+  </ion-nav-buttons>
+  <!--<ion-content overflow-scroll="true" padding="true" class="has-header">-->
+  <ion-content class="has-header fondo-perritos" padding="true">
+    <ion-refresher on-refresh="getPublicaciones()" ng-if="tipoController=='inicio'"></ion-refresher>
+    <div class="alert alert-warning text-center" data-ng-hide="publicaciones.length">
+      No se encontraron publicaciones.
+    </div>
+    <ion-list>
+      <ion-item class="item-thumbnail-left" collection-repeat="publicacion in publicaciones" ng-click="viewPublicacion(publicacion)">
+        <img ng-if="publicacion.fotos.length > 0" ng-src="{{ base_url + publicacion.fotos[0].image }}" />
+        <img ng-if="publicacion.fotos.length == 0" src="img/dog.jpg" />
+          <div class="tipo-pub">
+            <span ng-repeat="tipo in tipos" ng-if="tipo.value == publicacion.tipo">{{tipo.texto}}</span>
+            <div ng-class="{'button-fav favorite': isFavorite(publicacion), 'button-fav not-favorite': !isFavorite(publicacion)}"></div>
+          </div>
+          <h2>{{publicacion.titulo}}</h2>
+          <p class="desc-pub">{{publicacion.descripcion}}</p>
+          <p class="fecha-pub">
+            <span ng-if="publicacion.estado=='N'">Nuevo</span>
+            <span ng-if="publicacion.estado=='A'">Activo</span>
+            <span ng-if="publicacion.estado=='B'">Pausado</span>
+            {{publicacion.date}}
+          </p>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

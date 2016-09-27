@@ -1,0 +1,7 @@
+<div class="modal image-modal transparent">
+  <ion-slide-box show-pager="true">
+    <ion-slide ng-repeat="photo in fotos">
+      <img ng-src="{{base_url + photo.url}}" class="fullscreen-image"/>
+    </ion-slide>
+  </ion-slide-box>
+</div>
