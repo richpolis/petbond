@@ -1,5 +1,5 @@
 {
-  "name": "petmatch",
+  "name": "petbond",
   "app_id": "",
   "gulpStartupTasks": [
     "sass",
