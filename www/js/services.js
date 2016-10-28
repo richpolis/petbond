@@ -3,7 +3,7 @@ angular.module('app.services', [])
 
         this.executeRequest = function (url, data) {
 
-            //var baseUrl = 'http://api.laretaapp.com';
+            //var baseUrl = 'http://api.petbondweb.com';
             var baseUrl = Config.base_url;
             var deferred = $q.defer();
 
@@ -95,6 +95,11 @@ angular.module('app.services', [])
             return this.executeRequest('/publications/edit/' + data["id"], data);
         };
 
+        // Publicacion Contact to User own
+        this.contactUserPublicacion = function (data) {
+            return this.executeRequest('/publications/contact/user/' + data["id"], data);
+        };
+
           // Publicacion set estado
         this.estadoPublicacion = function (data) {
           return this.executeRequest('/publications/estado/' + data["id"], data);
@@ -161,7 +166,7 @@ angular.module('app.services', [])
         };
 
         obj.executeRequest = function (url, data) {
-            //var baseUrl = 'http://api.laretaapp.com';
+            //var baseUrl = 'http://api.petbondweb.com';
             var baseUrl = Config.base_url;
             var deferred = $q.defer();
             var endpoint = baseUrl + url;
@@ -322,6 +327,9 @@ angular.module('app.services', [])
             },
             isCantEdit: function (publicacion) {
               var user = $localStorage.get('user',{},true);
+
+              if(user.is_admin) return true;
+
               if(publicacion.usuario.id == user.id){
                 return true;
               }else{
@@ -457,7 +465,7 @@ angular.module('app.services', [])
 
         obj.me = function (authToken) {
 
-            var baseUrl = 'https://graph.facebook.com/v2.5/me?fields%3Did%2Cbirthday%2Cname%2Cfirst_name%2Clast_name%2Cemail%2Cpicture.width%28200%29.height%28200%29' +
+            var baseUrl = 'https://graph.facebook.com/v2.7/me?fields=first_name,last_name,email,picture.height(200).width(200)' +
                 '&access_token=' + authToken +
                 '&format=json&method=get&pretty=0&suppress_http_code=1';
             var deferred = $q.defer();

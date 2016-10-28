@@ -9,12 +9,11 @@
   <ion-content class="fondo-perritos">
     <form class="list card">
       <!--Filtro.-->
-      <label class="item item-select">
-        <span class="input-label">Listar</span>
-        <select ng-model="criteria.tipoPublicacion">
-          <option value="">Todos</option>
-        </select>
-      </label>
+      <div class="item range">
+        <span>1km</span>
+        <input type="range" name="distance" min="1" max="100" value="50" ng-model="criteria.distance">
+        <span>100km</span>
+      </div>
 
       <!-- Pet. -->
       <label class="item item-select">

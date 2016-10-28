@@ -1,0 +1,22 @@
+<ion-modal-view>
+  <ion-header-bar class="bar-stable">
+    <h1 class="title">Contactar</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeFormContacto()">
+        <i class="icon ion-close-round"></i>
+      </button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <form ng-submit="doFormContacto()">
+      <div class="list">
+        <label class="item item-input">
+            <textarea ng-model="contactoData.message" placeholder="Mensaje" style="width: 98%; height: 100px;border: 2px solid #2EC7C7; padding: 5px;"></textarea>
+        </label>
+        <label class="item">
+          <button class="button button-block button-balanced" type="submit">Enviar</button>
+        </label>
+      </div>
+    </form>
+  </ion-content>
+</ion-modal-view>

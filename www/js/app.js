@@ -14,30 +14,26 @@ angular.module('app', [
     'app.filters',
     'uiGmapgoogle-maps',
     'google.places',
-    'ngIOS9UIWebViewPatch'
+    'ngIOS9UIWebViewPatch',
+    'ionicLazyLoad'
 ])
-
         .value('OAuth', {
             fb: {
-                app_id: '153688465044024',
+                app_id: '1780795122136268',
                 client_id: '5cc15374b0353ae0e66a4d664b8b67d8',
-                profile_url: 'https://graph.facebook.com/v2.2/me',
-                picture_url: 'https://graph.facebook.com/v2.2/me'
+                profile_url: 'https://graph.facebook.com/v2.7/me',
+                picture_url: 'https://graph.facebook.com/v2.7/me'
             }
         })
-
         .value('Config', {
             base_url: 'http://api.petbondweb.com/api',
             //base_url: 'http://localhost:8022/app_dev.php/api',
             base_url_web: 'http://api.petbondweb.com/',
             base_url_web_images: 'http://api.petbondweb.com/uploads/imagenes/'
         })
-
         .run(function ($http, $ionicPlatform, authService, $rootScope, $state,
                        $ionicHistory, $cordovaNetwork, $cordovaGeolocation, $localStorage,
                        $ionicLoading, $ionicPopup, $cordovaToast, $location) {
-
-
             $rootScope.showLoader = function (enabled) {
                 if (enabled) {
                     $ionicLoading.show({
@@ -330,8 +326,8 @@ angular.module('app', [
 
             // Facebook configuration
             if (window.cordova && window.cordova.plugins) {
-                var appID = 153688465044024;
-                var version = "v2.5"; // or leave blank and default is v2.0
+                var appID = 1780795122136268;
+                var version = "v2.7"; // or leave blank and default is v2.0
                 $cordovaFacebookProvider.browserInit(appID, version);
             }
 
@@ -363,9 +359,9 @@ angular.module('app', [
                       .state('app.logout', {
                         url: '/logout',
                         views: {
-                          'menuContent': {
-                            controller: 'LogoutCtrl'
-                          }
+                            'menuContent': {
+                                controller: 'LogoutCtrl'
+                            }
                         },
                         data: {
                           requireLogin: true

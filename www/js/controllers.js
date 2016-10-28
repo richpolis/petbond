@@ -55,8 +55,8 @@ angular.module('app.controllers', [])
 
     // GoTo Sign Up
     $scope.goToSignUp = function () {
-      $ionicHistory.clearHistory();
-      $ionicHistory.clearCache();
+      //$ionicHistory.clearHistory();
+      //$ionicHistory.clearCache();
       $state.go('app.signup');
     };
     // END Sign Up function
@@ -154,7 +154,7 @@ angular.module('app.controllers', [])
         }
 
         if (apiResponse.hasOwnProperty('last_name')) {
-          $scope.user.apellido = apiResponse.bio;
+          $scope.user.apellido = apiResponse.last_name;
         }
 
         if (apiResponse.hasOwnProperty('picture')) {
@@ -196,7 +196,7 @@ angular.module('app.controllers', [])
           }
 
           if (apiResponse.hasOwnProperty('last_name')) {
-            $scope.user.apellido = apiResponse.bio;
+            $scope.user.apellido = apiResponse.last_name;
           }
 
           if (apiResponse.hasOwnProperty('picture')) {
@@ -472,6 +472,14 @@ angular.module('app.controllers', [])
 
     $scope.isFavorite = function(publicacion){
       return jsonUtility.isFavorite(publicacion);
+    };
+
+    $scope.addFavorite = function(publicacion){
+        if(jsonUtility.isFavorite(publicacion)){
+            jsonUtility.removeFavorite(publicacion);
+        }else {
+            jsonUtility.addFavorite(publicacion);
+        }
     };
 
     if($scope.tipoController != 'favoritos') {
@@ -1246,7 +1254,8 @@ angular.module('app.controllers', [])
 
   .controller('PublicacionCtrl', function ($rootScope, $scope, $stateParams, $window, apiHandler, $state,
                                            $ionicPopup, uiGmapGoogleMapApi, $cordovaSocialSharing,
-                                           $localStorage, jsonUtility,Config, $ionicNavBarDelegate) {
+                                           $localStorage, jsonUtility,Config, $ionicNavBarDelegate,
+                                           $ionicSlideBoxDelegate, $ionicScrollDelegate, $ionicModal, $timeout, $ionicLoading) {
 
     var publicacionId = $stateParams["publicacionId"];
 
@@ -1344,7 +1353,91 @@ angular.module('app.controllers', [])
 
     $scope.goToPublicacionImages = function(){
       $state.go('app.publicacion-images', {'publicacionId': $scope.publicacion.id});
-    }
+    };
+
+    $scope.zoomMin = 1;
+
+    $scope.showImages = function(index) {
+          $scope.activeSlide = index;
+          $scope.showModal('templates/fotos-zoomview.html');
+    };
+
+    $scope.showModal = function(templateUrl) {
+          $ionicModal.fromTemplateUrl(templateUrl, {
+              scope: $scope
+          }).then(function(modal) {
+              $scope.modal = modal;
+              $scope.modal.show();
+          });
+    };
+
+    $scope.closeModal = function() {
+          $scope.modal.hide();
+          $scope.modal.remove()
+    };
+
+    $scope.updateSlideStatus = function(slide) {
+          var zoomFactor = $ionicScrollDelegate.$getByHandle('scrollHandle' + slide).getScrollPosition().zoom;
+          if (zoomFactor == $scope.zoomMin) {
+              $ionicSlideBoxDelegate.enableSlide(true);
+          } else {
+              $ionicSlideBoxDelegate.enableSlide(false);
+          }
+    };
+
+    $scope.contactoData = {
+      message: ''
+    };
+
+    // Accion para cerrar el formContacto
+    $scope.closeFormContacto = function () {
+        console.log("Cerrar form contacto");
+        $scope.modalFormContacto.hide();
+    };
+
+    // Accion para mostrar el formContacto
+    $scope.showFormContacto = function () {
+        $ionicLoading.show({
+          template: 'Loading...'
+        }).then(function(){
+           console.log("The loading indicator is now displayed");
+        });
+        // Creamos un modal enviar un mensaje al usuario que creo la publicacion
+        $ionicModal.fromTemplateUrl('templates/modalFormContacto.html', {
+              scope: $scope
+        }).then(function (modalFormContacto) {
+              $scope.modalFormContacto = modalFormContacto;
+        });
+        $timeout(function(){
+          $ionicLoading.hide().then(function(){
+             console.log("The loading indicator is now hidden");
+          });
+          $scope.modalFormContacto.show();
+        },1000);
+        
+    };
+
+    $scope.doFormContacto = function () {
+      $scope.contactoData.id = publicacionId;
+
+      var promise = apiHandler.contactUserPublicacion($scope.contactoData);
+
+      promise.then(function (result) {
+        console.log(result);
+        if (result.error != 0) {
+          $rootScope.error(
+            $rootScope.getErrorDescription(result.error)
+          );
+        } else {
+          $ionicPopup.alert({
+                title: 'Contacto solicitado',
+                template: result.message
+            });
+            $scope.closeFormContacto();
+        }
+      });
+      
+    };
 
 
   })

@@ -1,12 +1,16 @@
 <ion-view title="Publicación" cache-view="false">
-  <ion-content overflow-scroll="true" padding="true" class="has-header fondo-perritos">
+  <ion-content overflow-scroll="true" padding="true" class="has-header fondo-perritos" lazy-scroll>
     <div class="list card">
 
       <div class="item item-avatar">
-        <img ng-if="publicacion.fotos.length > 0" ng-src="{{ base_url + publicacion.fotos[0].image }}" />
+        <img ng-if="publicacion.fotos.length > 0" image-lazy-src="{{ base_url + publicacion.fotos[0].image }}" />
         <img ng-if="publicacion.fotos.length == 0" src="img/dog.jpg" />
         <h2>{{publicacion.titulo}}</h2>
-        <p ng-repeat="tipo in tipos" ng-if="tipo.value == publicacion.tipo">{{tipo.texto}}</p>
+        <p ng-repeat="tipo in tipos" ng-if="tipo.value == publicacion.tipo">
+          {{tipo.texto}}
+          <br/>
+          Vistas: {{publicacion.cont_views}} Interesados: {{publicacion.cont_contact}} Distancia: {{publicacion.distance}}
+        </p>
       </div>
       <div class="item item-text-wrap">
         {{publicacion.descripcion}}
@@ -24,7 +28,9 @@
       </button>
       <br><br>
       <!--Vista preliminar-->
-      <img ng-src="{{base_url + publicacion.fotos[0].image}}" class="image-list-thumb" ng-click="showPhoto()" ng-if="publicacion.fotos.length > 0">
+      <ion-scroll direction="x" ng-if="publicacion.fotos.length > 0">
+          <img ng-repeat="foto in publicacion.fotos" image-lazy-src="{{base_url + foto.image}}" class="image-list-thumb"  style="width:100%;margin:auto;display:inline-block; vertical-align: top;" ng-click="showImages($index)">
+      </ion-scroll>
       <!--Sin fotos disponibles-->
       <span ng-if="publicacion.fotos.length == 0">No hay imágenes disponibles.</span>
     </div>
@@ -69,8 +75,11 @@
       </label>
     </div>
 
-    <div class="item item-divider">
+    <div class="item item-divider" ng-if="!can_edit">
       Cómo contactarme
+    </div>
+    <div class="item" ng-if="!can_edit">
+      <button class="button button-block button-balanced icon-left ion-email" ng-click="showFormContacto()">Enviar email</button>
     </div>
     <br/>
       <div class="item">

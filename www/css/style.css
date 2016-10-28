@@ -1,4 +1,26 @@
 
+@font-face {
+    font-family: 'amatic_bold';
+    src: url('../fonts/amatic/amatic_bold.eot');
+    src: url('../fonts/amatic/amatic_bold.eot') format('embedded-opentype'),
+        url('../fonts/amatic/amatic_bold.woff2') format('woff2'),
+        url('../fonts/amatic/amatic_bold.woff') format('woff'),
+        url('../fonts/amatic/amatic_bold.ttf') format('truetype'),
+        url('../fonts/amatic/amatic_bold.svg#amatic_bold') format('svg');
+}
+
+.title-petbond{
+  font-family: 'amatic_bold';
+  font-size: 30px;
+}
+
+.petmatch-item {
+    background-color: #009900 !important;
+    color: #000 !important;
+    border-radius: 15px !important;
+    margin: 5px !important;
+}
+
 .image-loader-container {
     margin: 9px;
     max-width: 81px;
@@ -22,6 +44,30 @@
     padding: 2px 2px 2px 2px;
     height: 300px;
     width: 100%;
+}
+
+.image-modal {
+    width: 100% !important;
+    height: 100%;
+    top: 0 !important;
+    left: 0 !important;
+}
+
+.transparent {
+    background: rgba(0,0,0,0.7);
+}
+
+.slider {
+    width: 100%;
+    height: 100%;
+}
+
+.image {
+    width: 100%;
+    height: 600px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center, center;
 }
 
 .fullscreen-image {
@@ -58,9 +104,7 @@
 }
 
 .item-detail-label {
-    font: bolder 20px amatic_bold !important;
     font-weight: bold;
-    background-color: activeborder;
 }
 
 .button-fav {
@@ -110,13 +154,6 @@
 #map {
   width: 100%;
   height: 100%;
-}
-
-
-textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"] {
-  font-weight: normal;
-  font-size: 22px;
-  line-height: 1.42857;
 }
 
 .fondo-perritos{
@@ -170,3 +207,21 @@ div.pac-container {
   z-index: 10000; }
 
 /*# sourceMappingURL=style.css.map */
+
+textarea, 
+input[type="text"], 
+input[type="password"], 
+input[type="datetime"], 
+input[type="datetime-local"], 
+input[type="date"], 
+input[type="month"], 
+input[type="time"], 
+input[type="week"], 
+input[type="number"], 
+input[type="email"], 
+input[type="url"], 
+input[type="search"], 
+input[type="tel"], 
+input[type="color"] {
+  font-weight: normal;
+}

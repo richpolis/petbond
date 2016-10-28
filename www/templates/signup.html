@@ -1,13 +1,12 @@
 <ion-view title="Registrarme">
-  <ion-nav-bar>
-    <ion-nav-back-button/>
-  </ion-nav-bar>
   <ion-content padding="true" overflow-scroll="true" class="has-header">
     <form class="list" name="signupForm">
       <!--Foto-->
       <ion-item class="item-thumbnail-left">
         <img src="img/blank-avatar-big.png" ng-if="user.image == null" />
-        <img src="data:image/jpeg;base64,{{user.image}}" class="ion-camera" ng-if="user.image != null" />
+        <img src="data:image/jpeg;base64,{{user.image}}" class="ion-camera" ng-if="user.image != null && facebookConnected == false" />
+        <img src="{{user.image}}" class="ion-camera" ng-if="facebookConnected" />
+
         <button
           class="button button-full icon-right ion-camera button-stable"
           ng-click="editProfilePicture()">
