@@ -250,8 +250,8 @@ angular.module('app', [
                     // Start GeoLocation
                     // Initialize variables (Monterrey)
                     // Default position if no GPS data was found
-                    $rootScope.lat = 25.67702;
-                    $rootScope.lng = -100.30890;
+                    /*$rootScope.lat = 19.4342;
+                    $rootScope.lng = -99.1386;*/
 
 
                     var posOptions = {timeout: 10000, enableHighAccuracy: true};

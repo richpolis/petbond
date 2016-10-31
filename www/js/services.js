@@ -130,6 +130,11 @@ angular.module('app.services', [])
             return this.executeRequest('/publications/load/image/base64', data);
          };
 
+         // Eliminar imagen de publicacion
+         this.deleteImagePublicacion = function (data) {
+            return this.executeRequest('/publications/delete/image/' + data['id'], data);
+         };
+
         //  Message List
         this.listMessage = function (data) {
             return this.executeRequest('/message/list', data);

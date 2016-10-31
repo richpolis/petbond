@@ -1,6 +1,6 @@
 <ion-view title="{{tipoController|capitalize}}" id="page1">
   <ion-nav-buttons side="secondary">
-    <button class="button button-clear ion-search" ng-click="openModal()" ng-if="tipoController=='inicio'"></button>
+    <button class="button button-clear ion-search" style="font-size: 2em;" ng-click="openModal()" ng-if="tipoController=='inicio'"></button>
   </ion-nav-buttons>
   <!--<ion-content overflow-scroll="true" padding="true" class="has-header">-->
   <ion-content class="has-header fondo-perritos" padding="true" lazy-scroll>
@@ -28,5 +28,7 @@
         </ion-option-button>
         </ion-item>
     </ion-list>
+    <ion-infinite-scroll on-infinite="getPublicacionesMore()" distance="1%" ng-if="tipoController=='inicio' && more_publicaciones==true">
+  </ion-infinite-scroll>
   </ion-content>
 </ion-view>

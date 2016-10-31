@@ -325,10 +325,10 @@ angular.module('app.controllers', [])
       if (data.error == 0) {
         authService.setUser({});
         $localStorage.set('userFacebook', {}, true);
-        $state.go('app.login');
         $ionicHistory.nextViewOptions({disableBack: 'true'});
         $ionicHistory.clearHistory();
         $ionicHistory.clearCache();
+        $state.go('app.login');
       }
     });
   })
@@ -378,6 +378,7 @@ angular.module('app.controllers', [])
       var user = authService.getUser();
       var posOptions = {timeout: 10000, enableHighAccuracy: true};
       $cordovaGeolocation.getCurrentPosition(posOptions).then(function (position) {
+        console.log(position);
         if ($rootScope.lat == "undefined") {
           $rootScope.lat = position.coords.latitude;
           $rootScope.lng = position.coords.longitude;
@@ -407,12 +408,15 @@ angular.module('app.controllers', [])
     $scope.colores        = $localStorage.get('colores', [], true);
     $scope.tipos_mascota  = $localStorage.get('tipos_mascota', [], true);
     $scope.razas          = $localStorage.get('razas', [], true);
+    $scope.more_publicaciones = true;
 
     $scope.getPublicaciones = function(){
       console.log("Entro a getPublicaciones");
       var fecha = 10000;
       console.log(fecha);
-      apiHandler.listPublicacionsAll({'timestamp': fecha}).then(function(result){
+      $scope.page = 1;
+      $scope.more_publicaciones = true;
+      apiHandler.listPublicacionsAll({'timestamp': fecha, 'page': $scope.page}).then(function(result){
         console.log(result);
         $scope.publicaciones = result.data;
         $localStorage.set('publicaciones', result.data, true);
@@ -430,6 +434,33 @@ angular.module('app.controllers', [])
         //$scope.$apply();
       }, function(err){
         $scope.$broadcast('scroll.refreshComplete');
+        console.log(err);
+      });
+    }
+
+    $scope.getPublicacionesMore = function(){
+      console.log("Entro a getPublicacionesMore");
+      var fecha = 10000;
+      console.log(fecha);
+      $scope.page = $scope.page + 1;
+      apiHandler.listPublicacionsAll({'timestamp': fecha, 'page': $scope.page}).then(function(result){
+        console.log(result);
+        var posts = result.data;
+        for(var cont=0; cont < posts.length; cont++){
+          if(posts[cont].estado == 'A'){
+            $scope.publicaciones.push(posts[cont]);
+          }
+        }
+        $localStorage.set('publicaciones', $scope.publicaciones, true);
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+
+        if(result.data.length == 0){
+          $scope.more_publicaciones = false;
+        }
+
+        //$scope.$apply();
+      }, function(err){
+        $scope.$broadcast('scroll.infiniteScrollComplete');
         console.log(err);
       });
     }
@@ -453,6 +484,9 @@ angular.module('app.controllers', [])
     });
 
     $scope.doSearch = function(){
+      $scope.user = $localStorage.get('user',{}, true);
+      $scope.criteria.latitude = $rootScope.lat || $scope.user.latitude;
+      $scope.criteria.longitude = $rootScope.lng || $scope.user.longitude;
       console.log($scope.criteria);
       apiHandler.listPublicacions($scope.criteria).then(function(response){
         console.log(response);
@@ -1132,10 +1166,38 @@ angular.module('app.controllers', [])
         window.history.back();
       } else {
         $scope.publicacion = response.data;
-        $localStorage.set('images',$scope.publicacion.fotos,true);
+       // $localStorage.set('images',$scope.publicacion.fotos,true);
         $scope.fotos = response.data.fotos;
       }
     });
+
+    function eliminarImagenPublicacion(foto){
+      var data = {id: foto.id, publicacion: $scope.publicacion.id};
+      var promise = apiHandler.deleteImagePublicacion(data);
+      promise.then(function(response){
+        console.log("Response:");
+        console.log(response);
+
+        if (response.error != 0) {
+          // TODO: throw popup
+          $rootScope.error('Ocurrió un error en la operación.');
+          window.history.back();
+        } else {
+          $scope.publicacion = response.data;
+        // $localStorage.set('images',$scope.publicacion.fotos,true);
+          $scope.fotos = response.data.fotos;
+          var imagenes = FileService.images();
+          for(var cont=0; cont < imagenes.length; cont++){
+              var obj = {id: 0 , image: imagenes[cont]};
+              $scope.fotos.push(obj);
+          }
+          if ($scope.fotos.length == 0) {
+            $ionicScrollDelegate.scrollTop();
+          }
+          $scope.$apply();
+        }
+      });
+    }
 
     $scope.addPhoto = function () {
       $scope.hideSheet = $ionicActionSheet.show({
@@ -1157,7 +1219,8 @@ angular.module('app.controllers', [])
       $scope.hideSheet();
       ImageService.handleMediaBase64(type).then(function (result) {
         //console.log(result);
-        $scope.fotos.push(result);
+        var obj = {id: 0, image: result};
+        $scope.fotos.push(obj);
         $scope.$apply();
       },function(err){
         console.log("Error en tomar imagen: ");
@@ -1166,7 +1229,7 @@ angular.module('app.controllers', [])
     };
     // End Get Picture
 
-    $scope.removeImage = function (image) {
+    $scope.removeImage = function (foto) {
       var confirmPopup = $ionicPopup.confirm({
         title: 'Confirmar quitar la imagen',
         template: 'Deseas quitar la imagen?',
@@ -1175,23 +1238,38 @@ angular.module('app.controllers', [])
       });
       confirmPopup.then(function (res) {
         if (res) {
-          if(image.length > 250) {
+          if(foto.image.length > 250 && foto.id == 0) {
             FileService.removeImageBase64(image).then(function (success) {
-              $scope.publicacion.fotos = FileService.images();
-              if ($scope.publicacion.fotos.length == 0) {
+              var imagenes = FileService.images();
+              var aObj = $scope.publicacion.fotos;
+              $scope.fotos = aObj;
+              for(var cont=0; cont < imagenes.length; cont++){
+                var obj = {id: 0 , image: imagenes[cont]};
+                aObj.push(obj);
+              }
+              if (aObj.length == 0) {
+                $ionicScrollDelegate.scrollTop();
+              }
+              $scope.$apply();
+            });
+          }else if(foto.id == 0){
+            // aqui se implementara quitar del servidor
+            FileService.removeImage(image).then(function (success) {
+              var imagenes = FileService.images();
+              var aObj = $scope.publicacion.fotos;
+              $scope.fotos = aObj;
+              for(var cont=0; cont < imagenes.length; cont++){
+                var obj = {id: 0 , image: imagenes[cont]};
+                aObj.push(obj);
+              }
+              if (aObj.length == 0) {
                 $ionicScrollDelegate.scrollTop();
               }
               $scope.$apply();
             });
           }else{
-            // aqui se implementara quitar del servidor
-            FileService.removeImage(image).then(function (success) {
-              $scope.publicacion.fotos = FileService.images();
-              if ($scope.publicacion.fotos.length == 0) {
-                $ionicScrollDelegate.scrollTop();
-              }
-              $scope.$apply();
-            });
+            // es una foto existente en la base de datos
+            eliminarImagenPublicacion(foto);
           }
         }
       });
