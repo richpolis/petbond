@@ -8,8 +8,8 @@
     <div class="alert alert-warning text-center" data-ng-hide="publicaciones.length">
       No se encontraron publicaciones.
     </div>
-    <ion-list>
-      <ion-item class="item-thumbnail-left" collection-repeat="publicacion in publicaciones"
+    <ion-list can-swipe="true">
+      <!--ion-item class="item-thumbnail-left" collection-repeat="publicacion in publicaciones"
                 ng-click="viewPublicacion(publicacion)">
         <img ng-if="publicacion.fotos.length > 0"  image-lazy-src="{{ base_url + publicacion.fotos[0].image }}"/>
         <img ng-if="publicacion.fotos.length == 0" src="img/dog.jpg" />
@@ -26,8 +26,33 @@
                            ng-click="addFavorite(publicacion)">
           Favorito
         </ion-option-button>
-        </ion-item>
+        </ion-item-->
+		
+		<div class="list card" collection-repeat="publicacion in publicaciones">
+
+		  <div class="item item-avatar" ng-click="viewPublicacion(publicacion)">
+			<img ng-if="publicacion.fotos.length > 0"  image-lazy-src="{{ base_url + publicacion.fotos[0].image }}"/>
+        	<img ng-if="publicacion.fotos.length == 0" src="img/dog.jpg" />
+			<h2>{{publicacion.titulo}} - {{publicacion.distance}}</h2>
+        	<p class="fecha-pub">{{publicacion.date}}</p>
+		  </div>
+
+		  <div class="item item-body">
+			<img class="full-image" ng-click="viewPublicacion(publicacion)" ng-dblclick="addFavorite(publicacion)" ng-if="publicacion.fotos.length > 0"  image-lazy-src="{{ base_url + publicacion.fotos[0].image }}"/>
+        	<p ng-click="viewPublicacion(publicacion)">
+			  {{publicacion.descripcion}}
+			</p>
+			<p>
+			  	<div class="tipo-pub">
+				  <span ng-repeat="tipo in tipos" ng-if="tipo.value == publicacion.tipo">{{tipo.texto}}</span>
+				  <div ng-class="{'button-fav favorite': isFavorite(publicacion), 'button-fav not-favorite': !isFavorite(publicacion)}"></div>
+				</div>
+			</p>
+		  </div>
+
+		</div>
     </ion-list>
+	  
     <ion-infinite-scroll on-infinite="getPublicacionesMore()" distance="1%" ng-if="tipoController=='inicio' && more_publicaciones==true">
   </ion-infinite-scroll>
   </ion-content>
