@@ -399,7 +399,7 @@ angular.module('app.controllers', [])
       });
     }
 
-    $scope.criteria = {};
+    $scope.criteria = { isDistance: false };
     $scope.user = authService.getUser();
     $scope.sexos  = $rootScope.sexos;
     $scope.edades = $rootScope.edades;
@@ -486,8 +486,10 @@ angular.module('app.controllers', [])
 
     $scope.doSearch = function(){
       $scope.user = $localStorage.get('user',{}, true);
-      $scope.criteria.latitude = $rootScope.lat || $scope.user.latitude;
-      $scope.criteria.longitude = $rootScope.lng || $scope.user.longitude;
+		if($scope.criteria.isDistance){
+			$scope.criteria.latitude = $rootScope.lat || $scope.user.latitude;
+      		$scope.criteria.longitude = $rootScope.lng || $scope.user.longitude;
+		}
       console.log($scope.criteria);
       apiHandler.listPublicacions($scope.criteria).then(function(response){
         console.log(response);

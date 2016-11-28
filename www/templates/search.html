@@ -9,7 +9,9 @@
   <ion-content class="fondo-perritos">
     <form class="list card">
       <!--Filtro.-->
-      <div class="item range">
+	  <ion-toggle ng-model="criteria.isDistance" toggle-class="toggle-calm">Filtrar por distancia?</ion-toggle>
+		
+      <div class="item range range-calm" ng-if="criteria.isDistance">
         <span>1km</span>
         <input type="range" name="distance" min="1" max="100" value="50" ng-model="criteria.distance">
         <span>100km</span>
