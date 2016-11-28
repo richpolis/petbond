@@ -379,7 +379,7 @@ angular.module('app.controllers', [])
       var posOptions = {timeout: 10000, enableHighAccuracy: true};
       $cordovaGeolocation.getCurrentPosition(posOptions).then(function (position) {
         console.log(position);
-        if ($rootScope.lat == "undefined") {
+        if ($rootScope.lat === undefined) {
           $rootScope.lat = position.coords.latitude;
           $rootScope.lng = position.coords.longitude;
           user.latitude = $rootScope.lat;
@@ -394,7 +394,8 @@ angular.module('app.controllers', [])
           });
         }
       }, function (err) {
-        // console.info('Returned a Geo error');
+        console.info('Returned a Geo error');
+        consoe.log(err)
       });
     }
 

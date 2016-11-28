@@ -10,7 +10,7 @@
     </div>
     <ion-list>
       <ion-item class="item-thumbnail-left" collection-repeat="publicacion in publicaciones" ng-click="viewPublicacion(publicacion)">
-        <img ng-if="publicacion.fotos.length > 0" image-lazy-src="{{ base_url + publicacion.fotos[0].image }}"/>
+        <img ng-if="publicacion.fotos.length > 0" image-lazy-src="{{ base_url + publicacion.fotos[0].image }}" image-lazy-loader="android" image-lazy-distance-from-bottom-to-load="-200"/>
         <img ng-if="publicacion.fotos.length == 0" src="img/dog.jpg" />
           <div class="tipo-pub">
             <span ng-repeat="tipo in tipos" ng-if="tipo.value == publicacion.tipo">{{tipo.texto}}</span>

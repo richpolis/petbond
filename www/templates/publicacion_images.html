@@ -10,9 +10,9 @@
     <div class="alert alert-warning text-center" data-ng-hide="fotos.length">
       Esta publicación no tiene fotos.
     </div>
-    <ion-list>
+    <ion-list lazy-scroll>
       <ion-item class="item item-thumbnail-left" ng-repeat="foto in fotos">
-        <img src="{{urlForImage(foto.image)}}">
+        <img image-lazy-src="{{urlForImage(foto.image)}}" image-lazy-loader="android" image-lazy-distance-from-bottom-to-load="-200">
         <h2>Foto {{$index + 1}}</h2>
         <!--Delete photo-->
         <button class="button button-small icon-left ion-trash-a button-assertive" ng-click="removeImage(foto)">

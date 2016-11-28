@@ -3,7 +3,7 @@
     <div class="list card">
 
       <div class="item item-avatar">
-        <img ng-if="publicacion.fotos.length > 0" image-lazy-src="{{ base_url + publicacion.fotos[0].image }}" />
+        <img ng-if="publicacion.fotos.length > 0" image-lazy-src="{{ base_url + publicacion.fotos[0].image }}" image-lazy-loader="android" image-lazy-distance-from-bottom-to-load="-200"/>
         <img ng-if="publicacion.fotos.length == 0" src="img/dog.jpg" />
         <h2>{{publicacion.titulo}}</h2>
         <p ng-repeat="tipo in tipos" ng-if="tipo.value == publicacion.tipo">

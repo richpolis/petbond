@@ -49,12 +49,9 @@
 
       <!-- Tipo publicación. -->
       <ion-toggle toggle-class="toggle-positive" ng-repeat="(key, value) in Config.tipos" ng-model="selected_tipos[key]">{{value}}</ion-toggle>
-
-      <!-- Zone. -->
-      <!--<ion-item>Zona</ion-item>-->
+      <div class="item">
+        <button class="button button-block button-positive" ng-click="doSearch()">Buscar</button>
+      </div>
     </form>
   </ion-content>
-  <div class="bar bar-footer padding" style="padding: 2em;">
-    <button class="button button-block button-positive" style="margin-top: -1em;" ng-click="doSearch()">Buscar</button>
-  </div>
 </ion-modal-view>
