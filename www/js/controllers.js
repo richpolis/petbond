@@ -555,6 +555,7 @@ angular.module('app.controllers', [])
                                           $localStorage, $ionicNavBarDelegate, $state) {
 
     $scope.publicaciones = $localStorage.get('resultados', [], true);
+    $scope.cards = [];
 
     $scope.tipoController = $stateParams.tipoController;
     $scope.base_url = Config.base_url_web_images;
@@ -570,6 +571,37 @@ angular.module('app.controllers', [])
     $scope.isFavorite = function(publicacion){
       return jsonUtility.isFavorite(publicacion);
     };
+
+    $scope.addCard = function(i) {
+        //var newCard = $scope.publicaciones[Math.floor(Math.random() * $scope.publicaciones.length)];
+        //newCard.id = Math.random();
+        var newCard = $scope.publicaciones[i];
+        $scope.cards.push(angular.extend({}, newCard));
+    }
+ 
+    for(var i = 0; i < $scope.publicaciones.length; i++) $scope.addCard(i);
+ 
+    $scope.cardSwipedLeft = function(index) {
+        console.log('Left swipe');
+    }
+ 
+    $scope.cardSwipedRight = function(index) {
+        console.log('Right swipe');
+    }
+ 
+    $scope.cardDestroyed = function(index) {
+        $scope.cards.splice(index, 1);
+        console.log('Card removed');
+    }
+
+    $scope.addFavorite = function(publicacion){
+        if(jsonUtility.isFavorite(publicacion)){
+            jsonUtility.removeFavorite(publicacion);
+        }else {
+            jsonUtility.addFavorite(publicacion);
+        }
+    };
+
   })
 
   .controller('MisPublicacionesCtrl', function ($scope, $stateParams, jsonUtility, Config,
