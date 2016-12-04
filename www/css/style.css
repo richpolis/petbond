@@ -236,3 +236,14 @@ input[type="tel"],
 input[type="color"] {
   font-weight: normal;
 }
+
+.fondo-imagen-publicacion{
+	background-repeat: no-repeat;
+	background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center; 
+	background-size: contain;
+	height: 300px;
+	width: 100%;
+	
+}

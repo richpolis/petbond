@@ -28,7 +28,7 @@
         </ion-option-button>
         </ion-item-->
 		
-		<div class="list card" collection-repeat="publicacion in publicaciones">
+		<div class="list card" collection-repeat="publicacion in publicaciones" style="margin-botton: 10px;">
 
 		  <div class="item item-avatar" ng-click="viewPublicacion(publicacion)">
 			<img ng-if="publicacion.fotos.length > 0"  image-lazy-src="{{ base_url + publicacion.fotos[0].image }}"/>
@@ -38,7 +38,10 @@
 		  </div>
 
 		  <div class="item item-body">
-			<img class="full-image" ng-click="viewPublicacion(publicacion)" ng-dblclick="addFavorite(publicacion)" ng-if="publicacion.fotos.length > 0"  image-lazy-src="{{ base_url + publicacion.fotos[0].image }}"/>
+			<div class="fondo-imagen-publicacion" ng-click="viewPublicacion(publicacion)" ng-dblclick="addFavorite(publicacion)" ng-show="publicacion.fotos.length > 0"  style="background-image:url('{{ base_url + publicacion.fotos[0].image }}');">
+				&nbsp;
+			  </div>  
+			<!--img class="full-image" ng-click="viewPublicacion(publicacion)" ng-dblclick="addFavorite(publicacion)" ng-if="publicacion.fotos.length > 0"  image-lazy-src="{{ base_url + publicacion.fotos[0].image }}"/-->
         	<p ng-click="viewPublicacion(publicacion)">
 			  {{publicacion.descripcion}}
 			</p>
@@ -51,6 +54,7 @@
 		  </div>
 
 		</div>
+	  
     </ion-list>
 	  
     <ion-infinite-scroll on-infinite="getPublicacionesMore()" distance="1%" ng-if="tipoController=='inicio' && more_publicaciones==true">
