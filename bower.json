@@ -8,6 +8,8 @@
     "underscore": "~1.8.3",
     "angular-google-maps": "~2.1.5",
     "angular_ios9_patch": "*",
-    "ionic-image-lazy-load": "ion-image-lazy-load#*"
+    "ionic-image-lazy-load": "ion-image-lazy-load#*",
+    "ionic-ion-tinder-cards": "ionic-contrib-tinder-cards#*",
+    "ngCordova": "^0.1.27-alpha"
   }
 }

@@ -349,6 +349,8 @@ angular.module('app.controllers', [])
 
     $scope.tipoController = $stateParams.tipoController;
 
+    $scope.cards = [];
+
     // Check for auth
     if (typeof authService.getUser() === "undefined" || jsonUtility.isObjectEmpty(authService.getUser())) {
       $rootScope.forceLogout();
@@ -395,7 +397,7 @@ angular.module('app.controllers', [])
         }
       }, function (err) {
         console.info('Returned a Geo error');
-        consoe.log(err)
+        console.log(err)
       });
     }
 
@@ -450,6 +452,7 @@ angular.module('app.controllers', [])
         for(var cont=0; cont < posts.length; cont++){
           if(posts[cont].estado == 'A'){
             $scope.publicaciones.push(posts[cont]);
+            $scope.cards.push(angular.extend({}, posts[cont]));
           }
         }
         $localStorage.set('publicaciones', $scope.publicaciones, true);
@@ -502,6 +505,7 @@ angular.module('app.controllers', [])
     };
 
     $scope.viewPublicacion = function (publicacion) {
+      console.log(publicacion)
       $state.go('app.publicacion', {
         publicacionId: publicacion.id
       });
@@ -518,6 +522,28 @@ angular.module('app.controllers', [])
             jsonUtility.addFavorite(publicacion);
         }
     };
+
+    $scope.addCard = function(i) {
+        //var newCard = $scope.publicaciones[Math.floor(Math.random() * $scope.publicaciones.length)];
+        //newCard.id = Math.random();
+        var newCard = $scope.publicaciones[i];
+        $scope.cards.push(angular.extend({}, newCard));
+    }
+ 
+    for(var i = 0; i < $scope.publicaciones.length; i++) $scope.addCard(i);
+ 
+    $scope.cardSwipedLeft = function(index) {
+        console.log('Left swipe');
+    }
+ 
+    $scope.cardSwipedRight = function(index) {
+        console.log('Right swipe');
+    }
+ 
+    $scope.cardDestroyed = function(index) {
+        $scope.cards.splice(index, 1);
+        console.log('Card removed');
+    }
 
     if($scope.tipoController != 'favoritos') {
       $scope.getPublicaciones();

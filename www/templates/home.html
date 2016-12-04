@@ -8,8 +8,9 @@
     <div class="alert alert-warning text-center" data-ng-hide="publicaciones.length">
       No se encontraron publicaciones.
     </div>
-    <ion-list can-swipe="true">
-      <!--ion-item class="item-thumbnail-left" collection-repeat="publicacion in publicaciones"
+    <!-- primera version de listado -->
+    <!--ion-list>
+      <ion-item class="item-thumbnail-left" collection-repeat="publicacion in publicaciones"
                 ng-click="viewPublicacion(publicacion)">
         <img ng-if="publicacion.fotos.length > 0"  image-lazy-src="{{ base_url + publicacion.fotos[0].image }}" image-lazy-loader="android" image-lazy-distance-from-bottom-to-load="-200"/>
         <img ng-if="publicacion.fotos.length == 0" src="img/dog.jpg" />
@@ -26,22 +27,27 @@
                            ng-click="addFavorite(publicacion)">
           Favorito
         </ion-option-button>
-        </ion-item-->
-		
-		<div class="list card" collection-repeat="publicacion in publicaciones" style="margin-botton: 10px;">
+        </ion-item>
+		</ion-list-->
+  
+    <!-- segunda version de listado en cards -->
+    <!--ion-list can-swipe="true">
+		<div class="card" collection-repeat="publicacion in publicaciones" style="margin-botton: 10px;">
 
 		  <div class="item item-avatar" ng-click="viewPublicacion(publicacion)">
 			<img ng-if="publicacion.fotos.length > 0"  image-lazy-src="{{ base_url + publicacion.fotos[0].image }}"/>
-        	<img ng-if="publicacion.fotos.length == 0" src="img/dog.jpg" />
+      <img ng-if="publicacion.fotos.length == 0" src="img/dog.jpg" />
 			<h2>{{publicacion.titulo}} - {{publicacion.distance}}</h2>
         	<p class="fecha-pub">{{publicacion.date}}</p>
 		  </div>
 
 		  <div class="item item-body">
-			<div class="fondo-imagen-publicacion" ng-click="viewPublicacion(publicacion)" ng-dblclick="addFavorite(publicacion)" ng-show="publicacion.fotos.length > 0"  style="background-image:url('{{ base_url + publicacion.fotos[0].image }}');">
+			<div class="fondo-imagen-publicacion" ng-click="viewPublicacion(publicacion)" ng-dblclick="addFavorite(publicacion)" ng-if="publicacion.fotos.length > 0"  style="background-image:url('{{ base_url + publicacion.fotos[0].image }}');">
 				&nbsp;
-			  </div>  
-			<!--img class="full-image" ng-click="viewPublicacion(publicacion)" ng-dblclick="addFavorite(publicacion)" ng-if="publicacion.fotos.length > 0"  image-lazy-src="{{ base_url + publicacion.fotos[0].image }}"/-->
+			  </div>
+      <div class="fondo-imagen-publicacion" ng-click="viewPublicacion(publicacion)" ng-dblclick="addFavorite(publicacion)" ng-if="publicacion.fotos.length == 0"  style="background-image:url('img/dog.jpg');">
+        &nbsp;
+        </div>    
         	<p ng-click="viewPublicacion(publicacion)">
 			  {{publicacion.descripcion}}
 			</p>
@@ -55,7 +61,47 @@
 
 		</div>
 	  
-    </ion-list>
+    </ion-list-->
+
+    <!-- tercera opcion de listado en cards tipo tynder -->
+
+    <td-cards>
+      <td-card id="td-card" ng-repeat="card in cards" on-destroy="cardDestroyed($index)"
+      on-swipe-left="cardSwipedLeft($index)" on-swipe-right="cardSwipedRight($index)"
+      on-partial-swipe="cardPartialSwipe(amt)">
+          <!--div class="title">
+              {{card.titulo}}
+          </div>
+          <div class="image">
+              <div class="no-text overlayBox"><div class="noBox boxed">Trash</div></div>
+              <img ng-if="card.fotos.length > 0"  image-lazy-src="{{ base_url + card.fotos[0].image }}" image-lazy-loader="android" image-lazy-distance-from-bottom-to-load="-200"/>
+              <img ng-if="card.fotos.length == 0" src="img/dog.jpg" />
+              <div class="yes-text overlayBox"><div class="yesBox boxed" id="centerMe">Save</div></div>
+          </div-->
+          <div class="list card">
+              <div class="item item-avatar" ng-click="viewPublicacion(card)">
+                <img ng-if="card.fotos.length > 0"  image-lazy-src="{{ base_url + card.fotos[0].image }}"/>
+                <img ng-if="card.fotos.length == 0" src="img/dog.jpg" />
+                <h2>{{card.titulo}} - {{card.distance}}</h2>
+                <p class="fecha-pub"><span ng-repeat="tipo in tipos" ng-if="tipo.value == card.tipo">{{tipo.texto}}</span> - {{card.date}}</p>
+              </div>  
+              <div class="item item-body" ng-dblclick="addFavorite(card)">
+                <img class="full-image" ng-if="card.fotos.length > 0"  image-lazy-src="{{ base_url + card.fotos[0].image }}" image-lazy-loader="android" image-lazy-distance-from-bottom-to-load="-200"/>
+                <img class="full-image" ng-if="card.fotos.length == 0" src="img/dog.jpg" />
+                <p>
+                  {{card.descripcion}}
+                </p>
+                <p>
+                  <a href="#" class="subdued">{{card.cont_views}} Vistas</a>
+                  <a href="#" class="subdued">{{card.cont_contact}} Interesados</a>
+                  <a href="#" class="subdued">
+                  <div ng-class="{'button-fav favorite': isFavorite(card), 'button-fav not-favorite': !isFavorite(card)}"></div>
+                  </a>
+                </p>  
+              </div>
+         </div>     
+      </td-card>
+    </td-cards>
 	  
     <ion-infinite-scroll on-infinite="getPublicacionesMore()" distance="1%" ng-if="tipoController=='inicio' && more_publicaciones==true">
   </ion-infinite-scroll>

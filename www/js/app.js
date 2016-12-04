@@ -15,7 +15,8 @@ angular.module('app', [
     'uiGmapgoogle-maps',
     'google.places',
     'ngIOS9UIWebViewPatch',
-    'ionicLazyLoad'
+    'ionicLazyLoad',
+    'ionic.contrib.ui.tinderCards'
 ])
         .value('OAuth', {
             fb: {

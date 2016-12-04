@@ -1,6 +1,6 @@
 {
   "name": "Petbond",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "description": "Petbond: App para mascotas perdidas, adoptar mascotas y encontrar novia o novio para mi mascota.",
   "dependencies": {
     "gulp": "^3.5.6",
