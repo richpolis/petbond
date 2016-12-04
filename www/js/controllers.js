@@ -366,6 +366,7 @@ angular.module('app.controllers', [])
       for(var cont=0; cont < posts.length; cont++){
         if(posts[cont].estado == 'A'){
           $scope.publicaciones.push(posts[cont]);
+          $scope.cards.push(angular.extend({}, posts[cont]));
         }
       }
 
@@ -530,8 +531,6 @@ angular.module('app.controllers', [])
         $scope.cards.push(angular.extend({}, newCard));
     }
  
-    for(var i = 0; i < $scope.publicaciones.length; i++) $scope.addCard(i);
- 
     $scope.cardSwipedLeft = function(index) {
         console.log('Left swipe');
     }
@@ -548,6 +547,10 @@ angular.module('app.controllers', [])
     if($scope.tipoController != 'favoritos') {
       $scope.getPublicaciones();
     }
+
+    /*if($scope.publicaciones.length > 0){
+      for(var i = 0; i < $scope.publicaciones.length; i++) $scope.addCard(i);
+    }*/
 
   })
 
