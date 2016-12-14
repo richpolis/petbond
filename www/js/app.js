@@ -313,7 +313,7 @@ angular.module('app', [
         .config(function ($stateProvider, $urlRouterProvider, $httpProvider, $ionicConfigProvider, uiGmapGoogleMapApiProvider,
                 $cordovaFacebookProvider) {
             // Handle HTTP errors.
-            $httpProvider.interceptors.push('responseObserver');
+            //$httpProvider.interceptors.push('responseObserver');
 
             // Disable "Swipe to go back"
             $ionicConfigProvider.views.swipeBackEnabled(false);

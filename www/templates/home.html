@@ -3,11 +3,11 @@
     <button class="button button-clear ion-search" style="font-size: 2em;" ng-click="openModal()" ng-if="tipoController=='inicio'"></button>
   </ion-nav-buttons>
   <!--<ion-content overflow-scroll="true" padding="true" class="has-header">-->
-  <ion-content class="has-header fondo-perritos" padding="true">
+  <!--ion-content class="has-header fondo-perritos" padding="true">
     <ion-refresher on-refresh="getPublicaciones()"  ng-if="tipoController=='inicio'"></ion-refresher>
     <div class="alert alert-warning text-center" data-ng-hide="publicaciones.length">
       No se encontraron publicaciones.
-    </div>
+    </div-->
     <!-- primera version de listado -->
     <!--ion-list>
       <ion-item class="item-thumbnail-left" collection-repeat="publicacion in publicaciones"
@@ -65,19 +65,10 @@
 
     <!-- tercera opcion de listado en cards tipo tynder -->
 
-    <td-cards>
+    <!--td-cards>
       <td-card id="td-card" ng-repeat="card in cards" on-destroy="cardDestroyed($index)"
       on-swipe-left="cardSwipedLeft($index)" on-swipe-right="cardSwipedRight($index)"
       on-partial-swipe="cardPartialSwipe(amt)">
-          <!--div class="title">
-              {{card.titulo}}
-          </div>
-          <div class="image">
-              <div class="no-text overlayBox"><div class="noBox boxed">Trash</div></div>
-              <img ng-if="card.fotos.length > 0"  image-lazy-src="{{ base_url + card.fotos[0].image }}" image-lazy-loader="android" image-lazy-distance-from-bottom-to-load="-200"/>
-              <img ng-if="card.fotos.length == 0" src="img/dog.jpg" />
-              <div class="yes-text overlayBox"><div class="yesBox boxed" id="centerMe">Save</div></div>
-          </div-->
           <div class="list card">
               <div class="item item-avatar" ng-click="viewPublicacion(card)">
                 <img ng-if="card.fotos.length > 0"  ng-src="{{ base_url + card.fotos[0].image }}"/>
@@ -101,9 +92,70 @@
               </div>
          </div>     
       </td-card>
-    </td-cards>
+    </td-cards-->
+
+    <!-- cuarta version de listado en cards -->
+    <!--ion-slides  options="data.sliderOptions" slider="data.sliderDelegate">
+      <ion-slide-page collection-repeat="card in publicaciones">
+        <div class="list card">
+          <div class="item item-avatar" ng-click="viewPublicacion(card)">
+            <img ng-if="card.fotos.length > 0"  ng-src="{{ base_url + card.fotos[0].image }}"/>
+            <img ng-if="card.fotos.length == 0" src="img/dog.jpg" />
+            <h2>{{card.titulo}} - {{card.distance}}</h2>
+            <p class="fecha-pub"><span ng-repeat="tipo in tipos" ng-if="tipo.value == card.tipo">{{tipo.texto}}</span> - {{card.date}}</p>
+          </div>  
+          <div class="item item-body">
+            <img class="full-image"  on-double-tap="addFavorite(card)" ng-if="card.fotos.length > 0"  ng-src="{{ base_url + card.fotos[0].image }}"/>
+            <img class="full-image"  on-double-tap="addFavorite(card)" ng-if="card.fotos.length == 0" src="img/dog.jpg" />
+            <p>
+              {{card.descripcion}}
+            </p>
+            <p>
+              <a href="#" class="subdued">{{card.cont_views}} Vistas</a>
+              <a href="#" class="subdued">{{card.cont_contact}} Interesados</a>
+              <a href="#" class="subdued">
+              <div ng-click="addFavorite(card)" ng-class="{'button-fav favorite': isFavorite(card), 'button-fav not-favorite': !isFavorite(card)}"></div>
+              </a>
+            </p>  
+          </div>
+
+        </div>
+      </ion-slide-page>
+    </ion-slides-->
+
+    <ion-content scroll="false">
+      <ion-slides  options="data.sliderOptions" slider="data.sliderDelegate">
+        <ion-slide-page ng-repeat="card in publicaciones">
+        <div class="list card">
+          <div class="item item-avatar" ng-click="viewPublicacion(card)">
+            <img ng-if="card.fotos.length > 0"  ng-src="{{ base_url + card.fotos[0].image }}"/>
+            <img ng-if="card.fotos.length == 0" src="img/dog.jpg" />
+            <h2>{{card.titulo}} - {{card.distance}}</h2>
+            <p class="fecha-pub"><span ng-repeat="tipo in tipos" ng-if="tipo.value == card.tipo">{{tipo.texto}}</span> - {{card.date}}</p>
+          </div>  
+          <div class="item item-body">
+            <img class="full-image"  on-double-tap="addFavorite(card)" ng-if="card.fotos.length > 0"  ng-src="{{ base_url + card.fotos[0].image }}"/>
+            <img class="full-image"  on-double-tap="addFavorite(card)" ng-if="card.fotos.length == 0" src="img/dog.jpg" />
+            <p>
+              {{card.descripcion}}
+            </p>
+            <p>
+              <a href="#" class="subdued">{{card.cont_views}} Vistas</a>
+              <a href="#" class="subdued">{{card.cont_contact}} Interesados</a>
+              <a href="#" class="subdued">
+              <div ng-click="addFavorite(card)" ng-class="{'button-fav favorite': isFavorite(card), 'button-fav not-favorite': !isFavorite(card)}"></div>
+              </a>
+            </p>  
+          </div>
+
+        </div>
+      </ion-slides>
+    </ion-content>
+
+    
+
 	  
-    <ion-infinite-scroll on-infinite="getPublicacionesMore()" distance="1%" ng-if="tipoController=='inicio' && more_publicaciones==true">
+    <!--ion-infinite-scroll on-infinite="getPublicacionesMore()" distance="1%" ng-if="tipoController=='inicio' && more_publicaciones==true">
   </ion-infinite-scroll>
-  </ion-content>
+  </ion-content-->
 </ion-view>

@@ -349,7 +349,31 @@ angular.module('app.controllers', [])
 
     $scope.tipoController = $stateParams.tipoController;
 
-    $scope.cards = [];
+    $scope.data = {};
+    $scope.data.currentPage = 0;
+    
+    var setupSlider = function() {
+      //some options to pass to our slider
+      $scope.data.sliderOptions = {
+        initialSlide: 0,
+        direction: 'horizontal', //or vertical
+        speed: 300 //0.3s transition
+      };
+
+      //create delegate reference to link with slider
+      $scope.data.sliderDelegate = null;
+
+      //watch our sliderDelegate reference, and use it when it becomes available
+      $scope.$watch('data.sliderDelegate', function(newVal, oldVal) {
+        if (newVal != null) {
+          $scope.data.sliderDelegate.on('slideChangeEnd', function() {
+            $scope.data.currentPage = $scope.data.sliderDelegate.activeIndex;
+            //use $scope.$apply() to refresh any content external to the slider
+            $scope.$apply();
+          });
+        }
+      });
+    };
 
     // Check for auth
     if (typeof authService.getUser() === "undefined" || jsonUtility.isObjectEmpty(authService.getUser())) {
@@ -366,10 +390,10 @@ angular.module('app.controllers', [])
       for(var cont=0; cont < posts.length; cont++){
         if(posts[cont].estado == 'A'){
           $scope.publicaciones.push(posts[cont]);
-          $scope.cards.push(angular.extend({}, posts[cont]));
         }
       }
 
+      setupSlider();
       setGeolocalizacion();
 
       $ionicNavBarDelegate.showBackButton(false);
@@ -433,6 +457,7 @@ angular.module('app.controllers', [])
             $scope.publicaciones.push(posts[cont]);
           }
         }
+        setupSlider();
         setGeolocalizacion();
         $scope.$broadcast('scroll.refreshComplete');
         //$scope.$apply();
@@ -453,7 +478,6 @@ angular.module('app.controllers', [])
         for(var cont=0; cont < posts.length; cont++){
           if(posts[cont].estado == 'A'){
             $scope.publicaciones.push(posts[cont]);
-            $scope.cards.push(angular.extend({}, posts[cont]));
           }
         }
         $localStorage.set('publicaciones', $scope.publicaciones, true);
@@ -524,33 +548,11 @@ angular.module('app.controllers', [])
         }
     };
 
-    $scope.addCard = function(i) {
-        //var newCard = $scope.publicaciones[Math.floor(Math.random() * $scope.publicaciones.length)];
-        //newCard.id = Math.random();
-        var newCard = $scope.publicaciones[i];
-        $scope.cards.push(angular.extend({}, newCard));
-    }
- 
-    $scope.cardSwipedLeft = function(index) {
-        console.log('Left swipe');
-    }
- 
-    $scope.cardSwipedRight = function(index) {
-        console.log('Right swipe');
-    }
- 
-    $scope.cardDestroyed = function(index) {
-        $scope.cards.splice(index, 1);
-        console.log('Card removed');
-    }
-
     if($scope.tipoController != 'favoritos') {
       $scope.getPublicaciones();
     }
 
-    /*if($scope.publicaciones.length > 0){
-      for(var i = 0; i < $scope.publicaciones.length; i++) $scope.addCard(i);
-    }*/
+    
 
   })
 
