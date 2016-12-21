@@ -255,11 +255,11 @@ td-cards, .cards {
     display: block;
 }
  
-.list:last-child.card {
+.list:last-child.card.card-page {
     margin-bottom: none; 
 }
 
-td-card, .card {
+td-card, .card.card-page {
     position: relative;
     /*left: 50%;*/
     margin: 10px 0 80px 0;
@@ -273,19 +273,19 @@ td-card, .card {
 
 
  
-.td-card .title, .card .title {
+.td-card .title, .card.card-page .title {
     height: 40px;
     font-size: 15px;
     padding: 15px;
 }
  
-td-card .image, .card .item-body .image {
+td-card .image, .card.card-page .item-body .image {
     position: absolute;
     top: 40px;
     width: 100%;
 }
  
-td-card img, .card .item-body img {
+td-card img, .card.card-page .item-body img {
     height: 258px;
     width: 100%;
     border-radius: 6px;

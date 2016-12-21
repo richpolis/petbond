@@ -126,7 +126,7 @@
     <ion-content scroll="false">
       <ion-slides  options="data.sliderOptions" slider="data.sliderDelegate">
         <ion-slide-page ng-repeat="card in publicaciones">
-        <div class="list card">
+        <div class="list card card-page">
           <div class="item item-avatar" ng-click="viewPublicacion(card)">
             <img ng-if="card.fotos.length > 0"  ng-src="{{ base_url + card.fotos[0].image }}"/>
             <img ng-if="card.fotos.length == 0" src="img/dog.jpg" />

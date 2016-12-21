@@ -78,6 +78,17 @@
     <div class="item item-divider" ng-if="!can_edit">
       Cómo contactarme
     </div>
+    <div class="list" ng-if="!can_edit">
+      <label class="item item-input item-detail">
+        <span class="input-label item-detail-label">Nombre</span>
+        {{publicacion.usuario.nombre}} {{publicacion.usuario.apellido}} 
+      </label>
+      <label class="item item-input item-detail">
+        <span class="input-label item-detail-label">Email</span>
+        {{publicacion.usuario.email}}
+      </label>
+    </div>
+
     <div class="item" ng-if="!can_edit">
       <button class="button button-block button-balanced icon-left ion-email" ng-click="showFormContacto()">Enviar email</button>
     </div>
