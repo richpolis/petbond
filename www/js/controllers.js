@@ -91,6 +91,7 @@ angular.module('app.controllers', [])
     $scope.recuperarContrasena = function () {
       if ($scope.loginData.email && $scope.loginData.email.length > 0) {
         authService.recoverPassword($scope.loginData).then(function (result) {
+          console.log(result);
           if (result.error == 0) {
             console.log(result)
             $rootScope.showMessage("Se ha enviado una nueva contraseña a su correo");
@@ -219,16 +220,11 @@ angular.module('app.controllers', [])
 
     // Do Signup
     $scope.doSignup = function (data) {
-
-      // Process date
-      if ($scope.user.date != "undefined" && $scope.user.date instanceof Date) {
-        $scope.user.birthDateYear = $scope.user.date.getFullYear();
-        $scope.user.birthDateMonth = $scope.user.date.getMonth() + 1;
-        $scope.user.birthDateDay = $scope.user.date.getDate();
-      }
-
+      $rootScope.showLoader(true);
       var promise = apiHandler.signup($scope.user);
       promise.then(function (result) {
+        console.log(result);
+        $rootScope.showLoader(false);
         if (result.error != 0) {
           $rootScope.error(
             $rootScope.getErrorDescription(result.error)
@@ -245,19 +241,21 @@ angular.module('app.controllers', [])
           $scope.user.lat = $rootScope.lat;
           $scope.user.lng = $rootScope.lng;
 
+          $rootScope.showLoader(true);
           // Sign up successful
           var loginPromise = authService.login($scope.user);
           loginPromise.then(function (loginResult) {
-
+            $rootScope.showLoader(false);
             if (result.error != 0) {
               $rootScope.error(
                 $rootScope.getErrorDescription(loginResult.error)
               );
             } else {
-              authService.setUser(loginResult.data);
-              $scope.user = {};
-              $scope.facebookConnected = false;
-              facebookHandler.clear();
+              authService.setUser(loginResult.data.user);
+              $localStorage.set('colores', loginResult.data.colores,true);
+              $localStorage.set('tipos_mascota', loginResult.data.tipos_mascota,true);
+              $localStorage.set('razas', loginResult.data.razas,true);
+
               $state.go('app.home'); // Default screen after login
               $ionicHistory.nextViewOptions({disableBack: 'true'});
               $ionicHistory.clearHistory();
@@ -265,6 +263,10 @@ angular.module('app.controllers', [])
             }
           });
         }
+      }, function(err){
+        $rootScope.showLoader(false);
+        $rootScope.getErrorDescription("Error al registrar");
+        console.log(err);
       });
     };
     // END Do Signup function

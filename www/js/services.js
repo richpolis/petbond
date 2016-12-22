@@ -6,6 +6,11 @@ angular.module('app.services', [])
             //var baseUrl = 'http://api.petbondweb.com';
             var baseUrl = Config.base_url;
             var deferred = $q.defer();
+            var endpoint = baseUrl + url;
+
+            console.log("Endpoint: " + endpoint);
+            console.log("Data:");
+            console.log(JSON.stringify(data));
 
             $http({
                 method: 'POST',

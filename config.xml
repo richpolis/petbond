@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.ionicframework.petmatch649866" version="2.1.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.ionicframework.petmatch649866" version="2.1.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Petbond</name>
     <description>
         App para mascotas perdidas, adoptar mascotas y encontrar novia o novio para mi mascota.
@@ -12,6 +12,7 @@
     <access launch-external="yes" origin="geo:*" />
     <allow-navigation href="*" />
     <allow-navigation href="http://api.petbondweb.com/*" />
+    <allow-navigation href="http://localhost:8022/*" />
     <allow-navigation href="http://maps.apple.com/*" />
     <allow-navigation href="maps://maps.apple.com/*" />
     <allow-navigation href="https://scontent.xx.fbcdn.net/*" />
