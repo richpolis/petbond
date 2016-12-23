@@ -38,7 +38,7 @@ angular.module('app', [
             $rootScope.showLoader = function (enabled) {
                 if (enabled) {
                     $ionicLoading.show({
-                        template: '<ion-spinner></ion-spinner>',
+                        template: '<ion-spinner icon="android"></ion-spinner>',
                         animation: 'fade-in',
                         showBackdrop: true,
                         maxWidth: 120,
@@ -313,7 +313,7 @@ angular.module('app', [
         .config(function ($stateProvider, $urlRouterProvider, $httpProvider, $ionicConfigProvider, uiGmapGoogleMapApiProvider,
                 $cordovaFacebookProvider) {
             // Handle HTTP errors.
-            //$httpProvider.interceptors.push('responseObserver');
+            $httpProvider.interceptors.push('responseObserver');
 
             // Disable "Swipe to go back"
             $ionicConfigProvider.views.swipeBackEnabled(false);
