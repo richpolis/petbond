@@ -1,3 +1,81 @@
+<a name"2.3.5"></a>
+### 2.3.5 (2016-09-19)
+
+
+#### Bug Fixes
+
+* **docs:** correct changelog version number ([62eb11fb](https://github.com/angular-ui/angular-google-maps/commit/62eb11fb))
+* **model-key:** model-key comparison on objects ([139c5e4a](https://github.com/angular-ui/angular-google-maps/commit/139c5e4a), closes [#1485](https://github.com/angular-ui/angular-google-maps/issues/1485))
+
+
+<a name"2.3.4"></a>
+### 2.3.4 (2016-08-15)
+
+
+#### Bug Fixes
+
+* **build:** webpack-dev-server is a peer dependency of grunt-webpack ([e7631d28](https://github.com/angular-ui/angular-google-maps/commit/e7631d28))
+* **map-loader:** change includeScript to place maps api script tag to head element instead of bod ([8d6ed161](https://github.com/angular-ui/angular-google-maps/commit/8d6ed161))
+
+
+<a name"2.3.3"></a>
+### 2.3.3 (2016-05-13)
+
+
+<a name"2.3.2"></a>
+### 2.3.2 (2016-02-11)
+
+
+#### Bug Fixes
+
+* **angular 1.5:** working ([8ac35c3e](https://github.com/angular-ui/angular-google-maps/commit/8ac35c3e))
+
+
+<a name"2.3.1"></a>
+### 2.3.1 (2016-01-28)
+
+
+#### Bug Fixes
+
+* **lodash:** #1682 check both directions 3.X to 4.X and 4.X to 3.X. ([cb3a20bd](https://github.com/angular-ui/angular-google-maps/commit/cb3a20bd))
+
+
+<a name"2.2.2"></a>
+### 2.2.2 (2016-01-21)
+
+
+#### Bug Fixes
+
+* **EventsHelper removeEvents:** hasOwnProperty check to protect againt those that override Array.prototype issue ([4aa49942](https://github.com/angular-ui/angular-google-maps/commit/4aa49942))
+* **angular-simple-logger:** point to browser version of the lib ([6136cb81](https://github.com/angular-ui/angular-google-maps/commit/6136cb81))
+* **loader:** replace remove() with removeChild() to delete an existing ([86aa0fe8](https://github.com/angular-ui/angular-google-maps/commit/86aa0fe8))
+* **lodash:** lodash version also fixed to 3.X on devDependencies for node #1682 ([065568aa](https://github.com/angular-ui/angular-google-maps/commit/065568aa))
+* **lodash extensions:** fixed indenting and other mistakes ([4f303c08](https://github.com/angular-ui/angular-google-maps/commit/4f303c08))
+* **mapType:** options watch deep, is now watchCollection as it avoids infinite digests ([222e68f3](https://github.com/angular-ui/angular-google-maps/commit/222e68f3))
+* **travis:** remove underscore spec for now ([84db4848](https://github.com/angular-ui/angular-google-maps/commit/84db4848))
+* **window memory scope leaks:** - WindowsParent model now correctly destroys its child model's scopes. - coffeel ([42cca071](https://github.com/angular-ui/angular-google-maps/commit/42cca071))
+
+
+<a name"2.2.1"></a>
+### 2.2.1 (2015-09-11)
+
+
+#### Bug Fixes
+
+* **meteor:** prepping for new release to have meteor working again ([6d01d4eb](https://github.com/angular-ui/angular-google-maps/commit/6d01d4eb))
+
+
+<a name"2.2.0"></a>
+### 2.2.0 (2015-09-06)
+
+#### Bug Fixes
+
+* **searchbox:** visibility fixes, issue #1471 ([265e2a3](https://github.com/angular-ui/angular-google-maps/commit/265e2a3))
+
+#### Features
+
+* **uiGmapLogger:** internals outsourced to nemSimpleLogger which we now instantiate ([05af52c](https://github.com/angular-ui/angular-google-maps/commit/05af52c))
+
 <a name"2.1.6"></a>
 ### 2.1.6 (2015-08-27)
 
@@ -39,4 +117,3 @@
   * added to bump routines ([69b317fa](https://github.com/angular-ui/angular-google-maps/commit/69b317fa))
   * trying to aid in documentation and help people figure this out ([b6017de0](https://github.com/angular-ui/angular-google-maps/commit/b6017de0))
 * **grunt-changelog:** changelog added to our grunt build, sorry I did not know about this sooner. See  ([84227c03](https://github.com/angular-ui/angular-google-maps/commit/84227c03))
-

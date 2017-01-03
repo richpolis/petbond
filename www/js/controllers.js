@@ -354,7 +354,12 @@ angular.module('app.controllers', [])
     $scope.data = {};
     $scope.data.currentPage = 0;
     
-    var setupSlider = function() {
+    // Check for auth
+    if (typeof authService.getUser() === "undefined" || jsonUtility.isObjectEmpty(authService.getUser())) {
+      $rootScope.forceLogout();
+    } 
+
+    $scope.setupSlider = function() {
       //some options to pass to our slider
       $scope.data.sliderOptions = {
         initialSlide: 0,
@@ -377,31 +382,7 @@ angular.module('app.controllers', [])
       });
     };
 
-    // Check for auth
-    if (typeof authService.getUser() === "undefined" || jsonUtility.isObjectEmpty(authService.getUser())) {
-      $rootScope.forceLogout();
-    } 
-
-    if($scope.tipoController=='favoritos') {
-      $scope.publicaciones = $localStorage.get('favoritos', [], true);
-      $ionicNavBarDelegate.showBackButton(true);
-    }else{
-      var posts = $localStorage.get('publicaciones', [], true);
-      $scope.publicaciones = [];
-
-      for(var cont=0; cont < posts.length; cont++){
-        if(posts[cont].estado == 'A'){
-          $scope.publicaciones.push(posts[cont]);
-        }
-      }
-
-      setupSlider();
-      setGeolocalizacion();
-
-      $ionicNavBarDelegate.showBackButton(false);
-    }
-
-    function setGeolocalizacion(){
+    $scope.setGeolocalizacion = function(){
       // obtiene la posicion actual, para mantener actualizado su posicion.
       console.log("Entrando a geolocalizacion");
       var user = authService.getUser();
@@ -428,6 +409,8 @@ angular.module('app.controllers', [])
       });
     }
 
+    $scope.setGeolocalizacion();
+
     $scope.criteria = { isDistance: false };
     $scope.user = authService.getUser();
     $scope.sexos  = $rootScope.sexos;
@@ -440,7 +423,7 @@ angular.module('app.controllers', [])
     $scope.razas          = $localStorage.get('razas', [], true);
     $scope.more_publicaciones = true;
 
-    $scope.getPublicaciones = function(){
+    $scope.getPublicaciones2 = function(){
       console.log("Entro a getPublicaciones");
       var fecha = 10000;
       console.log(fecha);
@@ -459,15 +442,42 @@ angular.module('app.controllers', [])
             $scope.publicaciones.push(posts[cont]);
           }
         }
-        setupSlider();
-        setGeolocalizacion();
-        $scope.$broadcast('scroll.refreshComplete');
+        $scope.setupSlider();
+        $scope.setGeolocalizacion();
         //$scope.$apply();
       }, function(err){
-        $scope.$broadcast('scroll.refreshComplete');
         console.log(err);
       });
     }
+
+    $scope.getPublicaciones = function(){
+      $scope.user = $localStorage.get('user',{}, true);
+      $scope.criteria.distance = 100;
+      $scope.criteria.latitude = $rootScope.lat || $scope.user.latitude;
+      $scope.criteria.longitude = $rootScope.lng || $scope.user.longitude;
+      console.log($scope.criteria);
+      apiHandler.listPublicacions($scope.criteria).then(function(result){
+        console.log(result);
+        if(result.data.length > 0){
+          $localStorage.set('publicaciones',result.data,true);
+          var posts = result.data;
+          $scope.publicaciones = [];
+
+          for(var cont=0; cont < posts.length; cont++){
+            if(posts[cont].estado == 'A'){
+              $scope.publicaciones.push(posts[cont]);
+            }
+          }
+          $scope.setupSlider();
+          $scope.setGeolocalizacion();
+        }else{
+          $scope.getPublicaciones2();
+        }
+      },function(err){
+        console.log(err);
+      });
+    }
+
 
     $scope.getPublicacionesMore = function(){
       console.log("Entro a getPublicacionesMore");
@@ -516,10 +526,10 @@ angular.module('app.controllers', [])
 
     $scope.doSearch = function(){
       $scope.user = $localStorage.get('user',{}, true);
-		if($scope.criteria.isDistance){
-			$scope.criteria.latitude = $rootScope.lat || $scope.user.latitude;
-      		$scope.criteria.longitude = $rootScope.lng || $scope.user.longitude;
-		}
+  		if($scope.criteria.isDistance){
+  			$scope.criteria.latitude = $rootScope.lat || $scope.user.latitude;
+        $scope.criteria.longitude = $rootScope.lng || $scope.user.longitude;
+  		}
       console.log($scope.criteria);
       apiHandler.listPublicacions($scope.criteria).then(function(response){
         console.log(response);
@@ -550,8 +560,12 @@ angular.module('app.controllers', [])
         }
     };
 
-    if($scope.tipoController != 'favoritos') {
+    if($scope.tipoController=='favoritos') {
+      $scope.publicaciones = $localStorage.get('favoritos', [], true);
+      $ionicNavBarDelegate.showBackButton(true);
+    }else{
       $scope.getPublicaciones();
+      $ionicNavBarDelegate.showBackButton(false);
     }
 
     
@@ -611,15 +625,15 @@ angular.module('app.controllers', [])
 
   })
 
-  .controller('MisPublicacionesCtrl', function ($scope, $stateParams, jsonUtility, Config,
-                                                $localStorage, $ionicNavBarDelegate, $state) {
+  .controller('MisPublicacionesCtrl', function ($scope, $stateParams, jsonUtility, Config, apiHandler, 
+                                                $localStorage, $ionicNavBarDelegate, $state, $rootScope) {
 
-    var posts = $localStorage.get('publicaciones', [], true);
-    $scope.publicaciones = [];
+    $scope.publicaciones = $localStorage.get('mis-publicaciones',[],true);;
     $scope.user = $localStorage.get('user',{},true);
 
     $scope.tipoController = $stateParams.tipoController;
     $scope.base_url = Config.base_url_web_images;
+    $scope.tipos  = $rootScope.tipos;
 
     $ionicNavBarDelegate.showBackButton(true);
 
@@ -633,11 +647,14 @@ angular.module('app.controllers', [])
       return jsonUtility.isFavorite(publicacion);
     };
 
-    for(var cont=0; cont < posts.length; cont++){
-      if(posts[cont].usuario.id == $scope.user.id){
-        $scope.publicaciones.push(posts[cont]);
-      }
-    }
+    apiHandler.listPublicacionsUser($scope.user).then(function(result){
+        console.log(result);
+        $localStorage.set('mis-publicaciones',result.data,true);
+        $scope.publicaciones = result.data;
+    },function(err){
+        console.log(err);
+    });
+    
 
   })
 
@@ -1222,27 +1239,11 @@ angular.module('app.controllers', [])
     $scope.tipos  = $rootScope.tipos;
     $scope.base_url = Config.base_url_web_images;
 
-    var promise = apiHandler.viewPublicacion(data);
+    $scope.getPublicacion = function(){
 
-    promise.then(function (response) {
-      console.log("Response:");
-      console.log(response);
+      var promise = apiHandler.viewPublicacion(data);
 
-      if (response.error != 0) {
-        // TODO: throw popup
-        $rootScope.error('Ocurrió un error en la operación.');
-        window.history.back();
-      } else {
-        $scope.publicacion = response.data;
-       // $localStorage.set('images',$scope.publicacion.fotos,true);
-        $scope.fotos = response.data.fotos;
-      }
-    });
-
-    function eliminarImagenPublicacion(foto){
-      var data = {id: foto.id, publicacion: $scope.publicacion.id};
-      var promise = apiHandler.deleteImagePublicacion(data);
-      promise.then(function(response){
+      promise.then(function (response) {
         console.log("Response:");
         console.log(response);
 
@@ -1252,17 +1253,31 @@ angular.module('app.controllers', [])
           window.history.back();
         } else {
           $scope.publicacion = response.data;
-        // $localStorage.set('images',$scope.publicacion.fotos,true);
+         // $localStorage.set('images',$scope.publicacion.fotos,true);
           $scope.fotos = response.data.fotos;
-          var imagenes = FileService.images();
-          for(var cont=0; cont < imagenes.length; cont++){
-              var obj = {id: 0 , image: imagenes[cont]};
-              $scope.fotos.push(obj);
-          }
+
           if ($scope.fotos.length == 0) {
             $ionicScrollDelegate.scrollTop();
           }
-          $scope.$apply();
+        }
+      });
+
+    }
+
+    $scope.getPublicacion();
+
+    function eliminarImagenPublicacion(foto){
+      var data = {id: foto.id, publicacion: $scope.publicacion.id};
+      var promise = apiHandler.deleteImagePublicacion(data);
+      promise.then(function(response){
+        console.log("Response:" + JSON.stringify(response));
+
+        if (response.error != 0) {
+          // TODO: throw popup
+          $rootScope.error('Ocurrió un error en la operación.');
+          window.history.back();
+        } else {
+          $scope.getPublicacion();
         }
       });
     }
@@ -1287,9 +1302,8 @@ angular.module('app.controllers', [])
       $scope.hideSheet();
       ImageService.handleMediaBase64(type).then(function (result) {
         //console.log(result);
-        var obj = {id: 0, image: result};
-        $scope.fotos.push(obj);
-        $scope.$apply();
+        var imagen = {id: 0, image: result};
+        $scope.transferirImagen(imagen);
       },function(err){
         console.log("Error en tomar imagen: ");
         console.log(err);
@@ -1306,89 +1320,51 @@ angular.module('app.controllers', [])
       });
       confirmPopup.then(function (res) {
         if (res) {
-          if(foto.image.length > 250 && foto.id == 0) {
-            FileService.removeImageBase64(image).then(function (success) {
-              var imagenes = FileService.images();
-              var aObj = $scope.publicacion.fotos;
-              $scope.fotos = aObj;
-              for(var cont=0; cont < imagenes.length; cont++){
-                var obj = {id: 0 , image: imagenes[cont]};
-                aObj.push(obj);
-              }
-              if (aObj.length == 0) {
+          apiHandler.deleteImagePublicacion(foto).then(function (result) {
+
+              console.log(result);
+
+              $scope.publicacion = result.data;
+              $scope.fotos = result.data.fotos;
+              if ($scope.fotos.length == 0) {
                 $ionicScrollDelegate.scrollTop();
               }
               $scope.$apply();
+            }, function(err){
+              $ionicPopup.alert({
+                title: 'Error al eliminar la imagen!',
+                template: err.detail
+              });
             });
-          }else if(foto.id == 0){
-            // aqui se implementara quitar del servidor
-            FileService.removeImage(image).then(function (success) {
-              var imagenes = FileService.images();
-              var aObj = $scope.publicacion.fotos;
-              $scope.fotos = aObj;
-              for(var cont=0; cont < imagenes.length; cont++){
-                var obj = {id: 0 , image: imagenes[cont]};
-                aObj.push(obj);
-              }
-              if (aObj.length == 0) {
-                $ionicScrollDelegate.scrollTop();
-              }
-              $scope.$apply();
-            });
-          }else{
-            // es una foto existente en la base de datos
-            eliminarImagenPublicacion(foto);
-          }
         }
       });
     };
 
     $scope.finish = function(){
-      if($scope.fotos.length>0) {
-        transferirImagenes(0, $scope.publicacion);
-      }else{
-        $state.go('app.publicacion', {'publicacionId': $scope.publicacion.id});
-      }
+      $state.go('app.publicacion', {'publicacionId': $scope.publicacion.id});
     };
 
     $scope.urlForImage = function (imageName) {
       if(imageName.length > 250 ){
         return "data:image/jpeg;base64," + imageName;
       }else{
-        return $scope.base_url +"/"+ imageName;
+        return $scope.base_url + imageName;
       }
 
     };
 
-    function transferirImagenes(index, publicacion, images, params, headers) {
-      var images = images || $scope.fotos;
-      var cuantas = images.length;
-      console.log('Subiendo: ' + (index+1) + "/" + images.length);
-      var params = params || { "publicacion": publicacion.id , "encode": "jpg"};
-      params.image = images[index];
-      if(images[index].length > 250) {
-        apiHandler.loadImageBase64Publicacion(params).then(function (result) {
-          images.splice(index, 1);
-          if (images.length > 0) {
-              transferirImagenes(0, publicacion, images, params, headers);
-          } else {
-              $state.go('app.publicacion', {'publicacionId': publicacion.id});
-          }
-        }, function (err) {
+    $scope.transferirImagen = function(imagen) {
+      var params = params || { "publicacion": $scope.publicacion.id , "encode": "jpg"};
+      params.image = imagen.image;
+      apiHandler.loadImageBase64Publicacion(params).then(function (result) {
+          $scope.getPublicacion();
+      }, function (err) {
+          console.log(err);
           $ionicPopup.alert({
-            title: 'Error en la carga de imagenes!',
+            title: 'Error en la carga de imagen!',
             template: err.detail
           });
-        });
-      }else{
-        FileService.removeImage(images[index]).then(function (imagenes) {
-          if (imagenes.length > 0) {
-            transferirImagenes(0, publicacion, imagenes, params, headers);
-          } else {
-            $state.go('app.publicacion', {'publicacionId': publicacion.id});
-          }
-        });
-      }
+      });
 
     };
 

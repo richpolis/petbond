@@ -1,7 +1,7 @@
 angular.module('app.services', [])
         .service("apiHandler", function($http, $q, authService, Config) {
 
-        this.executeRequest = function (url, data) {
+        this.executeRequest = function (url, data, method) {
 
             //var baseUrl = 'http://api.petbondweb.com';
             var baseUrl = Config.base_url;
@@ -13,7 +13,7 @@ angular.module('app.services', [])
             console.log(JSON.stringify(data));
 
             $http({
-                method: 'POST',
+                method: method || 'POST',
                 data: data || {},
                 dataType: 'json',
                 url: baseUrl + url,
@@ -82,7 +82,7 @@ angular.module('app.services', [])
 
         // Publicacion List
         this.listPublicacionsUser = function (data) {
-            return this.executeRequest('/publications/users', data);
+            return this.executeRequest('/publications/user/' + data["id"], data);
         };
 
         // Publicacion View

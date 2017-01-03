@@ -12,6 +12,7 @@ angular.module('app', [
     'app.controllers',
     'app.services',
     'app.filters',
+    'nemLogging',
     'uiGmapgoogle-maps',
     'google.places',
     'ngIOS9UIWebViewPatch',
@@ -31,6 +32,7 @@ angular.module('app', [
             //base_url: 'http://localhost:8022/app_dev.php/api',
             base_url_web: 'http://api.petbondweb.com/',
             base_url_web_images: 'http://api.petbondweb.com/uploads/imagenes/'
+            //base_url_web_images: 'http://localhost:8022/uploads/imagenes/'
         })
         .run(function ($http, $ionicPlatform, authService, $rootScope, $state,
                        $ionicHistory, $cordovaNetwork, $cordovaGeolocation, $localStorage,
