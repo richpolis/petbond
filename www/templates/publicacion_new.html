@@ -22,18 +22,18 @@
       </label>
       <label class="item item-select" name="raza">
         <span class="input-label">Raza</span>
-        <select ng-model="publicacion.raza" id="raza" ng-required="true">
+        <select ng-model="publicacion.raza" id="raza" ng-required="false">
           <option ng-repeat="raza in razas" ng-if="raza.tipo_mascota.id == publicacion.tipoMascota" value="{{raza.id}}">{{raza.nombre}}</option>
         </select>
       </label>
       <label class="item item-select">
         <span class="input-label">Color pelaje</span>
-        <select ng-model="publicacion.color" ng-required="true" ng-options="color.id as color.nombre for color in colores">
+        <select ng-model="publicacion.color" ng-required="false" ng-options="color.id as color.nombre for color in colores">
         </select>
       </label>
       <label class="item item-select">
         <span class="input-label">Edad</span>
-        <select ng-model="publicacion.edad" ng-options="edad.value as edad.texto for edad in edades" ng-required="true"></select>
+        <select ng-model="publicacion.edad" ng-options="edad.value as edad.texto for edad in edades" ng-required="false"></select>
       </label>
       <div class="item" ng-click="openModal()">
           <div class="row">

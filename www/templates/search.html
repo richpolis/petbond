@@ -49,8 +49,12 @@
         <select ng-model="criteria.color" ng-options="color.id as color.nombre for color in colores"></select>
       </label>
 
-      <!-- Tipo publicación. -->
-      <ion-toggle toggle-class="toggle-positive" ng-repeat="(key, value) in Config.tipos" ng-model="selected_tipos[key]">{{value}}</ion-toggle>
+      <!-- Tipo. -->
+      <label class="item item-select">
+        <span class="input-label">Tipo</span>
+        <select ng-model="criteria.tipo" ng-options="tipo.value as tipo.texto for tipo in tipos"></select>
+      </label>
+
       <div class="item">
         <button class="button button-block button-positive" ng-click="doSearch()">Buscar</button>
       </div>

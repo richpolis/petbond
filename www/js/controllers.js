@@ -354,11 +354,6 @@ angular.module('app.controllers', [])
     $scope.data = {};
     $scope.data.currentPage = 0;
     
-    // Check for auth
-    if (typeof authService.getUser() === "undefined" || jsonUtility.isObjectEmpty(authService.getUser())) {
-      $rootScope.forceLogout();
-    } 
-
     $scope.setupSlider = function() {
       //some options to pass to our slider
       $scope.data.sliderOptions = {
@@ -560,15 +555,19 @@ angular.module('app.controllers', [])
         }
     };
 
-    if($scope.tipoController=='favoritos') {
-      $scope.publicaciones = $localStorage.get('favoritos', [], true);
-      $ionicNavBarDelegate.showBackButton(true);
+    // Check for auth
+    if (typeof authService.getUser() === "undefined" || jsonUtility.isObjectEmpty(authService.getUser())) {
+      $rootScope.forceLogout();
     }else{
-      $scope.getPublicaciones();
-      $ionicNavBarDelegate.showBackButton(false);
+    	if($scope.tipoController=='favoritos') {
+	      	$scope.publicaciones = $localStorage.get('favoritos', [], true);
+	      	$ionicNavBarDelegate.showBackButton(true);
+	    }else{
+	    	$scope.publicaciones = $localStorage.get('publicaciones', [], true);
+	      	$scope.getPublicaciones();
+	      	$ionicNavBarDelegate.showBackButton(false);
+	    }
     }
-
-    
 
   })
 
@@ -1003,10 +1002,8 @@ angular.module('app.controllers', [])
 
     uiGmapGoogleMapApi.then(function (maps) {
       console.log(maps);
-      $rootScope.lat = $rootScope.lat ||  25.67702;
-      $rootScope.lng = $rootScope.lng || -100.30890;
       $scope.map = {
-        center: {latitude: $rootScope.lat, longitude: $rootScope.lng},
+        center: {latitude: -34.6156541, longitude: -58.5734051},
         zoom: 15,
         options: {mapTypeControl: false, streetViewControl: false, mapTypeId: maps.MapTypeId.ROADMAP}
       };
@@ -1194,10 +1191,8 @@ angular.module('app.controllers', [])
 
     uiGmapGoogleMapApi.then(function (maps) {
       console.log(maps);
-      $rootScope.lat = $rootScope.lat ||  25.67702;
-      $rootScope.lng = $rootScope.lng || -100.30890;
       $scope.map = {
-        center: {latitude: $rootScope.lat, longitude: $rootScope.lng},
+        center: {latitude: -34.6156541, longitude: -58.5734051},
         zoom: 15,
         options: {mapTypeControl: false, streetViewControl: false, mapTypeId: maps.MapTypeId.ROADMAP}
       };
@@ -1408,19 +1403,20 @@ angular.module('app.controllers', [])
         $scope.can_edit = jsonUtility.isCantEdit($scope.publicacion);
 
         uiGmapGoogleMapApi.then(function (maps) {
+    	  console.log(maps);
           $scope.marker = {
-            id: 0,
+            id: 1,
             coords: {
               latitude: $scope.publicacion.latitude,
               longitude: $scope.publicacion.longitude
             }
           };
-
           $scope.map = {
             center: {latitude: $scope.publicacion.latitude, longitude: $scope.publicacion.longitude},
             zoom: 15,
             options: {mapTypeControl: false, streetViewControl: false, mapTypeId: maps.MapTypeId.ROADMAP}
           };
+
         });
 
       }
