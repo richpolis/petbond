@@ -433,7 +433,7 @@ angular.module('app.controllers', [])
         $scope.publicaciones = [];
 
         for(var cont=0; cont < posts.length; cont++){
-          if(posts[cont].estado == 'A'){
+          if(posts[cont].estado != 'B'){
             $scope.publicaciones.push(posts[cont]);
           }
         }
@@ -459,7 +459,7 @@ angular.module('app.controllers', [])
           $scope.publicaciones = [];
 
           for(var cont=0; cont < posts.length; cont++){
-            if(posts[cont].estado == 'A'){
+            if(posts[cont].estado != 'B'){
               $scope.publicaciones.push(posts[cont]);
             }
           }
@@ -483,7 +483,7 @@ angular.module('app.controllers', [])
         console.log(result);
         var posts = result.data;
         for(var cont=0; cont < posts.length; cont++){
-          if(posts[cont].estado == 'A'){
+          if(posts[cont].estado != 'B'){
             $scope.publicaciones.push(posts[cont]);
           }
         }
@@ -564,7 +564,7 @@ angular.module('app.controllers', [])
 	      	$ionicNavBarDelegate.showBackButton(true);
 	    }else{
 	    	$scope.publicaciones = $localStorage.get('publicaciones', [], true);
-	      	$scope.getPublicaciones();
+	      	$scope.getPublicaciones2();
 	      	$ionicNavBarDelegate.showBackButton(false);
 	    }
     }
