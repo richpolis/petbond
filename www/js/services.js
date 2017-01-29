@@ -211,6 +211,17 @@ angular.module('app.services', [])
             return obj.executeRequest('/security/check', data);
         };
 
+        obj.config = function (data) {
+
+            var sufix = "";
+            if (typeof data != 'undefined' && typeof data.id != 'undefined') {
+                suffix = "/" + data.id;
+            } else {
+                suffix = "";
+            }
+            return obj.executeRequest('/security/config' + suffix);
+        };
+
         obj.recoverPassword = function(data){
             return obj.executeRequest('/users/recover/password', data);
         };

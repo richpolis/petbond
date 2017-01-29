@@ -404,8 +404,6 @@ angular.module('app.controllers', [])
       });
     }
 
-    $scope.setGeolocalizacion();
-
     $scope.criteria = { isDistance: false };
     $scope.user = authService.getUser();
     $scope.sexos  = $rootScope.sexos;
@@ -413,9 +411,9 @@ angular.module('app.controllers', [])
     $scope.tipos  = $rootScope.tipos;
     $scope.base_url = Config.base_url_web_images;
 
-    $scope.colores        = $localStorage.get('colores', [], true);
-    $scope.tipos_mascota  = $localStorage.get('tipos_mascota', [], true);
-    $scope.razas          = $localStorage.get('razas', [], true);
+    $scope.colores        = $localStorage.get('colores', [], false);
+    $scope.tipos_mascota  = $localStorage.get('tipos_mascota', [], false);
+    $scope.razas          = $localStorage.get('razas', [], false);
     $scope.more_publicaciones = true;
 
     $scope.getPublicaciones2 = function(){
@@ -438,7 +436,6 @@ angular.module('app.controllers', [])
           }
         }
         $scope.setupSlider();
-        $scope.setGeolocalizacion();
         //$scope.$apply();
       }, function(err){
         console.log(err);
@@ -557,16 +554,44 @@ angular.module('app.controllers', [])
 
     // Check for auth
     if (typeof authService.getUser() === "undefined" || jsonUtility.isObjectEmpty(authService.getUser())) {
-      $rootScope.forceLogout();
-    }else{
-    	if($scope.tipoController=='favoritos') {
-	      	$scope.publicaciones = $localStorage.get('favoritos', [], true);
-	      	$ionicNavBarDelegate.showBackButton(true);
-	    }else{
-	    	$scope.publicaciones = $localStorage.get('publicaciones', [], true);
-	      	$scope.getPublicaciones2();
-	      	$ionicNavBarDelegate.showBackButton(false);
-	    }
+        $rootScope.forceLogout();
+    } else {
+        //
+        if ($scope.tipoController == 'favoritos') {
+            $scope.publicaciones = $localStorage.get('favoritos', [], false);
+            $ionicNavBarDelegate.showBackButton(true);
+        } else {
+            $scope.publicaciones = $localStorage.get('publicaciones', [], false);
+            $scope.getPublicaciones2();
+            $ionicNavBarDelegate.showBackButton(false);
+            
+            var ahora = new Date();
+            var configFecha = {};
+            configFecha.fecha = ahora.valueOf() + (1 * 24 * 60 * 60 * 1000);
+            configFecha = JSON.parse($localStorage.get('config_user', configFecha, false));
+            var fecha = new Date(new Date(configFecha.fecha));
+
+            console.log(fecha);
+            console.log(ahora);
+
+            if (fecha < ahora) {
+                console.log("Entro a refrescar config");
+                var promise = authService.config($scope.user);
+                promise.then(function (result) {
+                    if (result.error != 0) {
+                        $rootScope.error(
+                                $rootScope.getErrorDescription(result.error)
+                        );
+                    } else {
+                        $localStorage.set('colores', result.data.colores, true);
+                        $localStorage.set('tipos_mascota', result.data.tipos_mascota, true);
+                        $localStorage.set('razas', result.data.razas, true);
+                        $localStorage.set('config_user', {'fecha': ahora.valueOf() + (1 * 24 * 60 * 60 * 1000)}, true);
+                        $scope.setGeolocalizacion();
+                    }
+                });
+            }
+        }
     }
 
   })
