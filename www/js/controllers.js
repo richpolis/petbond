@@ -31,7 +31,11 @@ angular.module('app.controllers', [])
       var promise = authService.login($scope.loginData);
       promise.then(function (result) {
         console.log("Login: ")
-        console.log(JSON.stringify(result));
+        console.log(JSON.stringify(result.error));
+        console.log(JSON.stringify(result.data.user));
+        console.log(JSON.stringify(result.data.colores));
+        console.log(JSON.stringify(result.data.tipos_mascota));
+        console.log(JSON.stringify(result.data.razas));
         if (result.error == 26) {
           $state.go('app.signup');
         } else if (result.error != 0) {
@@ -411,9 +415,9 @@ angular.module('app.controllers', [])
     $scope.tipos  = $rootScope.tipos;
     $scope.base_url = Config.base_url_web_images;
 
-    $scope.colores        = $localStorage.get('colores', [], false);
-    $scope.tipos_mascota  = $localStorage.get('tipos_mascota', [], false);
-    $scope.razas          = $localStorage.get('razas', [], false);
+    $scope.colores        = $localStorage.get('colores', [], true);
+    $scope.tipos_mascota  = $localStorage.get('tipos_mascota', [], true);
+    $scope.razas          = $localStorage.get('razas', [], true);
     $scope.more_publicaciones = true;
 
     $scope.getPublicaciones2 = function(){
@@ -565,11 +569,16 @@ angular.module('app.controllers', [])
             $scope.getPublicaciones2();
             $ionicNavBarDelegate.showBackButton(false);
             
-            var ahora = new Date();
+            /*var ahora = new Date();
             var configFecha = {};
             configFecha.fecha = ahora.valueOf() + (1 * 24 * 60 * 60 * 1000);
-            configFecha = JSON.parse($localStorage.get('config_user', configFecha, false));
-            var fecha = new Date(new Date(configFecha.fecha));
+            console.log(JSON.stringify(configFecha));
+            configFecha = $localStorage.get('config_user', configFecha, true);
+            if(configFecha.fecha === 'undefined'){ 
+              configFecha = JSON.parse(configFecha)
+            }
+            var fecha = new Date(configFecha.fecha); 
+            
 
             console.log(fecha);
             console.log(ahora);
@@ -578,6 +587,7 @@ angular.module('app.controllers', [])
                 console.log("Entro a refrescar config");
                 var promise = authService.config($scope.user);
                 promise.then(function (result) {
+                    console.log(JSON.stringify(result));
                     if (result.error != 0) {
                         $rootScope.error(
                                 $rootScope.getErrorDescription(result.error)
@@ -590,7 +600,7 @@ angular.module('app.controllers', [])
                         $scope.setGeolocalizacion();
                     }
                 });
-            }
+            }*/
         }
     }
 
