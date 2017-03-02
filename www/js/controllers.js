@@ -31,11 +31,6 @@ angular.module('app.controllers', [])
       var promise = authService.login($scope.loginData);
       promise.then(function (result) {
         console.log("Login: ")
-        console.log(JSON.stringify(result.error));
-        console.log(JSON.stringify(result.data.user));
-        console.log(JSON.stringify(result.data.colores));
-        console.log(JSON.stringify(result.data.tipos_mascota));
-        console.log(JSON.stringify(result.data.razas));
         if (result.error == 26) {
           $state.go('app.signup');
         } else if (result.error != 0) {
@@ -43,6 +38,12 @@ angular.module('app.controllers', [])
             $rootScope.getErrorDescription(result.error)
           );
         } else {
+          console.log(JSON.stringify(result.error));
+          console.log(JSON.stringify(result.data.user));
+          console.log(JSON.stringify(result.data.colores));
+          console.log(JSON.stringify(result.data.tipos_mascota));
+          console.log(JSON.stringify(result.data.razas));
+
           authService.setUser(result.data.user);
           $localStorage.set('colores', result.data.colores,true);
           $localStorage.set('tipos_mascota', result.data.tipos_mascota,true);
@@ -569,7 +570,7 @@ angular.module('app.controllers', [])
             $scope.getPublicaciones2();
             $ionicNavBarDelegate.showBackButton(false);
             
-            /*var ahora = new Date();
+            var ahora = new Date();
             var configFecha = {};
             configFecha.fecha = ahora.valueOf() + (1 * 24 * 60 * 60 * 1000);
             console.log(JSON.stringify(configFecha));
@@ -600,7 +601,7 @@ angular.module('app.controllers', [])
                         $scope.setGeolocalizacion();
                     }
                 });
-            }*/
+            }
         }
     }
 
