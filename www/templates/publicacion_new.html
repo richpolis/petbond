@@ -52,17 +52,17 @@
       </label>
       <!--Botones para crear publicación-->
       <div class="item" ng-if="!publicacion.id > 0">
-        <button class="button button-block button-positive icon ion-save" type="submit"
+        <button class="button button-block button-calm icon ion-save" type="submit"
                 ng-disabled="publicacionForm.$invalid"
                 ng-click="publicacionForm.$valid && createPublicacion()">Grabar y editar fotos</button>
       </div>
 
       <!--Botones para editar publicación-->
       <div class="item" ng-if="publicacion.id > 0">
-        <button class="button button-block button-positive icon ion-upload" type="submit"
+        <button class="button button-block button-calm icon ion-upload" type="submit"
                 ng-disabled="publicacionForm.$invalid"
                 ng-click="publicacionForm.$valid && updatePublicacion()">Grabar cambios</button>
-        <button class="button button-block button-assertive icon ion-camera"
+        <button class="button button-block button-positive icon ion-camera"
                 ng-click="goToPublicacionImages()">Editar fotos</button>
       </div>
     </form>

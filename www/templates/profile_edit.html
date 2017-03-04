@@ -1,5 +1,5 @@
 <ion-view title="Mi perfil">
-    <ion-content overflow-scroll="true" padding="true" class="has-header">
+    <ion-content overflow-scroll="true" padding="true" class="has-header fondo-perritos">
         <form class="list"  name="profileForm">
             <ion-item class="item-thumbnail-left">
               <img src="img/blank-avatar-big.png" ng-if="user.image == null && user.login_fb == false" />
@@ -28,7 +28,7 @@
                 <input type="email" ng-model="user.email" disabled>
             </label>
 
-            <button class="button button-full button-positive" ng-disabled="profileForm.$invalid" ng-click="profileForm.$valid && saveProfile()">
+            <button class="button button-full button-dark" ng-disabled="profileForm.$invalid" ng-click="profileForm.$valid && saveProfile()">
               Guardar cambios
             </button>
         </form>

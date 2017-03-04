@@ -29,10 +29,10 @@ angular.module('app', [
         })
         .value('Config', {
             base_url: 'http://api.petbondweb.com/api',
-            // base_url: 'http://localhost:8022/app_dev.php/api',
+            //base_url: 'http://localhost:8022/app_dev.php/api',
             base_url_web: 'http://api.petbondweb.com/',
             base_url_web_images: 'http://api.petbondweb.com/uploads/imagenes/'
-            // base_url_web_images: 'http://localhost:8022/uploads/imagenes/'
+            //base_url_web_images: 'http://localhost:8022/uploads/imagenes/'
             // com.ionicframework.petmatch649866
         })
         .run(function ($http, $ionicPlatform, authService, $rootScope, $state,
@@ -41,7 +41,7 @@ angular.module('app', [
             $rootScope.showLoader = function (enabled) {
                 if (enabled) {
                     $ionicLoading.show({
-                        template: '<ion-spinner icon="android"></ion-spinner>',
+                        template: '<ion-spinner class="spinner-calm" icon="android"></ion-spinner>',
                         animation: 'fade-in',
                         showBackdrop: true,
                         maxWidth: 120,
@@ -212,16 +212,55 @@ angular.module('app', [
                 {value: 'N', texto: 'Buscando novio / novia'}
             ];
 
+            $rootScope.getTipos = function(){
+                var arreglo = [];
+                arreglo.push({value: '' , texto: 'Todos'});
+                return arreglo.concat($rootScope.tipos);
+            };
+
             $rootScope.sexos = [
                 {value: 'M', texto: 'Macho'},
                 {value: 'H', texto: 'Hembra'}
             ];
+
+            $rootScope.getSexos = function(){
+                var arreglo = [];
+                arreglo.push({value: '' , texto: 'Todos'});
+                return arreglo.concat($rootScope.sexos);
+            };
 
             $rootScope.edades = [
                 {value: 'C', texto: 'Cachorro'},
                 {value: 'J', texto: 'Joven'},
                 {value: 'A', texto: 'Adulto'}
             ];
+
+            $rootScope.getEdades = function(){
+                var arreglo = [];
+                arreglo.push({value: '' , texto: 'Todas'});
+                return arreglo.concat($rootScope.edades);
+            };
+
+            $rootScope.getTiposMascota = function(){
+                var tipos_mascota  = $localStorage.get('tipos_mascota', [], true);
+                var arreglo = [];
+                arreglo.push({id: 0 , nombre: 'Todos'});
+                return arreglo.concat(tipos_mascota);
+            };
+
+            $rootScope.getRazas = function(){
+                var razas  = $localStorage.get('razas', [], true);
+                var arreglo = [];
+                arreglo.push({id: 0 , nombre: 'Todas'});
+                return arreglo.concat(razas);
+            };
+
+            $rootScope.getColores = function(){
+                var colores  = $localStorage.get('colores', [], true);
+                var arreglo = [];
+                arreglo.push({id: 0 , nombre: 'Todos'});
+                return arreglo.concat(colores);
+            };
 
             $ionicPlatform.ready(function () {
 

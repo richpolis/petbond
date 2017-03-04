@@ -409,16 +409,19 @@ angular.module('app.controllers', [])
       });
     }
 
-    $scope.criteria = { isDistance: false };
+    $scope.criteria = { isDistance: false, isFecha: false,
+                        tipoMascota:0, raza:0, color:0, tipo:'',sexo:'',edad:'',
+                        fecha_desde: new Date() ,fecha_hasta: new Date()};
+
     $scope.user = authService.getUser();
-    $scope.sexos  = $rootScope.sexos;
-    $scope.edades = $rootScope.edades;
-    $scope.tipos  = $rootScope.tipos;
+    $scope.sexos  = $rootScope.getSexos();
+    $scope.edades = $rootScope.getEdades();
+    $scope.tipos  = $rootScope.getTipos();
     $scope.base_url = Config.base_url_web_images;
 
-    $scope.colores        = $localStorage.get('colores', [], true);
-    $scope.tipos_mascota  = $localStorage.get('tipos_mascota', [], true);
-    $scope.razas          = $localStorage.get('razas', [], true);
+    $scope.colores        = $rootScope.getColores();
+    $scope.tipos_mascota  = $rootScope.getTiposMascota();
+    $scope.razas          = $rootScope.getRazas();
     $scope.more_publicaciones = true;
 
     $scope.getPublicaciones2 = function(){
@@ -523,12 +526,36 @@ angular.module('app.controllers', [])
 
     $scope.doSearch = function(){
       $scope.user = $localStorage.get('user',{}, true);
+      var criterio = {};
   		if($scope.criteria.isDistance){
-  			$scope.criteria.latitude = $rootScope.lat || $scope.user.latitude;
-        $scope.criteria.longitude = $rootScope.lng || $scope.user.longitude;
+  			criterio.latitude = $rootScope.lat || $scope.user.latitude;
+            criterio.longitude = $rootScope.lng || $scope.user.longitude;
   		}
-      console.log($scope.criteria);
-      apiHandler.listPublicacions($scope.criteria).then(function(response){
+
+  		if($scope.criteria.isFecha){
+  		    var fechaDesde = $scope.criteria.fecha_desde;
+  		    var fechaHasta = $scope.criteria.fecha_hasta;
+
+  		    if(fechaDesde > fechaHasta){
+  		        $rootScope.showMessage("Las fechas no son correctas.");
+                return false;
+  		    }
+
+  		    criterio.fecha_desde = fechaDesde.getFullYear() + "-" + ((fechaDesde.getMonth()+1)>=10?"":"0") + (fechaDesde.getMonth()+1) + "-" + (fechaDesde.getDate()>=10?"":"0") + fechaDesde.getDate() + " 00:00:00";
+  		    criterio.fecha_hasta = fechaHasta.getFullYear() + "-" + ((fechaHasta.getMonth()+1)>=10?"":"0") + (fechaHasta.getMonth()+1) + "-" + (fechaHasta.getDate()>=10?"":"0") + fechaHasta.getDate() + " 23:59:59";
+  		}
+
+  	  criterio.distance = $scope.criteria.distance || 50;
+  	  if($scope.criteria.tipoMascota > 0) criterio.tipoMascota = $scope.criteria.tipoMascota;
+  	  if($scope.criteria.raza > 0) criterio.raza = $scope.criteria.raza;
+  	  if($scope.criteria.color > 0) criterio.color = $scope.criteria.color;
+      if($scope.criteria.sexo != '') criterio.sexo = $scope.criteria.sexo;
+      if($scope.criteria.edad != '') criterio.edad = $scope.criteria.edad;
+      if($scope.criteria.tipo != '') criterio.tipo = $scope.criteria.tipo;
+
+
+      console.log(criterio);
+      apiHandler.listPublicacions(criterio).then(function(response){
         console.log(response);
         $localStorage.set('resultados',response.data,true);
         $scope.closeModal();
@@ -537,6 +564,27 @@ angular.module('app.controllers', [])
         console.log(err);
       });
     };
+
+    $scope.razaPorTipoMascota = function(tipoMascota){
+        return function(item){
+            if(item.id == 0 || item.tipo_mascota.id == tipoMascota){
+                return true;
+            }
+            return false;
+        }
+    };
+
+    $scope.getTipoTexto = function(publicacion){
+        var texto = "";
+        for(var cont=0; cont<$scope.tipos.length; cont++){
+            if($scope.tipos[cont].value == publicacion.tipo ){
+                texto = $scope.tipos[cont].texto;
+                break;
+            }
+        }
+        return texto;
+    }
+
 
     $scope.viewPublicacion = function (publicacion) {
       console.log(publicacion)
@@ -591,7 +639,7 @@ angular.module('app.controllers', [])
                     console.log(JSON.stringify(result));
                     if (result.error != 0) {
                         $rootScope.error(
-                                $rootScope.getErrorDescription(result.error)
+                             $rootScope.getErrorDescription(result.error)
                         );
                     } else {
                         $localStorage.set('colores', result.data.colores, true);
@@ -608,9 +656,10 @@ angular.module('app.controllers', [])
   })
 
   .controller('ResultadosCtrl', function ($scope, $stateParams, jsonUtility, Config, 
-                                          $localStorage, $ionicNavBarDelegate, $state) {
+                                          $localStorage, $ionicNavBarDelegate, $state, $rootScope) {
 
     $scope.publicaciones = $localStorage.get('resultados', [], true);
+    $scope.tipos  = $rootScope.tipos;
     $scope.cards = [];
 
     $scope.tipoController = $stateParams.tipoController;
@@ -656,6 +705,17 @@ angular.module('app.controllers', [])
         }else {
             jsonUtility.addFavorite(publicacion);
         }
+    };
+
+    $scope.getTipoTexto = function(publicacion){
+        var texto = "";
+        for(var cont=0; cont<$scope.tipos.length; cont++){
+            if($scope.tipos[cont].value == publicacion.tipo ){
+                texto = $scope.tipos[cont].texto;
+                break;
+            }
+        }
+        return texto;
     };
 
   })

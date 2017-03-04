@@ -92,14 +92,14 @@
     </div>
 
     <div class="item" ng-if="!can_edit">
-      <button class="button button-block button-balanced icon-left ion-email" ng-click="showFormContacto()">Enviar email</button>
+      <button class="button button-block button-dark icon-left ion-email" ng-click="showFormContacto()">Enviar email</button>
     </div>
     <br/>
       <div class="item">
-        <button class="button icon-left ion-edit" ng-click="edit()" ng-if="can_edit">Editar</button>
+        <button class="button button-balanced icon-left ion-edit" ng-click="edit()" ng-if="can_edit">Editar</button>
         <!--Pausar/Activar-->
-        <button class="button icon-left ion-pause" ng-show="can_edit && (publicacion.estado=='A')" ng-click="setEstado('B')">Pausar</button>
-        <button class="button icon-left ion-play" ng-show="can_edit && (publicacion.estado=='N' || publicacion.estado=='B')" ng-click="setEstado('A')">Activar</button>
+        <button class="button button-calm icon-left ion-pause" ng-show="can_edit && (publicacion.estado=='A')" ng-click="setEstado('B')">Pausar</button>
+        <button class="button button-positive icon-left ion-play" ng-show="can_edit && (publicacion.estado=='N' || publicacion.estado=='B')" ng-click="setEstado('A')">Activar</button>
 
         <!--Favorito/No favorito-->
         <button class="button icon-right ion-ios-heart-outline" ng-if="!is_favorite" ng-click="setFavorite()">Marcar favorito</button>

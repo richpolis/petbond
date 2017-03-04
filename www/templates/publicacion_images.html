@@ -1,7 +1,7 @@
 <ion-view title="Fotos" id="publicacion-images" cache-view="false">
-  <ion-content overflow-scroll="true" padding="true" scroller>
+  <ion-content overflow-scroll="true" padding="true" scroller class=" fondo-perritos">
     <button
-      class="button button-full icon-right ion-camera button-stable"
+      class="button button-full icon-right ion-camera button-dark"
       ng-click="addPhoto()" ng-disabled="fotos.length == 4">
       Selecciona hasta {{4 - fotos.length }} foto{{((4-fotos.length)>1?'s':'')}}
     </button>
@@ -23,6 +23,6 @@
 
   </ion-content>
   <div class="bar bar-footer padding">
-    <button class="button button-block button-balanced" ng-click="finish()" ng-if="true">Ver publicacion</button>
+    <button class="button button-block button-calm" ng-click="finish()" ng-if="true">Ver publicacion</button>
   </div>
 </ion-view>

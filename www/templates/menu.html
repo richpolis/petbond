@@ -1,6 +1,6 @@
 <ion-side-menus enable-menu-with-back-views="false">
     <ion-side-menu-content>
-        <ion-nav-bar class="bar-stable">
+        <ion-nav-bar class="bar-calm">
             <ion-nav-back-button></ion-nav-back-button>
             <ion-nav-buttons side="left">
                 <button class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
@@ -8,20 +8,22 @@
         </ion-nav-bar>
         <ion-nav-view name="menuContent"></ion-nav-view>
     </ion-side-menu-content>
-    <ion-side-menu side="left" id="side-menu21">
-        <ion-header-bar class="bar-stable">
-            <div class="title">Menu</div>
+    <ion-side-menu side="left" id="side-menu21" >
+        <ion-header-bar class="bar-calm">
+            <div class="title menu-petbond">PETBOND</div>
         </ion-header-bar>
-        <ion-content padding="false" class="side-menu-left has-header">
+        <ion-content padding="true" class="side-menu-left has-header stable-bg">
+
+            <img class="nav-logo" src="img/logo_petbond.png" style="width: 100%;height: auto;margin: 0 auto;padding: 15px;">
             <ion-list>
-                <ion-item ui-sref="app.home" menu-close>Inicio</ion-item>
-                <ion-item ui-sref="app.publicacion-new" menu-close>Nueva publicación</ion-item>
+                <ion-item class="item-calm menu-petbond" ui-sref="app.home" menu-close>Inicio</ion-item>
+                <ion-item class="item-calm menu-petbond" ui-sref="app.publicacion-new" menu-close>Nueva publicación</ion-item>
                 <!--<ion-item ng-click="admin_photos()" menu-close="">Nueva publicación</ion-item>-->
-                <ion-item ui-sref="app.mis-publicaciones" menu-close>Mis publicaciones</ion-item>
-                <ion-item ui-sref="app.favoritos" menu-close>Favoritos</ion-item>
-                <ion-item ui-sref="app.profile" menu-close>Mi perfil</ion-item>
+                <ion-item class="item-calm menu-petbond" ui-sref="app.mis-publicaciones" menu-close>Mis publicaciones</ion-item>
+                <ion-item class="item-calm menu-petbond" ui-sref="app.favoritos" menu-close>Favoritos</ion-item>
+                <ion-item class="item-calm menu-petbond" ui-sref="app.profile" menu-close>Mi perfil</ion-item>
                 <!--ion-item ui-sref="app.map" menu-close="">Map</ion-item-->
-                <ion-item ui-sref="app.logout" menu-close>Logout</ion-item>
+                <ion-item class="item-calm menu-petbond" ui-sref="app.logout" menu-close>Logout</ion-item>
             </ion-list>
         </ion-content>
     </ion-side-menu>

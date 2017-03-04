@@ -23,6 +23,14 @@
         <select ng-model="criteria.tipoMascota" ng-options="tipoMascota.id as tipoMascota.nombre for tipoMascota in tipos_mascota"></select>
       </label>
 
+      <!-- Race. -->
+      <label class="item item-select" ng-if="criteria.tipoMascota > 0">
+        <span class="input-label">Raza</span>
+        <select ng-options="raza.id as raza.nombre for raza in razas | filter:razaPorTipoMascota(criteria.tipoMascota)"
+                ng-model="criteria.raza"></select>
+
+      </label>
+
       <!-- Sexo. -->
       <label class="item item-select">
         <span class="input-label">Sexo</span>
@@ -35,13 +43,6 @@
         <select ng-model="criteria.edad" ng-options="edad.value as edad.texto for edad in edades"></select>
       </label>
 
-      <!-- Race. -->
-      <label class="item item-select">
-        <span class="input-label">Raza</span>
-        <select ng-model="publicacion.raza">
-          <option ng-repeat="raza in razas" ng-if="raza.tipo_mascota.id == criteria.tipoMascota" value="{{raza.id}}">{{raza.nombre}}</option>
-        </select>
-      </label>
 
       <!-- Color. -->
       <label class="item item-select">
@@ -55,8 +56,21 @@
         <select ng-model="criteria.tipo" ng-options="tipo.value as tipo.texto for tipo in tipos"></select>
       </label>
 
+      <!--Por Fecha.-->
+      <ion-toggle ng-model="criteria.isFecha" toggle-class="toggle-calm">Por fecha de publicación</ion-toggle>
+
+      <label class="item item-input" ng-if="criteria.isFecha">
+        <span class="input-label">Desde</span>
+        <input type="date" ng-model="criteria.fecha_desde">
+      </label>
+
+      <label class="item item-input" ng-if="criteria.isFecha">
+        <span class="input-label">Hasta</span>
+        <input type="date" ng-model="criteria.fecha_hasta">
+      </label>
+
       <div class="item">
-        <button class="button button-block button-positive" ng-click="doSearch()">Buscar</button>
+        <button class="button button-block button-calm" ng-click="doSearch()">Buscar</button>
       </div>
     </form>
   </ion-content>

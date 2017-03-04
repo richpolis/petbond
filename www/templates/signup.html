@@ -1,6 +1,6 @@
 <ion-view title="Registrarme">
-  <ion-content padding="true" overflow-scroll="true" class="has-header">
-    <form class="list" name="signupForm">
+  <ion-content padding="true" overflow-scroll="true" class="has-header fondo-perritos">
+    <form class="list" name="signupForm" style="background-color: white;">
       <!--Foto-->
       <ion-item class="item-thumbnail-left">
         <img src="img/blank-avatar-big.png" ng-if="user.image == null" />
@@ -8,7 +8,7 @@
         <img src="{{user.image}}" class="ion-camera" ng-if="facebookConnected" />
 
         <button
-          class="button button-full icon-right ion-camera button-stable"
+          class="button button-dark button-full icon-right ion-camera button-stable"
           ng-click="editProfilePicture()">
           Selecciona tu avatar
         </button>

@@ -2,16 +2,16 @@
   <ion-nav-buttons side="secondary">
     <button class="button button-clear ion-search" style="font-size: 2em;" ng-click="openModal()" ng-if="tipoController=='inicio'"></button>
   </ion-nav-buttons>
-    <ion-content scroll="false">
+    <ion-content scroll="false" class="fondo-perritos">
       <ion-slides  options="data.sliderOptions" slider="data.sliderDelegate">
-        <ion-slide-page ng-repeat="card in publicaciones">
+        <ion-slide-page ng-repeat="card in publicaciones track by card.id ">
         
         <div class="list card card-page">
           <div class="item item-avatar" ng-click="viewPublicacion(card)">
             <img ng-if="card.fotos.length > 0"  ng-src="{{ base_url + card.fotos[0].image }}"/>
             <img ng-if="card.fotos.length == 0" src="img/dog.jpg" />
-            <h2>{{card.titulo}} - {{card.distance}}</h2>
-            <p class="fecha-pub"><span ng-repeat="tipo in tipos" ng-if="tipo.value == card.tipo">{{tipo.texto}}</span> - {{card.date}}</p>
+            <h2 class="tipo-pub text-center">{{card.titulo}} <span ng-if="card.distance">- {{card.distance}}</span></h2>
+            <p class="fecha-pub"><span>{{getTipoTexto(card)}}</span> - {{card.date}}</p>
           </div>  
           
           <div class="item item-body">
