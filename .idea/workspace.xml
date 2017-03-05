@@ -3,29 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="c91298d0-38c0-4918-8f4f-c01137b28b8a" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config.xml" afterPath="$PROJECT_DIR$/config.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scss/ionic.app.scss" afterPath="$PROJECT_DIR$/scss/ionic.app.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/css/ionic.app.css" afterPath="$PROJECT_DIR$/www/css/ionic.app.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/css/ionic.app.min.css" afterPath="$PROJECT_DIR$/www/css/ionic.app.min.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/css/style.css" afterPath="$PROJECT_DIR$/www/css/style.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/index.html" afterPath="$PROJECT_DIR$/www/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/js/app.js" afterPath="$PROJECT_DIR$/www/js/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/js/controllers.js" afterPath="$PROJECT_DIR$/www/js/controllers.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/templates/changePassword.html" afterPath="$PROJECT_DIR$/www/templates/changePassword.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/templates/contact.html" afterPath="$PROJECT_DIR$/www/templates/contact.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/templates/home.html" afterPath="$PROJECT_DIR$/www/templates/home.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/templates/location-modal.html" afterPath="$PROJECT_DIR$/www/templates/location-modal.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/templates/login.html" afterPath="$PROJECT_DIR$/www/templates/login.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/templates/menu.html" afterPath="$PROJECT_DIR$/www/templates/menu.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/templates/modalFormContacto.html" afterPath="$PROJECT_DIR$/www/templates/modalFormContacto.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/templates/no-internet.html" afterPath="$PROJECT_DIR$/www/templates/no-internet.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/templates/profile.html" afterPath="$PROJECT_DIR$/www/templates/profile.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/templates/profile_edit.html" afterPath="$PROJECT_DIR$/www/templates/profile_edit.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/templates/publicacion.html" afterPath="$PROJECT_DIR$/www/templates/publicacion.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/templates/publicacion_images.html" afterPath="$PROJECT_DIR$/www/templates/publicacion_images.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/templates/publicacion_new.html" afterPath="$PROJECT_DIR$/www/templates/publicacion_new.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/templates/search.html" afterPath="$PROJECT_DIR$/www/templates/search.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/templates/signup.html" afterPath="$PROJECT_DIR$/www/templates/signup.html" />
     </list>
     <ignored path="petbond.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -94,8 +71,8 @@
       <file leaf-file-name="home.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/www/templates/home.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="12" column="43" selection-start-line="12" selection-start-column="43" selection-end-line="12" selection-end-column="43" />
+            <state relative-caret-position="330">
+              <caret line="22" column="15" selection-start-line="22" selection-start-column="15" selection-end-line="22" selection-end-column="15" />
               <folding />
             </state>
           </provider>
@@ -955,8 +932,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/www/templates/home.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="43" selection-start-line="12" selection-start-column="43" selection-end-line="12" selection-end-column="43" />
+        <state relative-caret-position="330">
+          <caret line="22" column="15" selection-start-line="22" selection-start-column="15" selection-end-line="22" selection-end-column="15" />
           <folding />
         </state>
       </provider>
