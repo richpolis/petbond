@@ -74,6 +74,7 @@ angular.module('app.controllers', [])
         console.log(JSON.stringify(response));
         if (response.hasOwnProperty('authResponse')) {
           $scope.loginData.facebookId = response.authResponse.userID;
+          $scope.loginData.facebookToken = response.authResponse.accessToken;
           facebookHandler.setUser(response.authResponse.userID, response.authResponse.accessToken);
           $rootScope.facebookId = response.authResponse.userID;
           $rootScope.facebookToken = response.authResponse.accessToken;
