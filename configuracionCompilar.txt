@@ -1,0 +1,10 @@
+
+<<<<<<< HEAD
+Esta forma es para IOS
+
+<widget id="com.petmatch.petbond" version="2.2.4">
+=======
+Esta forma es para Android
+
+<widget id="com.richpolissystems.petbond" version="2.2.3">
+>>>>>>> 5f7637373a5a782e548164d8c468ff9c857d50fb
