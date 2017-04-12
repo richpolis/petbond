@@ -16,15 +16,15 @@
         <select ng-model="publicacion.tipoMascota" id="tipoMascota" ng-required="true" ng-options="mascota.id as mascota.nombre for mascota in tipos_mascota">
         </select>
       </label>
-      <label class="item item-select">
-        <span class="input-label">Sexo</span>
-        <select ng-model="publicacion.sexo" ng-options="sexo.value as sexo.texto for sexo in sexos"></select>
-      </label>
-      <label class="item item-select" name="raza">
+      <label class="item item-select" name="raza" ng-if="publicacion.tipoMascota > 0">
         <span class="input-label">Raza</span>
         <select ng-model="publicacion.raza" id="raza" ng-required="false">
           <option ng-repeat="raza in razas" ng-if="raza.tipo_mascota.id == publicacion.tipoMascota" value="{{raza.id}}">{{raza.nombre}}</option>
         </select>
+      </label>
+      <label class="item item-select">
+        <span class="input-label">Sexo</span>
+        <select ng-model="publicacion.sexo" ng-options="sexo.value as sexo.texto for sexo in sexos"></select>
       </label>
       <label class="item item-select">
         <span class="input-label">Color pelaje</span>
