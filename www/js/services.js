@@ -90,6 +90,16 @@ angular.module('app.services', [])
             return this.executeRequest('/publications/view/' + data["id"], data);
         };
 
+        // Publicacion add favorito
+        this.addFavoritoPublicacion = function (data) {
+            return this.executeRequest('/publications/favorito/add/' + data["id"], data);
+        };
+
+        // Publicacion remove favorito
+        this.removeFavoritoPublicacion = function (data) {
+            return this.executeRequest('/publications/favorito/remove/' + data["id"], data);
+        };
+
         // Publicacion New
         this.newPublicacion = function (data) {
             return this.executeRequest('/publications/new', data);

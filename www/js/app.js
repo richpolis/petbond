@@ -31,8 +31,8 @@ angular.module('app', [
             base_url: 'http://api.petbondweb.com/api',
             //base_url: 'http://localhost:8022/app_dev.php/api',
             base_url_web: 'http://api.petbondweb.com/',
-            base_url_web_images: 'http://api.petbondweb.com/uploads/imagenes/'
-            //base_url_web_images: 'http://localhost:8022/uploads/imagenes/'
+            //base_url_web_images: 'http://api.petbondweb.com/uploads/imagenes/'
+            base_url_web_images: 'http://localhost:8022/uploads/imagenes/'
             // com.ionicframework.petmatch649866
         })
         .run(function ($http, $ionicPlatform, authService, $rootScope, $state,
@@ -239,6 +239,16 @@ angular.module('app', [
                 var arreglo = [];
                 arreglo.push({value: '' , texto: 'Todas'});
                 return arreglo.concat($rootScope.edades);
+            };
+
+            $rootScope.getCiudades = function(){
+                var ciudades  = $localStorage.get('ciudades', [], true);
+                var arreglo = [];
+                arreglo.push({value: '' , texto: 'Todas'});
+                for (var i = 0; ciudades.length > i; i++) {
+                    arreglo.push({value: ciudades[i].ciudad, texto: ciudades[i].ciudad});
+                }
+                return arreglo;
             };
 
             $rootScope.getTiposMascota = function(){

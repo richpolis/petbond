@@ -17,6 +17,12 @@
         <span>100km</span>
       </div>
 
+      <!-- Ciudad. -->
+      <label class="item item-select" ng-if="!criteria.isDistance">
+        <span class="input-label">Ciudad</span>
+        <select ng-model="criteria.ciudad" ng-options="ciudad.value as ciudad.texto for ciudad in ciudades"></select>
+      </label>
+
       <!-- Pet. -->
       <label class="item item-select">
         <span class="input-label">Mascota</span>

@@ -9,6 +9,14 @@
         url('../fonts/amatic/amatic_bold.svg#amatic_bold') format('svg');
 }
 
+@font-face {
+    font-family: 'afta_serifregular';
+    src: url('../fonts/afta-serif/aftaserifthin-regular-webfont.woff2') format('woff2'),
+         url('../fonts/afta-serif/aftaserifthin-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 .title-petbond{
   font-family: 'amatic_bold';
   font-size: 30px;
@@ -21,6 +29,7 @@
   font-size: 1.2em;
   color: white;
   text-transform: lowercase;
+  font-family: 'afta_serifregular'
 }
 
 .menu-petbond:first-letter{
