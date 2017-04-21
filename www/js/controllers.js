@@ -655,7 +655,7 @@ angular.module('app.controllers', [])
                     console.log(fecha);
                     console.log(ahora);
 
-                    if (fecha < ahora) {
+                    if (true || fecha < ahora) {
                         console.log("Entro a refrescar config");
                         var promise = authService.config($scope.user);
                         promise.then(function (result) {
