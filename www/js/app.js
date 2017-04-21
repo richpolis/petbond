@@ -31,8 +31,8 @@ angular.module('app', [
             base_url: 'http://api.petbondweb.com/api',
             //base_url: 'http://localhost:8022/app_dev.php/api',
             base_url_web: 'http://api.petbondweb.com/',
-            //base_url_web_images: 'http://api.petbondweb.com/uploads/imagenes/'
-            base_url_web_images: 'http://localhost:8022/uploads/imagenes/'
+            base_url_web_images: 'http://api.petbondweb.com/uploads/imagenes/'
+            //base_url_web_images: 'http://localhost:8022/uploads/imagenes/'
             // com.ionicframework.petmatch649866
         })
         .run(function ($http, $ionicPlatform, authService, $rootScope, $state,

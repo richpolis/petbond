@@ -30,7 +30,7 @@ angular.module('app.controllers', [])
 
                 var promise = authService.login($scope.loginData);
                 promise.then(function (result) {
-                    console.log("Login: ")
+                    console.log("Login: " + JSON.stringify(result));
                     if (result.error == 26) {
                         $state.go('app.signup');
                     } else if (result.error != 0) {
@@ -558,7 +558,7 @@ angular.module('app.controllers', [])
                 if ($scope.criteria.tipo != '')
                     criterio.tipo = $scope.criteria.tipo;
                 if ($scope.criteria.ciudad != '')
-                    criterio.ciudad = $scope.criteria.ciudad;  
+                    criterio.ciudad = $scope.criteria.ciudad;
 
 
                 console.log(criterio);
@@ -642,7 +642,8 @@ angular.module('app.controllers', [])
 
                     var ahora = new Date();
                     var configFecha = {};
-                    configFecha.fecha = ahora.valueOf() + (1 * 24 * 60 * 60 * 1000);
+                    // dias horas minutos segundos milisegundos
+                    configFecha.fecha = ahora.valueOf() + ( 60 * 1000 );  //(1 * 24 * 60 * 60 * 1000);
                     console.log(JSON.stringify(configFecha));
                     configFecha = $localStorage.get('config_user', configFecha, true);
                     if (configFecha.fecha === 'undefined') {
@@ -675,7 +676,7 @@ angular.module('app.controllers', [])
                                 $scope.razas = $rootScope.getRazas();
                                 $scope.ciudades = $rootScope.getCiudades();
                                 
-                                $localStorage.set('config_user', {'fecha': ahora.valueOf() + (1 * 24 * 60 * 60 * 1000)}, true);
+                                $localStorage.set('config_user', {'fecha': ahora.valueOf() + (60 * 1000)}, true ); //(1 * 24 * 60 * 60 * 1000)}, true);
                                 $scope.setGeolocalizacion();
                             }
                         });
