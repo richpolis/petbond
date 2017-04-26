@@ -8,7 +8,7 @@ angular.module('app.controllers', [])
 
         .controller('LoginCtrl', function ($rootScope, $scope, $timeout, $log,
                 $state, authService, $ionicHistory, $cordovaFacebook,
-                facebookHandler, $localStorage) {
+                facebookHandler, $localStorage, Config) {
 
             $scope.loginData = {
                 'devicePlatform': $rootScope.devicePlatform,
@@ -44,6 +44,8 @@ angular.module('app.controllers', [])
                         $localStorage.set('razas', result.data.razas, true);
                         $localStorage.set('favoritos', result.data.favoritos, true);
                         $localStorage.set('ciudades', result.data.ciudades, true);
+
+                        $localStorage.set('version', {version: Config.version}, true);
 
                         $state.go('app.home'); // Default screen after login
                         $ionicHistory.nextViewOptions({disableBack: 'true'});
@@ -116,7 +118,7 @@ angular.module('app.controllers', [])
 
         .controller('SignupCtrl', function ($scope, apiHandler, $state,
                 $rootScope, $ionicHistory, $cordovaFacebook, facebookHandler,
-                authService, $localStorage, $cordovaCamera, dateUtility) {
+                authService, $localStorage, $cordovaCamera, dateUtility, Config) {
 
             // Initialize variables
             $scope.user = {};
@@ -258,6 +260,9 @@ angular.module('app.controllers', [])
                                 $localStorage.set('tipos_mascota', loginResult.data.tipos_mascota, true);
                                 $localStorage.set('razas', loginResult.data.razas, true);
                                 $localStorage.set('favoritos', loginResult.data.favoritos, true);
+                                $localStorage.set('ciudades', loginData.data.ciudades, true);
+
+                                $localStorage.set('version', {version: Config.version}, true);
 
                                 $state.go('app.home'); // Default screen after login
                                 $ionicHistory.nextViewOptions({disableBack: 'true'});
@@ -627,10 +632,20 @@ angular.module('app.controllers', [])
 
             };
 
+            var petbond = $localStorage.get('version', {version: '0.0.0'}, true);
+
+            if(petbond.version != Config.version){
+                $rootScope.forceLogout();
+            }
+
+
             // Check for auth
             if (typeof authService.getUser() === "undefined" || jsonUtility.isObjectEmpty(authService.getUser())) {
                 $rootScope.forceLogout();
             } else {
+
+
+
                 //
                 if ($scope.tipoController == 'favoritos') {
                     $scope.publicaciones = $localStorage.get('favoritos', [], true);
@@ -640,8 +655,11 @@ angular.module('app.controllers', [])
                     $scope.getPublicaciones2();
                     $ionicNavBarDelegate.showBackButton(false);
 
+                    $scope.publicaciones = $localStorage.get('publicaciones', [], false);
+
                     var ahora = new Date();
                     var configFecha = {};
+
                     // dias horas minutos segundos milisegundos
                     configFecha.fecha = ahora.valueOf() + ( 60 * 1000 );  //(1 * 24 * 60 * 60 * 1000);
                     console.log(JSON.stringify(configFecha));
