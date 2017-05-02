@@ -614,7 +614,7 @@ angular.module('app.services', [])
         quality: 80,
         destinationType: Camera.DestinationType.DATA_URL,
         sourceType: source,
-        allowEdit: true,
+        allowEdit: false,
         encodingType: Camera.EncodingType.JPEG,
         popoverOptions: CameraPopoverOptions,
         saveToPhotoAlbum: false,

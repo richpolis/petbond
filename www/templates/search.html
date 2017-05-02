@@ -17,6 +17,12 @@
         <span>100km</span>
       </div>
 
+      <!-- Estado solo administrador. -->
+      <label class="item item-select" ng-if="is_admin">
+        <span class="input-label">Estado de publicacion</span>
+        <select ng-model="criteria.estado" ng-options="estado.value as estado.texto for estado in estados"></select>
+      </label>
+
       <!-- Ciudad. -->
       <label class="item item-select" ng-if="!criteria.isDistance">
         <span class="input-label">Ciudad</span>

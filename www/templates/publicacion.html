@@ -98,9 +98,11 @@
       <div class="item">
         <button class="button button-balanced icon-left ion-edit" ng-click="edit()" ng-if="can_edit">Editar</button>
         <!--Pausar/Activar-->
-        <button class="button button-calm icon-left ion-pause" ng-show="can_edit && (publicacion.estado=='A')" ng-click="setEstado('B')">Pausar</button>
+        <button class="button button-assertive icon-left ion-stop" ng-show="can_edit" ng-click="deletePublicacion()">Eliminar</button>
+        <button class="button button-calm icon-left ion-pause" ng-show="is_admin && (publicacion.estado=='A')" ng-click="setEstado('B')">Pausar</button>
         <button class="button button-positive icon-left ion-play" ng-show="can_edit && (publicacion.estado=='N' || publicacion.estado=='B')" ng-click="setEstado('A')">Activar</button>
-
+      </div>
+      <div class="item">
         <!--Favorito/No favorito-->
         <button class="button icon-right ion-ios-heart-outline" ng-if="!is_favorite" ng-click="setFavorite()">Marcar favorito</button>
         <button class="button icon-right ion-ios-heart" ng-if="is_favorite" ng-click="setFavorite()">Quitar favorito</button>

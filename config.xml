@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.richpolissystems.petbond" version="2.3.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.richpolissystems.petbond" version="2.3.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Petbond</name>
     <description>
         App para mascotas perdidas, adoptar mascotas y encontrar novia o novio para mi mascota.
@@ -46,6 +46,8 @@
         <variable name="APP_ID" value="1780795122136268" />
         <variable name="APP_NAME" value="Petbond" />
     </plugin>
+    <plugin name="cordova-plugin-whitelist" spec="https://github.com/apache/cordova-plugin-whitelist.git" />
+    <plugin name="cordova-plugin-geolocation" spec="~2.4.1" />
     <platform name="android">
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
         <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" />
@@ -97,6 +99,4 @@
         <splash height="480" src="resources/ios/splash/Default~iphone.png" width="320" />
     </platform>
     <icon src="resources/android/icon/drawable-xhdpi-icon.png" />
-    <plugin name="cordova-plugin-whitelist" spec="https://github.com/apache/cordova-plugin-whitelist.git" />
-    <plugin name="cordova-plugin-geolocation" spec="~2.4.1" />
 </widget>

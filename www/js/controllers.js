@@ -8,7 +8,7 @@ angular.module('app.controllers', [])
 
         .controller('LoginCtrl', function ($rootScope, $scope, $timeout, $log,
                 $state, authService, $ionicHistory, $cordovaFacebook,
-                facebookHandler, $localStorage, Config) {
+                facebookHandler, $localStorage, Config, $ionicHistory) {
 
             $scope.loginData = {
                 'devicePlatform': $rootScope.devicePlatform,
@@ -36,7 +36,7 @@ angular.module('app.controllers', [])
                     } else if (result.error != 0) {
                         $rootScope.error(
                                 $rootScope.getErrorDescription(result.error)
-                                );
+                        );
                     } else {
                         authService.setUser(result.data.user);
                         $localStorage.set('colores', result.data.colores, true);
@@ -77,17 +77,46 @@ angular.module('app.controllers', [])
                         $rootScope.facebookId = response.authResponse.userID;
                         $rootScope.facebookToken = response.authResponse.accessToken;
 
-                        $scope.doLogin($scope.loginData);
-                    } else {
-                        $rootScope.error(
-                                $rootScope.getErrorDescription(26)
-                                );
+                        var promise = facebookHandler.me($scope.loginData.facebookToken);
+
+                        promise.then(function (apiResponse) {
+                            console.log(JSON.stringify(apiResponse));
+
+                            if (apiResponse.hasOwnProperty('birthday')) {
+                                $scope.loginData.date = new Date(Date.parse(apiResponse.birthday));
+                            }
+
+                            if (apiResponse.hasOwnProperty('email')) {
+                                $scope.loginData.email = apiResponse.email;
+                                $scope.facebookHasEmail = true;
+                            }
+
+                            if (apiResponse.hasOwnProperty('first_name')) {
+                                $scope.loginData.nombre = apiResponse.first_name;
+                            }
+
+                            if (apiResponse.hasOwnProperty('last_name')) {
+                                $scope.loginData.apellido = apiResponse.last_name;
+                            }
+
+                            if (apiResponse.hasOwnProperty('picture')) {
+                                $scope.loginData.image = apiResponse.picture.data.url;
+                            } else {
+                                $scope.loginData.image = null;
+                            }
+
+                            $scope.facebookConnected = true;
+
+                            $scope.signup($scope.loginData);
+
+
+                        });
                     }
                 }, function (error) {
                     console.log(error);
                     $rootScope.error(
-                            $rootScope.getErrorDescription(26)
-                            );
+                        $rootScope.getErrorDescription(26)
+                    );
                 });
             };
             // End facebook login
@@ -114,6 +143,66 @@ angular.module('app.controllers', [])
                     $rootScope.showMessage('Ingresa tu correo y presiona "Recuperar Contraseña"');
                 }
             }
+
+
+            // Do Signup
+            $scope.doSignup = function (data) {
+                $rootScope.showLoader(true);
+                var promise = apiHandler.signup(data);
+                promise.then(function (result) {
+                    console.log(result);
+                    $rootScope.showLoader(false);
+                    if (result.error != 0) {
+                        $rootScope.error(
+                                $rootScope.getErrorDescription(result.error)
+                                );
+                    } else {
+
+                        if ($rootScope.deviceToken == "undefined") {
+                            var token = $localStorage.get("deviceToken", "{}", true);
+                            $rootScope.deviceToken = token.registrationId;
+                        }
+                        // obligando a que ponga los datos.
+                        data.devicePlatform = $rootScope.devicePlatform;
+                        data.deviceToken = $rootScope.deviceToken;
+                        data.lat = $rootScope.lat;
+                        data.lng = $rootScope.lng;
+
+                        $rootScope.showLoader(true);
+                        // Sign up successful
+                        var loginPromise = authService.login(data);
+                        loginPromise.then(function (loginResult) {
+                            $rootScope.showLoader(false);
+                            if (result.error != 0) {
+                                $rootScope.error(
+                                    $rootScope.getErrorDescription(loginResult.error)
+                                );
+                            } else {
+                                authService.setUser(loginResult.data.user);
+                                $localStorage.set('colores', loginResult.data.colores, true);
+                                $localStorage.set('tipos_mascota', loginResult.data.tipos_mascota, true);
+                                $localStorage.set('razas', loginResult.data.razas, true);
+                                $localStorage.set('favoritos', loginResult.data.favoritos, true);
+                                $localStorage.set('ciudades', loginData.data.ciudades, true);
+
+                                $localStorage.set('version', {version: Config.version}, true);
+
+                                $state.go('app.home'); // Default screen after login
+                                $ionicHistory.nextViewOptions({disableBack: 'true'});
+                                $ionicHistory.clearHistory();
+                                $ionicHistory.clearCache();
+                            }
+                        });
+                    }
+                }, function (err) {
+                    $rootScope.showLoader(false);
+                    $rootScope.getErrorDescription("Error al registrar");
+                    console.log(err);
+                });
+            };
+            // END Do Signup function
+
+
         })
 
         .controller('SignupCtrl', function ($scope, apiHandler, $state,
@@ -252,8 +341,8 @@ angular.module('app.controllers', [])
                             $rootScope.showLoader(false);
                             if (result.error != 0) {
                                 $rootScope.error(
-                                        $rootScope.getErrorDescription(loginResult.error)
-                                        );
+                                    $rootScope.getErrorDescription(loginResult.error)
+                                );
                             } else {
                                 authService.setUser(loginResult.data.user);
                                 $localStorage.set('colores', loginResult.data.colores, true);
@@ -420,12 +509,14 @@ angular.module('app.controllers', [])
             $scope.sexos = $rootScope.getSexos();
             $scope.edades = $rootScope.getEdades();
             $scope.tipos = $rootScope.getTipos();
+            $scope.estados = $rootScope.getEstados();
             $scope.base_url = Config.base_url_web_images;
 
             $scope.ciudades = $rootScope.getCiudades();
             $scope.colores = $rootScope.getColores();
             $scope.tipos_mascota = $rootScope.getTiposMascota();
             $scope.razas = $rootScope.getRazas();
+            $scope.is_admin = $scope.user.is_admin;
             $scope.more_publicaciones = true;
 
             $scope.getPublicaciones2 = function () {
@@ -443,8 +534,14 @@ angular.module('app.controllers', [])
                     $scope.publicaciones = [];
 
                     for (var cont = 0; cont < posts.length; cont++) {
-                        if (posts[cont].estado != 'B') {
-                            $scope.publicaciones.push(posts[cont]);
+                        if($scope.user.is_admin) {
+                            if (posts[cont].estado != 'B') {
+                                $scope.publicaciones.push(posts[cont]);
+                            }
+                        }else{
+                            if (posts[cont].estado == 'A') {
+                                $scope.publicaciones.push(posts[cont]);
+                            }
                         }
                     }
                     $scope.setupSlider();
@@ -468,8 +565,14 @@ angular.module('app.controllers', [])
                         $scope.publicaciones = [];
 
                         for (var cont = 0; cont < posts.length; cont++) {
-                            if (posts[cont].estado != 'B') {
-                                $scope.publicaciones.push(posts[cont]);
+                            if($scope.user.is_admin) {
+                                if (posts[cont].estado != 'B') {
+                                    $scope.publicaciones.push(posts[cont]);
+                                }
+                            }else{
+                                if (posts[cont].estado == 'A') {
+                                    $scope.publicaciones.push(posts[cont]);
+                                }
                             }
                         }
                         $scope.setupSlider();
@@ -492,8 +595,14 @@ angular.module('app.controllers', [])
                     console.log(result);
                     var posts = result.data;
                     for (var cont = 0; cont < posts.length; cont++) {
-                        if (posts[cont].estado != 'B') {
-                            $scope.publicaciones.push(posts[cont]);
+                        if($scope.user.is_admin) {
+                            if (posts[cont].estado != 'B') {
+                                $scope.publicaciones.push(posts[cont]);
+                            }
+                        }else{
+                            if (posts[cont].estado == 'A') {
+                                $scope.publicaciones.push(posts[cont]);
+                            }
                         }
                     }
                     $localStorage.set('publicaciones', $scope.publicaciones, true);
@@ -558,6 +667,11 @@ angular.module('app.controllers', [])
                     criterio.color = $scope.criteria.color;
                 if ($scope.criteria.sexo != '')
                     criterio.sexo = $scope.criteria.sexo;
+                if ($scope.criteria.estado != '') {
+                    criterio.estado = $scope.criteria.estado;
+                }else{
+                    criterio.estado = "A";
+                }
                 if ($scope.criteria.edad != '')
                     criterio.edad = $scope.criteria.edad;
                 if ($scope.criteria.tipo != '')
@@ -673,7 +787,7 @@ angular.module('app.controllers', [])
                     console.log(fecha);
                     console.log(ahora);
 
-                    if (true || fecha < ahora) {
+                    if (fecha < ahora) {
                         console.log("Entro a refrescar config");
                         var promise = authService.config($scope.user);
                         promise.then(function (result) {
@@ -1105,6 +1219,7 @@ angular.module('app.controllers', [])
                     }
 
                 }
+                $rootScope.showLoader(false);
             };
 
 
@@ -1125,18 +1240,22 @@ angular.module('app.controllers', [])
                     latitude = $rootScope.lat;
                     longitude = $rootScope.lng;
                 }
-                var myLatlng = new google.maps.LatLng(latitude, longitude);
-                geocoder = new google.maps.Geocoder();
-                geocoder.geocode({'latLng': myLatlng}, function (results, status) {
-                    if (status == google.maps.GeocoderStatus.OK) {
-                        if (results[3]) {
-                            console.log(results);
-                            $scope.setValuesResults(results);
-                        }
-                    } else {
-                        console.log("no se pudo determinar el nombre de ubicación : " + status);
-                    } //end else
-                });
+                if(latitude && longitude) {
+                    $rootScope.showLoader(true);
+                    var myLatlng = new google.maps.LatLng(latitude, longitude);
+                    geocoder = new google.maps.Geocoder();
+                    geocoder.geocode({'latLng': myLatlng}, function (results, status) {
+                        if (status == google.maps.GeocoderStatus.OK) {
+                            if (results[3]) {
+                                console.log(results);
+                                $scope.setValuesResults(results);
+                            }
+                        } else {
+                            $rootScope.showLoader(false);
+                            console.log("no se pudo determinar el nombre de ubicación : " + status);
+                        } //end else
+                    });
+                }
             });
 
             // Clear function
@@ -1332,6 +1451,7 @@ angular.module('app.controllers', [])
                         $scope.publicacion.pais = componentes[cont].long_name;
                     }
                 }
+                $rootScope.showLoader(false);
             };
 
 
@@ -1352,18 +1472,22 @@ angular.module('app.controllers', [])
                     latitude = $rootScope.lat;
                     longitude = $rootScope.lng;
                 }
-                var myLatlng = new google.maps.LatLng(latitude, longitude);
-                geocoder = new google.maps.Geocoder();
-                geocoder.geocode({'latLng': myLatlng}, function (results, status) {
-                    if (status == google.maps.GeocoderStatus.OK) {
-                        if (results[3]) {
-                            console.log(results);
-                            $scope.setValuesResults(results);
-                        }
-                    } else {
-                        alert("no se pudo determinar el nombre de ubicación : " + status);
-                    } //end else
-                });
+                if(latitude && longitude) {
+                    $rootScope.showLoader(true);
+                    var myLatlng = new google.maps.LatLng(latitude, longitude);
+                    geocoder = new google.maps.Geocoder();
+                    geocoder.geocode({'latLng': myLatlng}, function (results, status) {
+                        if (status == google.maps.GeocoderStatus.OK) {
+                            if (results[3]) {
+                                console.log(results);
+                                $scope.setValuesResults(results);
+                            }
+                        } else {
+                            $rootScope.showLoader(false);
+                            console.log("no se pudo determinar el nombre de ubicación : " + status);
+                        } //end else
+                    });
+                }
             });
 
             // Clear function
@@ -1628,6 +1752,7 @@ angular.module('app.controllers', [])
                     $scope.publicacion = response.data;
                     $scope.is_favorite = jsonUtility.isFavorite($scope.publicacion);
                     $scope.can_edit = jsonUtility.isCantEdit($scope.publicacion);
+                    $scope.is_admin = $scope.user.is_admin;
 
                     uiGmapGoogleMapApi.then(function (maps) {
                         console.log(maps);
@@ -1652,33 +1777,62 @@ angular.module('app.controllers', [])
 
 
             // Delete Publicacion Function
-            $scope.deletePublicacion = function (publicacionId) {
-                var promise = apiHandler.deletePublicacion({'id': publicacionId});
+            $scope.deletePublicacion = function () {
+                var confirmPopup = $ionicPopup.confirm({
+                    title: 'Confirmar',
+                    template: 'Desea eliminar la publicacion?',
+                    cancelText: "No",
+                    okText: "Si"
+                });
+                confirmPopup.then(function(res) {
+                    console.log("RES :: "+res);
+                    if(res) {
+                        var promise = apiHandler.deletePublicacion($scope.publicacion);
 
-                promise.then(function (result) {
-                    if (result.error != 0) {
-                        $rootScope.error(
-                                $rootScope.getErrorDescription(result.error)
+                        promise.then(function (result) {
+                            if (result.error != 0) {
+                                $rootScope.error(
+                                    $rootScope.getErrorDescription(result.error)
                                 );
-                    } else {
-                        $state.reload();
+                            } else {
+                                window.history.back();
+                            }
+                        });
                     }
                 });
+
             };
             // End Cancel Publicacion Function
 
 
             $scope.edit = function () {
-                $state.go('app.publicacion-edit', {'publicacionId': $scope.publicacion.id});
+                $state.go('app.publicacion-edit', {'publicacionId': publicacionId});
             };
 
             $scope.setFavorite = function () {
-                if (!$scope.is_favorite) {
-                    jsonUtility.addFavorite($scope.publicacion);
-                } else {
+                $rootScope.showLoader(true);
+                if (jsonUtility.isFavorite($scope.publicacion)) {
                     jsonUtility.removeFavorite($scope.publicacion);
+                    var promise = apiHandler.removeFavoritoPublicacion($scope.publicacion);
+                } else {
+                    jsonUtility.addFavorite($scope.publicacion);
+                    var promise = apiHandler.addFavoritoPublicacion($scope.publicacion);
                 }
-                $scope.is_favorite = jsonUtility.isFavorite($scope.publicacion);
+                promise.then(function (result) {
+                    $rootScope.showLoader(false);
+                    console.log(JSON.stringify(result));
+                    if (result.error != 0) {
+                        $rootScope.error(
+                            $rootScope.getErrorDescription(result.error)
+                        );
+                    } else {
+                        $localStorage.set('favoritos', result.data, true);
+                        $scope.is_favorite = jsonUtility.isFavorite($scope.publicacion);
+                        $scope.can_edit = jsonUtility.isCantEdit($scope.publicacion);
+                        $scope.is_admin = $scope.user.is_admin;
+                    }
+                });
+
             };
 
             $scope.setEstado = function (estado) {
@@ -1697,7 +1851,7 @@ angular.module('app.controllers', [])
             };
 
             $scope.goToPublicacionImages = function () {
-                $state.go('app.publicacion-images', {'publicacionId': $scope.publicacion.id});
+                $state.go('app.publicacion-images', {'publicacionId': publicacionId});
             };
 
             $scope.zoomMin = 1;

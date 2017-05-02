@@ -1,5 +1,6 @@
-/.idea
-/.vscode
+.idea/
+.idea/workspace.xml
+.vscode/
 node_modules/
 temp/
 platforms/
@@ -7,4 +8,5 @@ plugins/
 *.DS_Store
 *.log
 *.swp
-/nbproject/private/
+nbproject/
+nbproject/private/

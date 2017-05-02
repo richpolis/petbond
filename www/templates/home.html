@@ -8,7 +8,7 @@
         
         <div class="list card card-page">
           <div class="item item-avatar" ng-click="viewPublicacion(card)">
-            <img ng-if="card.fotos.length > 0"  ng-src="{{ base_url + card.fotos[0].image }}"/>
+            <img ng-if="card.fotos.length > 0" ng-src="{{ base_url + card.fotos[0].image }}"/>
             <img ng-if="card.fotos.length == 0" src="img/dog.jpg" />
             <h2 class="tipo-pub text-center">{{card.titulo}} <span ng-if="card.distance">- {{card.distance}}</span></h2>
             <p class="fecha-pub"><span>{{getTipoTexto(card)}}</span> - {{card.date}}</p>
@@ -34,9 +34,6 @@
       </ion-slides>
     </ion-content>
 
-    
-
-	  
     <!--ion-infinite-scroll on-infinite="getPublicacionesMore()" distance="1%" ng-if="tipoController=='inicio' && more_publicaciones==true">
   </ion-infinite-scroll>
   </ion-content-->

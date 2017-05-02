@@ -34,7 +34,7 @@ angular.module('app', [
             base_url_web_images: 'http://api.petbondweb.com/uploads/imagenes/',
             //base_url_web_images: 'http://localhost:8022/uploads/imagenes/'
             // com.ionicframework.petmatch649866
-            version: '2.3.1'
+            version: '2.3.3'
         })
         .run(function ($http, $ionicPlatform, authService, $rootScope, $state,
                        $ionicHistory, $cordovaNetwork, $cordovaGeolocation, $localStorage,
@@ -75,6 +75,8 @@ angular.module('app', [
                 $localStorage.set('userFacebook', {}, true);
                 $state.go('app.login');
                 $ionicHistory.nextViewOptions({disableBack: 'true'});
+                var ahora = new Date();
+                $localStorage.set('config_user', {'fecha': ahora.valueOf() + (60 * 1000)}, true );
                 $ionicHistory.clearHistory();
                 $ionicHistory.clearCache();
             };
@@ -206,11 +208,24 @@ angular.module('app', [
                 {value: 'F', texto: 'Favoritos'}
             ];
 
+            // Presets
+            $rootScope.estados = [
+                {value: 'N', texto: 'Nuevo'},
+                {value: 'A', texto: 'Activo'},
+                {value: 'B', texto: 'Bloqueado'}
+            ];
+
+            $rootScope.getEstados = function(){
+                var arreglo = [];
+                arreglo.push({value: '' , texto: 'Todos'});
+                return arreglo.concat($rootScope.estados);
+            };
+
             $rootScope.tipos = [
                 {value: 'P', texto: 'Mascota perdida'},
                 {value: 'E', texto: 'Mascota encontrada'},
-                {value: 'A', texto: 'Mascota en adopción'},
-                {value: 'N', texto: 'Buscando novio / novia'}
+                {value: 'A', texto: 'Mascota en adopción'}/*,
+                {value: 'N', texto: 'Buscando novio / novia'}*/
             ];
 
             $rootScope.getTipos = function(){
@@ -532,7 +547,7 @@ angular.module('app', [
                     })
 
                     .state('app.publicacion-images', {
-                      url: '/publicacion/:publicacionId/fotos',
+                      url: '/publicacion/fotos/:publicacionId',
                       cache: false,
                       views: {
                         'menuContent': {
