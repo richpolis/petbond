@@ -8,7 +8,7 @@ angular.module('app.controllers', [])
 
         .controller('LoginCtrl', function ($rootScope, $scope, $timeout, $log,
                 $state, authService, $ionicHistory, $cordovaFacebook,
-                facebookHandler, $localStorage, Config, $ionicHistory) {
+                facebookHandler, $localStorage, Config, apiHandler) {
 
             $scope.loginData = {
                 'devicePlatform': $rootScope.devicePlatform,
@@ -32,10 +32,11 @@ angular.module('app.controllers', [])
                 promise.then(function (result) {
                     console.log("Login: " + JSON.stringify(result));
                     if (result.error == 26) {
-                        $state.go('app.signup');
+                        //$state.go('app.signup');
+                        $scope.registroFacebook();
                     } else if (result.error != 0) {
                         $rootScope.error(
-                                $rootScope.getErrorDescription(result.error)
+                            $rootScope.getErrorDescription(result.error)
                         );
                     } else {
                         authService.setUser(result.data.user);
@@ -72,45 +73,11 @@ angular.module('app.controllers', [])
                     console.log(JSON.stringify(response));
                     if (response.hasOwnProperty('authResponse')) {
                         $scope.loginData.facebookId = response.authResponse.userID;
-                        $scope.loginData.facebookToken = response.authResponse.accessToken;
                         facebookHandler.setUser(response.authResponse.userID, response.authResponse.accessToken);
                         $rootScope.facebookId = response.authResponse.userID;
                         $rootScope.facebookToken = response.authResponse.accessToken;
 
-                        var promise = facebookHandler.me($scope.loginData.facebookToken);
-
-                        promise.then(function (apiResponse) {
-                            console.log(JSON.stringify(apiResponse));
-
-                            if (apiResponse.hasOwnProperty('birthday')) {
-                                $scope.loginData.date = new Date(Date.parse(apiResponse.birthday));
-                            }
-
-                            if (apiResponse.hasOwnProperty('email')) {
-                                $scope.loginData.email = apiResponse.email;
-                                $scope.facebookHasEmail = true;
-                            }
-
-                            if (apiResponse.hasOwnProperty('first_name')) {
-                                $scope.loginData.nombre = apiResponse.first_name;
-                            }
-
-                            if (apiResponse.hasOwnProperty('last_name')) {
-                                $scope.loginData.apellido = apiResponse.last_name;
-                            }
-
-                            if (apiResponse.hasOwnProperty('picture')) {
-                                $scope.loginData.image = apiResponse.picture.data.url;
-                            } else {
-                                $scope.loginData.image = null;
-                            }
-
-                            $scope.facebookConnected = true;
-
-                            $scope.signup($scope.loginData);
-
-
-                        });
+                        $scope.doLogin($scope.loginData);
                     }
                 }, function (error) {
                     console.log(error);
@@ -142,57 +109,73 @@ angular.module('app.controllers', [])
                     email.focus();
                     $rootScope.showMessage('Ingresa tu correo y presiona "Recuperar Contraseña"');
                 }
-            }
+            };
+
+            $scope.registroFacebook = function(){
+                // Check for parameters
+                if ($rootScope.facebookId && $rootScope.facebookToken) {
+                    $scope.loginData.facebookId = $rootScope.facebookId;
+                    $scope.loginData.facebookToken = $rootScope.facebookToken;
+                    $scope.loginData.password = $rootScope.facebookToken;
+
+                    var promise = facebookHandler.me($scope.loginData.facebookToken);
+
+                    promise.then(function (apiResponse) {
+                        console.log(JSON.stringify(apiResponse));
+
+                        if (!apiResponse.hasOwnProperty('email')) {
+                            $rootScope.error(
+                                $rootScope.getErrorDescription(28)
+                            );
+                        }
+
+                        if (apiResponse.hasOwnProperty('birthday')) {
+                            $scope.loginData.date = new Date(Date.parse(apiResponse.birthday));
+                        }
+
+                        if (apiResponse.hasOwnProperty('email')) {
+                            $scope.loginData.email = apiResponse.email;
+                            $scope.facebookHasEmail = true;
+                        }
+
+                        if (apiResponse.hasOwnProperty('first_name')) {
+                            $scope.loginData.nombre = apiResponse.first_name;
+                        }
+
+                        if (apiResponse.hasOwnProperty('last_name')) {
+                            $scope.loginData.apellido = apiResponse.last_name;
+                        }
+
+                        if (apiResponse.hasOwnProperty('picture')) {
+                            $scope.loginData.image = apiResponse.picture.data.url;
+                            $localStorage.set('user', $scope.loginData, true);
+                        } else {
+                            $scope.loginData.image = null;
+                        }
+                        $scope.loginData.telefono = "000000000";
+                        $scope.facebookConnected = true;
+                        $scope.doSignup();
+
+                    });
+                }
+            };
 
 
             // Do Signup
             $scope.doSignup = function (data) {
                 $rootScope.showLoader(true);
-                var promise = apiHandler.signup(data);
+                var promise = apiHandler.signup($scope.loginData);
                 promise.then(function (result) {
                     console.log(result);
                     $rootScope.showLoader(false);
                     if (result.error != 0) {
                         $rootScope.error(
-                                $rootScope.getErrorDescription(result.error)
-                                );
+                            $rootScope.getErrorDescription(result.error)
+                        );
                     } else {
+                        // exito y ahora se hace login normal
+                        $scope.doLogin();
 
-                        if ($rootScope.deviceToken == "undefined") {
-                            var token = $localStorage.get("deviceToken", "{}", true);
-                            $rootScope.deviceToken = token.registrationId;
-                        }
-                        // obligando a que ponga los datos.
-                        data.devicePlatform = $rootScope.devicePlatform;
-                        data.deviceToken = $rootScope.deviceToken;
-                        data.lat = $rootScope.lat;
-                        data.lng = $rootScope.lng;
-
-                        $rootScope.showLoader(true);
-                        // Sign up successful
-                        var loginPromise = authService.login(data);
-                        loginPromise.then(function (loginResult) {
-                            $rootScope.showLoader(false);
-                            if (result.error != 0) {
-                                $rootScope.error(
-                                    $rootScope.getErrorDescription(loginResult.error)
-                                );
-                            } else {
-                                authService.setUser(loginResult.data.user);
-                                $localStorage.set('colores', loginResult.data.colores, true);
-                                $localStorage.set('tipos_mascota', loginResult.data.tipos_mascota, true);
-                                $localStorage.set('razas', loginResult.data.razas, true);
-                                $localStorage.set('favoritos', loginResult.data.favoritos, true);
-                                $localStorage.set('ciudades', loginData.data.ciudades, true);
-
-                                $localStorage.set('version', {version: Config.version}, true);
-
-                                $state.go('app.home'); // Default screen after login
-                                $ionicHistory.nextViewOptions({disableBack: 'true'});
-                                $ionicHistory.clearHistory();
-                                $ionicHistory.clearCache();
-                            }
-                        });
                     }
                 }, function (err) {
                     $rootScope.showLoader(false);
