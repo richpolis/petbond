@@ -24,12 +24,12 @@
   position: relative;
 }
 
-.menu-petbond{
-  font-weight: 900;
-  font-size: 1.2em;
+.menu-petbond, .title.title-center.header-item{
+  font-weight: bold;
+  font-size: 24px;
   color: white;
   text-transform: lowercase;
-  font-family: 'afta_serifregular'
+  font-family: 'amatic_bold'
 }
 
 .menu-petbond:first-letter{

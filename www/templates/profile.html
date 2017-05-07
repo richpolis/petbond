@@ -3,7 +3,7 @@
     <div class="list card">
 
       <div class="item item-avatar">
-        <img src="img/blank-avatar-big.png" ng-if="user.image == null && user.login_fb == false" />
+        <img src="img/blank-avatar-big.png" ng-if="user.image == null" />
         <img src="{{ user.image }}" ng-if="user.image != null" />
         <h2>{{ user.nombre }} {{ user.apellido }}</h2>
       </div>

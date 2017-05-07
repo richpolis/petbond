@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.richpolissystems.petbond" version="2.3.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.richpolissystems.petbond" version="2.3.4" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Petbond</name>
     <description>
         App para mascotas perdidas, adoptar mascotas y encontrar novia o novio para mi mascota.
@@ -33,21 +33,6 @@
     <feature name="Geolocation">
         <param name="ios-package" value="CDVLocation" />
     </feature>
-    <plugin name="cordova-plugin-device" spec="~1.1.2" />
-    <plugin name="cordova-plugin-console" spec="~1.0.3" />
-    <plugin name="cordova-plugin-splashscreen" spec="~3.2.2" />
-    <plugin name="cordova-plugin-statusbar" spec="~2.1.3" />
-    <plugin name="ionic-plugin-keyboard" spec="~2.2.1" />
-    <plugin name="cordova-plugin-network-information" spec="~1.2.1" />
-    <plugin name="cordova-plugin-camera" spec="~2.2.0" />
-    <plugin name="cordova-plugin-file" spec="~4.2.0" />
-    <plugin name="cordova-plugin-file-transfer" spec="~1.5.1" />
-    <plugin name="cordova-plugin-facebook4" spec="~1.7.4">
-        <variable name="APP_ID" value="1780795122136268" />
-        <variable name="APP_NAME" value="Petbond" />
-    </plugin>
-    <plugin name="cordova-plugin-whitelist" spec="https://github.com/apache/cordova-plugin-whitelist.git" />
-    <plugin name="cordova-plugin-geolocation" spec="~2.4.1" />
     <platform name="android">
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
         <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" />
@@ -99,4 +84,20 @@
         <splash height="480" src="resources/ios/splash/Default~iphone.png" width="320" />
     </platform>
     <icon src="resources/android/icon/drawable-xhdpi-icon.png" />
+    <engine name="android" spec="^6.2.3" />
+    <plugin name="cordova-plugin-camera" spec="~2.2.0" />
+    <plugin name="cordova-plugin-console" spec="~1.0.3" />
+    <plugin name="cordova-plugin-device" spec="~1.1.2" />
+    <plugin name="cordova-plugin-facebook4" spec="~1.7.4">
+        <variable name="APP_ID" value="1780795122136268" />
+        <variable name="APP_NAME" value="Petbond" />
+    </plugin>
+    <plugin name="cordova-plugin-file" spec="~4.2.0" />
+    <plugin name="cordova-plugin-file-transfer" spec="~1.5.1" />
+    <plugin name="cordova-plugin-geolocation" spec="~2.4.1" />
+    <plugin name="cordova-plugin-network-information" spec="~1.2.1" />
+    <plugin name="cordova-plugin-splashscreen" spec="~3.2.2" />
+    <plugin name="cordova-plugin-statusbar" spec="~2.1.3" />
+    <plugin name="cordova-plugin-whitelist" spec="https://github.com/apache/cordova-plugin-whitelist.git" />
+    <plugin name="ionic-plugin-keyboard" spec="~2.2.1" />
 </widget>

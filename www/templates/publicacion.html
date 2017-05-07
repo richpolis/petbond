@@ -77,10 +77,10 @@
       </label>
     </div>
 
-    <div class="item item-divider" ng-if="!can_edit">
+    <div class="item item-divider" ng-if="publicacion.usuario.id != user.id">
       Cómo contactarme
     </div>
-    <div class="list" ng-if="!can_edit">
+    <div class="list" ng-if="publicacion.usuario.id != user.id">
       <label class="item item-input item-detail">
         <span class="input-label item-detail-label">Nombre</span>
         {{publicacion.usuario.nombre}} {{publicacion.usuario.apellido}} 
@@ -91,7 +91,7 @@
       </label>
     </div>
 
-    <div class="item" ng-if="!can_edit">
+    <div class="item" ng-if="publicacion.usuario.id != user.id">
       <button class="button button-block button-dark icon-left ion-email" ng-click="showFormContacto()">Enviar email</button>
     </div>
     <br/>
@@ -102,7 +102,7 @@
         <button class="button button-calm icon-left ion-pause" ng-show="is_admin && (publicacion.estado=='A')" ng-click="setEstado('B')">Pausar</button>
         <button class="button button-positive icon-left ion-play" ng-show="can_edit && (publicacion.estado=='N' || publicacion.estado=='B')" ng-click="setEstado('A')">Activar</button>
       </div>
-      <div class="item">
+      <div class="item" ng-if="publicacion.usuario.id != user.id">
         <!--Favorito/No favorito-->
         <button class="button icon-right ion-ios-heart-outline" ng-if="!is_favorite" ng-click="setFavorite()">Marcar favorito</button>
         <button class="button icon-right ion-ios-heart" ng-if="is_favorite" ng-click="setFavorite()">Quitar favorito</button>

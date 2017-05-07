@@ -16,19 +16,21 @@ angular.module('app.controllers', [])
             };
 
             // Login function
-            $scope.doLogin = function (data) {
+            $scope.doLogin = function (dataLogin) {
+
+                dataLogin = dataLogin || $scope.loginData;
 
                 if ($rootScope.deviceToken == "undefined") {
                     var token = $localStorage.get("deviceToken", "{}", true);
                     $rootScope.deviceToken = token.registrationId;
                 }
                 // obligando a que ponga los datos.
-                $scope.loginData.devicePlatform = $rootScope.devicePlatform;
-                $scope.loginData.deviceToken = $rootScope.deviceToken;
-                $scope.loginData.latitude = $rootScope.lat;
-                $scope.loginData.longitude = $rootScope.lng;
+                dataLogin.devicePlatform = $rootScope.devicePlatform;
+                dataLogin.deviceToken = $rootScope.deviceToken;
+                dataLogin.latitude = $rootScope.lat;
+                dataLogin.longitude = $rootScope.lng;
 
-                var promise = authService.login($scope.loginData);
+                var promise = authService.login(dataLogin);
                 promise.then(function (result) {
                     console.log("Login: " + JSON.stringify(result));
                     if (result.error == 26) {
@@ -72,12 +74,13 @@ angular.module('app.controllers', [])
                     console.log("Login Facebook");
                     console.log(JSON.stringify(response));
                     if (response.hasOwnProperty('authResponse')) {
-                        $scope.loginData.facebookId = response.authResponse.userID;
+                        var loginFacebook = {};
+                        loginFacebook.facebookId = response.authResponse.userID;
                         facebookHandler.setUser(response.authResponse.userID, response.authResponse.accessToken);
                         $rootScope.facebookId = response.authResponse.userID;
                         $rootScope.facebookToken = response.authResponse.accessToken;
 
-                        $scope.doLogin($scope.loginData);
+                        $scope.doLogin(loginFacebook);
                     }
                 }, function (error) {
                     console.log(error);
@@ -113,12 +116,13 @@ angular.module('app.controllers', [])
 
             $scope.registroFacebook = function(){
                 // Check for parameters
+                var dataFacebook = {};
                 if ($rootScope.facebookId && $rootScope.facebookToken) {
-                    $scope.loginData.facebookId = $rootScope.facebookId;
-                    $scope.loginData.facebookToken = $rootScope.facebookToken;
-                    $scope.loginData.password = $rootScope.facebookToken;
+                    dataFacebook.facebookId = $rootScope.facebookId;
+                    dataFacebook.facebookToken = $rootScope.facebookToken;
+                    //dataFacebook.password = $rootScope.facebookToken;
 
-                    var promise = facebookHandler.me($scope.loginData.facebookToken);
+                    var promise = facebookHandler.me(dataFacebook.facebookToken);
 
                     promise.then(function (apiResponse) {
                         console.log(JSON.stringify(apiResponse));
@@ -130,31 +134,31 @@ angular.module('app.controllers', [])
                         }
 
                         if (apiResponse.hasOwnProperty('birthday')) {
-                            $scope.loginData.date = new Date(Date.parse(apiResponse.birthday));
+                            dataFacebook.date = new Date(Date.parse(apiResponse.birthday));
                         }
 
                         if (apiResponse.hasOwnProperty('email')) {
-                            $scope.loginData.email = apiResponse.email;
+                            dataFacebook.email = apiResponse.email;
                             $scope.facebookHasEmail = true;
                         }
 
                         if (apiResponse.hasOwnProperty('first_name')) {
-                            $scope.loginData.nombre = apiResponse.first_name;
+                            dataFacebook.nombre = apiResponse.first_name;
                         }
 
                         if (apiResponse.hasOwnProperty('last_name')) {
-                            $scope.loginData.apellido = apiResponse.last_name;
+                            dataFacebook.apellido = apiResponse.last_name;
                         }
 
                         if (apiResponse.hasOwnProperty('picture')) {
-                            $scope.loginData.image = apiResponse.picture.data.url;
+                            dataFacebook.image = apiResponse.picture.data.url;
                             $localStorage.set('user', $scope.loginData, true);
                         } else {
-                            $scope.loginData.image = null;
+                            dataFacebook.image = null;
                         }
-                        $scope.loginData.telefono = "000000000";
+                        dataFacebook.telefono = "000000000";
                         $scope.facebookConnected = true;
-                        $scope.doSignup();
+                        $scope.doSignup(dataFacebook);
 
                     });
                 }
@@ -162,9 +166,9 @@ angular.module('app.controllers', [])
 
 
             // Do Signup
-            $scope.doSignup = function (data) {
+            $scope.doSignup = function (dataSigup) {
                 $rootScope.showLoader(true);
-                var promise = apiHandler.signup($scope.loginData);
+                var promise = apiHandler.signup(dataSigup);
                 promise.then(function (result) {
                     console.log(result);
                     $rootScope.showLoader(false);
@@ -174,7 +178,7 @@ angular.module('app.controllers', [])
                         );
                     } else {
                         // exito y ahora se hace login normal
-                        $scope.doLogin();
+                        $scope.doLogin(dataSigup);
 
                     }
                 }, function (err) {
@@ -213,8 +217,8 @@ angular.module('app.controllers', [])
 
                     if (!apiResponse.hasOwnProperty('email')) {
                         $rootScope.error(
-                                $rootScope.getErrorDescription(28)
-                                );
+                            $rootScope.getErrorDescription(28)
+                        );
                     }
 
                     if (apiResponse.hasOwnProperty('birthday')) {
@@ -303,8 +307,8 @@ angular.module('app.controllers', [])
                     $rootScope.showLoader(false);
                     if (result.error != 0) {
                         $rootScope.error(
-                                $rootScope.getErrorDescription(result.error)
-                                );
+                            $rootScope.getErrorDescription(result.error)
+                        );
                     } else {
 
                         if ($rootScope.deviceToken == "undefined") {
@@ -314,8 +318,8 @@ angular.module('app.controllers', [])
                         // obligando a que ponga los datos.
                         $scope.user.devicePlatform = $rootScope.devicePlatform;
                         $scope.user.deviceToken = $rootScope.deviceToken;
-                        $scope.user.lat = $rootScope.lat;
-                        $scope.user.lng = $rootScope.lng;
+                        $scope.user.latitude = $rootScope.lat;
+                        $scope.user.longitude = $rootScope.lng;
 
                         $rootScope.showLoader(true);
                         // Sign up successful
@@ -332,7 +336,7 @@ angular.module('app.controllers', [])
                                 $localStorage.set('tipos_mascota', loginResult.data.tipos_mascota, true);
                                 $localStorage.set('razas', loginResult.data.razas, true);
                                 $localStorage.set('favoritos', loginResult.data.favoritos, true);
-                                $localStorage.set('ciudades', loginData.data.ciudades, true);
+                                $localStorage.set('ciudades', loginResult.data.ciudades, true);
 
                                 $localStorage.set('version', {version: Config.version}, true);
 
@@ -373,7 +377,7 @@ angular.module('app.controllers', [])
                         destinationType: Camera.DestinationType.DATA_URL,
                         cameraDirection: Camera.Direction.FRONT,
                         sourceType: Camera.PictureSourceType.CAMERA,
-                        allowEdit: true,
+                        allowEdit: false,
                         encodingType: Camera.EncodingType.JPEG,
                         targetWidth: 800,
                         targetHeight: 1200,
@@ -383,13 +387,9 @@ angular.module('app.controllers', [])
                     };
 
                     $cordovaCamera.getPicture(options).then(function (imageData) {
-                        /*
-                         var image = document.getElementById('profilePicture');
-                         image.src = "data:image/jpeg;base64," + imageData;
-                         */
-                        $scope.user.image = imageData;
+                        //$scope.user.image = imageData;
+                        $scope.user.image = "data:image/jpeg;base64," + imageData;
                         $scope.$apply();
-
 
                     }, function (err) {
                         // error
@@ -931,7 +931,6 @@ angular.module('app.controllers', [])
                 $state.go('app.change-password');
             }
 
-
         })
 
         .controller('ProfileEditCtrl', function ($scope, apiHandler, $state, $rootScope,
@@ -947,22 +946,26 @@ angular.module('app.controllers', [])
             $scope.imageData = {};
 
             $scope.isIOS = $rootScope.isIOS;
+            $scope.facebookConnected = false;
 
             $scope.userFacebook = $localStorage.get('userFacebook', {}, true);
 
             var promise = apiHandler.viewUser({'id': user.id});
-
+            $rootScope.showLoader(true);
             promise.then(function (response) {
+                $rootScope.showLoader(false);
                 console.log("Perfil: " + JSON.stringify(response));
                 if (response.error != 0) {
                     // Error Handling
                 } else {
                     $scope.user = response.data;
+                    if($scope.userFacebook.facebookToken){
+                        $scope.facebookConnected = true;
+                    }
                     // Check for parameters
-                    if ($scope.userFacebook.facebookToken) {
+                    /*if ($scope.userFacebook.facebookToken) {
 
                         var promise = facebookHandler.me($scope.userFacebook.facebookToken);
-
                         promise.then(function (apiResponse) {
                             console.log(JSON.stringify(apiResponse));
 
@@ -994,7 +997,7 @@ angular.module('app.controllers', [])
                         $scope.facebookConnected = true;
                     } else {
                         $scope.facebookConnected = false;
-                    }
+                    }*/
                 }
             });
 
@@ -1003,8 +1006,9 @@ angular.module('app.controllers', [])
             $scope.saveProfile = function (data) {
 
                 var promise = apiHandler.editUser($scope.user);
-
+                $rootScope.showLoader(true);
                 promise.then(function (response) {
+                    $rootScope.showLoader(false);
                     console.log("Response:");
                     console.log(response);
 
@@ -1025,7 +1029,7 @@ angular.module('app.controllers', [])
                         destinationType: Camera.DestinationType.DATA_URL,
                         cameraDirection: Camera.Direction.FRONT,
                         sourceType: Camera.PictureSourceType.CAMERA,
-                        allowEdit: true,
+                        allowEdit: false,
                         encodingType: Camera.EncodingType.JPEG,
                         targetWidth: 800,
                         targetHeight: 1200,
@@ -1040,15 +1044,16 @@ angular.module('app.controllers', [])
                          image.src = "data:image/jpeg;base64," + imageData;
                          */
                         $scope.user.image = "data:image/jpeg;base64," + imageData;
-                        $scope.imageData.image = imageData;
+                        $scope.$apply();
+                        /*$scope.imagedata.image = imagedata;
 
-                        // Save picture on
-                        var promise = apiHandler.updateImage($scope.imageData);
+                        // save picture on
+                        var promise = apihandler.updateimage($scope.imagedata);
 
                         promise.then(function (response) {
-                            console.log("Response:");
+                            console.log("response:");
                             console.log(response);
-                        });
+                        });*/
 
 
                     }, function (err) {
@@ -1205,11 +1210,10 @@ angular.module('app.controllers', [])
                 $rootScope.showLoader(false);
             };
 
-
             // Detect places
             $scope.$watch("publicacion.direction", function (newValue, oldValue) {
-                var latitude = 0;
-                var longitude = 0;
+                var latitude = $scope.publicacion.latitude || 0;
+                var longitude = $scope.publicacion.longitude || 0;
                 if (typeof $scope.publicacion.direction != "string" && typeof $scope.publicacion.direction != "undefined" && $scope.publicacion.direction != null) {
                     latitude = $scope.publicacion.direction.geometry.location.lat();
                     longitude = $scope.publicacion.direction.geometry.location.lng();
@@ -1240,15 +1244,15 @@ angular.module('app.controllers', [])
                     });
                 }
             });
-
             // Clear function
+
             $scope.clearDirection = function () {
                 $scope.publicacion.direction = '';
             };
 
             // Create publicacion function
             $scope.createPublicacion = function () {
-
+                $rootScope.showLoader(true);
                 console.log("Entro a validar formulario")
 
                 $scope.publicacion.latitude = $scope.map.center.latitude;
@@ -1269,10 +1273,12 @@ angular.module('app.controllers', [])
                     }
                 }
 
+                $rootScope.showLoader(false);
+
                 if (!todoCorrecto)
                     return false;
 
-
+                $rootScope.showLoader(true);
                 console.log("Nuevo publicacion: " + JSON.stringify($scope.publicacion));
 
                 var promise = apiHandler.newPublicacion($scope.publicacion);
@@ -1282,11 +1288,13 @@ angular.module('app.controllers', [])
                     console.log(response);
 
                     $scope.returnedPublicacion = response.data;
+                    $rootScope.showLoader(false);
                     $ionicHistory.clearHistory();
                     $ionicHistory.clearCache();
                     $ionicHistory.nextViewOptions({disableBack: 'true'});
 
-                    $state.go('app.publicacion-images', {'publicacionId': $scope.returnedPublicacion.id});
+                    //$state.go('app.publicacion-images', {'publicacionId': $scope.returnedPublicacion.id});
+                    $state.go('app.publicacion', {'publicacionId': $scope.publicacion.id});
                 });
             };
             // End create publicacion function
@@ -1440,8 +1448,8 @@ angular.module('app.controllers', [])
 
             // Detect places
             $scope.$watch("publicacion.direction", function (newValue, oldValue) {
-                var latitude = 0;
-                var longitude = 0;
+                var latitude = $scope.publicacion.latitude || 0;
+                var longitude = $scope.publicacion.longitude || 0;
                 if (typeof $scope.publicacion.direction != "string" && typeof $scope.publicacion.direction != "undefined" && $scope.publicacion.direction != null) {
                     latitude = $scope.publicacion.direction.geometry.location.lat();
                     longitude = $scope.publicacion.direction.geometry.location.lng();

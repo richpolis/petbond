@@ -4,8 +4,7 @@
       <!--Foto-->
       <ion-item class="item-thumbnail-left">
         <img src="img/blank-avatar-big.png" ng-if="user.image == null" />
-        <img src="data:image/jpeg;base64,{{user.image}}" class="ion-camera" ng-if="user.image != null && facebookConnected == false" />
-        <img src="{{user.image}}" class="ion-camera" ng-if="facebookConnected" />
+        <img src="{{user.image}}" class="ion-camera" ng-if="user.image != null"/>
 
         <button
           class="button button-dark button-full icon-right ion-camera button-stable"

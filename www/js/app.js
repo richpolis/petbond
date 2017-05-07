@@ -34,7 +34,7 @@ angular.module('app', [
             base_url_web_images: 'http://api.petbondweb.com/uploads/imagenes/',
             //base_url_web_images: 'http://localhost:8022/uploads/imagenes/'
             // com.ionicframework.petmatch649866
-            version: '2.3.3'
+            version: '2.3.4'
         })
         .run(function ($http, $ionicPlatform, authService, $rootScope, $state,
                        $ionicHistory, $cordovaNetwork, $cordovaGeolocation, $localStorage,
@@ -414,6 +414,7 @@ angular.module('app', [
 
                     .state('app.login', {
                         url: '/login',
+                        cache: false,
                         views: {
                             'menuContent': {
                                 templateUrl: 'templates/login.html',

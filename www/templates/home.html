@@ -24,7 +24,8 @@
               <a href="#" class="subdued">{{card.cont_views}} Vistas</a>
               <a href="#" class="subdued">{{card.cont_contact}} Interesados</a>
               <a href="#" class="subdued">
-              <div ng-click="addFavorite(card)" ng-class="{'button-fav favorite': isFavorite(card), 'button-fav not-favorite': !isFavorite(card)}"></div>
+              <div ng-click="addFavorite(card)" ng-class="{'button-fav favorite': isFavorite(card), 'button-fav not-favorite': !isFavorite(card)}" ng-if="card.usuario.id != user.id"></div>
+              <div ng-class="{'button-fav favorite': isFavorite(card), 'button-fav not-favorite': !isFavorite(card)}" ng-if="card.usuario.id == user.id"></div>
               </a>
             </p>  
           </div>

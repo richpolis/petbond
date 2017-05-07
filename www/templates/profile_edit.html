@@ -2,7 +2,7 @@
     <ion-content overflow-scroll="true" padding="true" class="has-header fondo-perritos">
         <form class="list"  name="profileForm">
             <ion-item class="item-thumbnail-left">
-              <img src="img/blank-avatar-big.png" ng-if="user.image == null && user.login_fb == false" />
+              <img src="img/blank-avatar-big.png" ng-if="user.image == null" />
               <img src="{{ user.image }}" ng-if="user.image != null" />
               <button
                 ng-if="facebookConnected == false"
