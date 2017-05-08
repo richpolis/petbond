@@ -120,7 +120,7 @@ angular.module('app.controllers', [])
                 if ($rootScope.facebookId && $rootScope.facebookToken) {
                     dataFacebook.facebookId = $rootScope.facebookId;
                     dataFacebook.facebookToken = $rootScope.facebookToken;
-                    //dataFacebook.password = $rootScope.facebookToken;
+                    dataFacebook.password = $rootScope.facebookToken;
 
                     var promise = facebookHandler.me(dataFacebook.facebookToken);
 
