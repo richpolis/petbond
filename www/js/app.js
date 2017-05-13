@@ -34,7 +34,7 @@ angular.module('app', [
             base_url_web_images: 'http://api.petbondweb.com/uploads/imagenes/',
             //base_url_web_images: 'http://localhost:8022/uploads/imagenes/'
             // com.ionicframework.petmatch649866
-            version: '2.3.4'
+            version: '2.3.5'
         })
         .run(function ($http, $ionicPlatform, authService, $rootScope, $state,
                        $ionicHistory, $cordovaNetwork, $cordovaGeolocation, $localStorage,

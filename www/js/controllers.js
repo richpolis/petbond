@@ -426,13 +426,14 @@ angular.module('app.controllers', [])
         })
 
         .controller('HomeCtrl', function ($scope, $rootScope, $state, $ionicHistory, Config,
-                authService, jsonUtility, apiHandler, $cordovaGeolocation, $timeout,
-                $localStorage, $ionicModal, $stateParams, $ionicNavBarDelegate) {
+                authService, jsonUtility, apiHandler, $cordovaGeolocation, $timeout, dateUtility,
+                $localStorage, $ionicModal, $stateParams, $ionicNavBarDelegate, $cordovaDatePicker) {
 
             $scope.tipoController = $stateParams.tipoController;
 
             $scope.data = {};
             $scope.data.currentPage = 0;
+            $scope.isIOS = $rootScope.isIOS;
 
             $scope.setupSlider = function () {
                 //some options to pass to our slider
@@ -798,6 +799,54 @@ angular.module('app.controllers', [])
                     }
                 }
             }
+
+            $scope.showDatePickerDesde = function(){
+                console.log($scope.criteria.fecha_desde);
+                var options = {
+                    date: $scope.criteria.fecha_desde || new Date(),
+                    mode: 'date', // or 'time'
+                    minDate: new Date(),
+                    allowOldDates: false,
+                    allowFutureDates: true,
+                    doneButtonLabel: 'DONE',
+                    doneButtonColor: '#F2F3F4',
+                    cancelButtonLabel: 'CANCEL',
+                    cancelButtonColor: '#000000'
+                  };
+
+                  document.addEventListener("deviceready", function () {
+
+                    $cordovaDatePicker.show(options).then(function(date){
+                        $scope.criteria.fecha_desde = date;
+                        $scope.criteria.fecha_desde_string =  dateUtility.getStringFromDate($scope.criteria.fecha_desde);
+                    });
+
+                  }, false);
+            };
+
+            $scope.showDatePickerHasta = function(){
+                console.log($scope.criteria.fecha_hasta);
+                var options = {
+                    date: $scope.criteria.fecha_hasta || new Date(),
+                    mode: 'date', // or 'time'
+                    minDate: new Date(),
+                    allowOldDates: false,
+                    allowFutureDates: true,
+                    doneButtonLabel: 'DONE',
+                    doneButtonColor: '#F2F3F4',
+                    cancelButtonLabel: 'CANCEL',
+                    cancelButtonColor: '#000000'
+                  };
+
+                  document.addEventListener("deviceready", function () {
+
+                    $cordovaDatePicker.show(options).then(function(date){
+                        $scope.criteria.fecha_hasta = date;
+                        $scope.criteria.fecha_hasta_string =  dateUtility.getStringFromDate($scope.criteria.fecha_hasta);
+                    });
+
+                  }, false);
+            };
 
         })
 

@@ -73,12 +73,14 @@
 
       <label class="item item-input" ng-if="criteria.isFecha">
         <span class="input-label">Desde</span>
-        <input type="date" ng-model="criteria.fecha_desde">
+                        <input type="text" ng-if="!isIOS" placeholder="Desde" ng-model="criteria.fecha_desde_string" min="{{ minDate }}" ng-required="true" ng-click="showDatePickerDesde()">
+                        <input type="date" ng-if="isIOS" placeholder="Desde" ng-model="criteria.fecha_desde" min="{{ minDate }}" ng-required="true">
       </label>
 
       <label class="item item-input" ng-if="criteria.isFecha">
         <span class="input-label">Hasta</span>
-        <input type="date" ng-model="criteria.fecha_hasta">
+                        <input type="text" ng-if="!isIOS" placeholder="Desde" ng-model="criteria.fecha_hasta_string" min="{{ minDate }}" ng-required="true" ng-click="showDatePickerHasta()">
+                        <input type="date" ng-if="isIOS" placeholder="Desde" ng-model="criteria.fecha_hasta" min="{{ minDate }}" ng-required="true">
       </label>
 
       <div class="item">
