@@ -4,7 +4,7 @@
             <ion-item class="item-thumbnail-left">
               <img src="img/blank-avatar-big.png" ng-if="user.image == null" />
               <img src="{{ user.image }}" ng-if="user.image != null" />
-              <button
+              <button 
                 ng-if="facebookConnected == false"
                 class="button button-full icon-right ion-camera button-stable"
                 ng-click="editProfilePicture()">

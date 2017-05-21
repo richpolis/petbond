@@ -32,9 +32,9 @@ angular.module('app', [
             //base_url: 'http://localhost:8022/app_dev.php/api',
             base_url_web: 'http://api.petbondweb.com/',
             base_url_web_images: 'http://api.petbondweb.com/uploads/imagenes/',
-            //base_url_web_images: 'http://localhost:8022/uploads/imagenes/'
+            //base_url_web_images: 'http://localhost:8022/uploads/imagenes/',
             // com.ionicframework.petmatch649866
-            version: '2.3.5'
+            version: '2.3.6'
         })
         .run(function ($http, $ionicPlatform, authService, $rootScope, $state,
                        $ionicHistory, $cordovaNetwork, $cordovaGeolocation, $localStorage,
@@ -321,17 +321,21 @@ angular.module('app', [
                     // Default position if no GPS data was found
                     $rootScope.lat = -34.6156541;
                     $rootScope.lng = -58.5734051;
+                    $rootScope.geolocalizacionActive = false;
 
 
                     var posOptions = {timeout: 10000, enableHighAccuracy: true};
                     $cordovaGeolocation.getCurrentPosition(posOptions).then(function (position) {
                         $rootScope.lat = position.coords.latitude;
                         $rootScope.lng = position.coords.longitude;
+                        $rootScope.geolocalizacionActive = true;
                         console.log("Entro a geolocalizacion");
                         console.log(position);
                     }, function (err) {
                         console.info('Returned a Geo error');
                         console.log(err);
+                        $rootScope.geolocalizacionActive = false;
+                        console.log('code: ' + err.code + '\n' + 'message: ' + err.message + '\n');
                     });
                     // End GeoLocation
                 }, false);

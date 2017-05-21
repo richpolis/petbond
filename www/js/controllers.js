@@ -434,6 +434,7 @@ angular.module('app.controllers', [])
             $scope.data = {};
             $scope.data.currentPage = 0;
             $scope.isIOS = $rootScope.isIOS;
+            $scope.minDate = new Date();
 
             $scope.setupSlider = function () {
                 //some options to pass to our slider
@@ -1343,7 +1344,7 @@ angular.module('app.controllers', [])
                     $ionicHistory.nextViewOptions({disableBack: 'true'});
 
                     //$state.go('app.publicacion-images', {'publicacionId': $scope.returnedPublicacion.id});
-                    $state.go('app.publicacion', {'publicacionId': $scope.publicacion.id});
+                    $state.go('app.publicacion', {'publicacionId': $scope.returnedPublicacion.id});
                 });
             };
             // End create publicacion function
@@ -1761,7 +1762,7 @@ angular.module('app.controllers', [])
         })
 
         .controller('PublicacionCtrl', function ($rootScope, $scope, $stateParams, $window, apiHandler, $state,
-                $ionicPopup, uiGmapGoogleMapApi, $cordovaSocialSharing,
+                $ionicPopup, uiGmapGoogleMapApi, $cordovaSocialSharing, $ionicHistory,
                 $localStorage, jsonUtility, Config, $ionicNavBarDelegate,
                 $ionicSlideBoxDelegate, $ionicScrollDelegate, $ionicModal, $timeout, $ionicLoading) {
 
@@ -1835,7 +1836,11 @@ angular.module('app.controllers', [])
                                     $rootScope.getErrorDescription(result.error)
                                 );
                             } else {
-                                window.history.back();
+                                //window.history.back();
+                                $ionicHistory.clearHistory();
+                                $ionicHistory.clearCache();
+                                $ionicHistory.nextViewOptions({disableBack: 'true'});
+                                $state.go('app.mis-publicaciones');
                             }
                         });
                     }
